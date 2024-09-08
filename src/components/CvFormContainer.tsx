@@ -1,7 +1,16 @@
 import CvForm from "@/forms/CvForm";
 import Stepper from "./Stepper";
+import { useEffect } from "react";
+import { useCvFromContext } from "@/context/CvForm.context";
 
 const CvFormContainer = () => {
+  const { setStep } = useCvFromContext();
+  useEffect(() => {
+    const storageStep = localStorage.getItem("currentStep");
+    if (storageStep) {
+      setStep(Number(storageStep));
+    }
+  }, []);
   return (
     <div className="border flex justify-center py-4  w-full px-12 gap-4">
       <Stepper />
