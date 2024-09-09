@@ -70,6 +70,7 @@ const PersonalDetails = ({
               <FormControl>
                 <Input placeholder="Your current location" {...field} />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -80,8 +81,13 @@ const PersonalDetails = ({
             <FormItem className="flex-1">
               <FormLabel>Phone number</FormLabel>
               <FormControl>
-                <Input placeholder="Enter phone number" {...field} />
+                <Input
+                  type="number"
+                  placeholder="Enter phone number"
+                  {...field}
+                />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
