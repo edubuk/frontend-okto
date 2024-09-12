@@ -52,7 +52,12 @@ const PersonalDetails = ({
             <FormItem className="flex-1">
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="Enter email" {...field} />
+                <Input
+                  required
+                  type="email"
+                  placeholder="Enter email"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

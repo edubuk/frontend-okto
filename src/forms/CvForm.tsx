@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import PersonalDetails from "./PersonalDetails";
 import { useCvFromContext } from "@/context/CvForm.context";
 import Education from "./Education";
+import Experience from "./Experience";
 const formSchema = z.object({
   name: z
     .string({
@@ -66,6 +67,19 @@ const formSchema = z.object({
     })
     .min(0, { message: "Enter GPA between 0 to 10" })
     .max(10, { message: "Enter GPA between 0 to 10" }),
+
+  // step 3 fields  (Experience)
+  experience: z.array(
+    z.object({
+      comapany_name: z.string({ required_error: "Company name is required" }),
+      job_role: z.string({ required_error: "job role is required" }),
+      duration: z.object({
+        from: z.date({ required_error: "Start date is required" }),
+        to: z.date({ required_error: "End date is required" }),
+      }),
+      description: z.string({ required_error: "Work description is required" }),
+    })
+  ),
 });
 
 type CvFormDataType = z.infer<typeof formSchema>;
@@ -138,10 +152,28 @@ const CvForm = () => {
         "postGraduateGPA",
       ];
     }
+    // else if (step === 3) {
+    //   const currentFormData = form.getValues();
+
+    //   console.log(currentFormData);
+
+    //   if (currentFormData.experience && currentFormData.experience.length > 0) {
+    //     currentFormData.experience.forEach((_, index) => {
+    //       fieldsToValidate.push(
+    //         `experience[${index}].company_name` as keyof CvFormDataType,
+    //         `experience[${index}].job_role` as keyof CvFormDataType,
+    //         `experience[${index}].duration.from` as keyof CvFormDataType,
+    //         `experience[${index}].duration.to` as keyof CvFormDataType,
+    //         `experience[${index}].description` as keyof CvFormDataType
+    //       );
+    //     });
+    //   }
+    // }
+
     // validate step;
     const isValid = await form.trigger(fieldsToValidate);
 
-    if (!isValid) return; //stop is validation fails;
+    if (!isValid) return; //stop if validation fails;
 
     const currentFormData = form.getValues();
     console.log(currentFormData);
@@ -174,7 +206,7 @@ const CvForm = () => {
   return (
     <div>
       <Form {...form}>
-        <form className="space-y-5">
+        <form className="space-y-5 flex flex-col">
           {/* step=1 */}
           {step === 1 && (
             <PersonalDetails
@@ -187,10 +219,10 @@ const CvForm = () => {
           )}
 
           {step === 2 && <Education />}
-          {step === 3 && <h1>Hey im step 3</h1>}
+          {step === 3 && <Experience />}
           {step === 4 && <h1>Hey im step 4</h1>}
           {/* save and next button */}
-          <div className="w-full px-12 mb-3 flex gap-5">
+          <div className="w-full mt-40 px-12  flex gap-5 border">
             {step !== 1 && (
               <Button
                 onClick={() => {
@@ -203,7 +235,11 @@ const CvForm = () => {
                 <GrLinkPrevious className="mr-3" /> Go to Previous step
               </Button>
             )}
-            <Button type="button" onClick={stepsHandler} className="w-full">
+            <Button
+              type="button"
+              onClick={stepsHandler}
+              className="w-full bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)] hover:opacity-90"
+            >
               Save and next
             </Button>
           </div>

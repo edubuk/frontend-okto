@@ -12,7 +12,7 @@ const Header = () => {
       />
       <div className="ml-5">
         <HyperText
-          text="CV ON BLOCKCHAIN BY : EDUBUK"
+          text="CV ON BLOCKCHAIN BY EDUBUK"
           className="text-4xl font-semibold text-[#006666]"
         />
       </div>
