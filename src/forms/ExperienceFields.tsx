@@ -14,7 +14,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { addDays, format } from "date-fns";
+import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { CiCalendar } from "react-icons/ci";
@@ -31,11 +31,11 @@ type Props = {
 
 const ExperienceFields = ({ index, removeExperienceFields, fields }: Props) => {
   const { control, setValue, getValues } = useFormContext();
-  const [date, setDate] = useState<DateRange | undefined>({
-    from: new Date(2023, 0, 20),
-    to: addDays(new Date(2024, 0, 20), 20),
-  });
-
+  const [date, setDate] = useState<DateRange | undefined>();
+  // {
+  //   from: new Date(2023, 0, 20),
+  //   to: addDays(new Date(2024, 0, 20), 20),
+  // }
   console.log(getValues());
 
   const { remove } = useFieldArray({ control, name: "Experience" });

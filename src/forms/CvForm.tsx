@@ -69,15 +69,33 @@ const formSchema = z.object({
     .max(10, { message: "Enter GPA between 0 to 10" }),
 
   // step 3 fields  (Experience)
-  experience: z.array(
+  Experience: z.array(
     z.object({
-      comapany_name: z.string({ required_error: "Company name is required" }),
-      job_role: z.string({ required_error: "job role is required" }),
-      duration: z.object({
-        from: z.date({ required_error: "Start date is required" }),
-        to: z.date({ required_error: "End date is required" }),
-      }),
-      description: z.string({ required_error: "Work description is required" }),
+      company_name: z
+        .string({ required_error: "Company name is required" })
+        .min(1, { message: "Company name is required" }),
+      job_role: z
+        .string({ required_error: "job role is required" })
+        .min(1, "Job role is required"),
+      duration: z
+        .union([
+          z.object({
+            from: z.date().optional(),
+            to: z.date().optional(),
+          }),
+          z
+            .literal("")
+            .refine((val) => val === "", { message: "Duration is required" }),
+        ])
+        .refine(
+          (data) => typeof data !== "string" && (data?.from || data?.to),
+          {
+            message: "Duration is required",
+          }
+        ),
+      description: z
+        .string({ required_error: "Work description is required" })
+        .min(1, { message: "description is required" }),
     })
   ),
 });
@@ -151,24 +169,25 @@ const CvForm = () => {
         "postGraduateDegreeName",
         "postGraduateGPA",
       ];
+    } else if (step === 3) {
+      const currentFormData = form.getValues();
+
+      console.log("after save and next data", currentFormData);
+
+      if (currentFormData.Experience && currentFormData.Experience.length > 0) {
+        console.log("validation calls");
+        currentFormData.Experience.forEach((_, index) => {
+          fieldsToValidate.push(
+            `Experience[${index}].company_name` as keyof CvFormDataType,
+            `Experience[${index}].job_role` as keyof CvFormDataType,
+            `Experience[${index}].duration` as keyof CvFormDataType,
+            // `Experience[${index}].duration.from` as keyof CvFormDataType,
+            // `Experience[${index}].duration.to` as keyof CvFormDataType,
+            `Experience[${index}].description` as keyof CvFormDataType
+          );
+        });
+      }
     }
-    // else if (step === 3) {
-    //   const currentFormData = form.getValues();
-
-    //   console.log(currentFormData);
-
-    //   if (currentFormData.experience && currentFormData.experience.length > 0) {
-    //     currentFormData.experience.forEach((_, index) => {
-    //       fieldsToValidate.push(
-    //         `experience[${index}].company_name` as keyof CvFormDataType,
-    //         `experience[${index}].job_role` as keyof CvFormDataType,
-    //         `experience[${index}].duration.from` as keyof CvFormDataType,
-    //         `experience[${index}].duration.to` as keyof CvFormDataType,
-    //         `experience[${index}].description` as keyof CvFormDataType
-    //       );
-    //     });
-    //   }
-    // }
 
     // validate step;
     const isValid = await form.trigger(fieldsToValidate);

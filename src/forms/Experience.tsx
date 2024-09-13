@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { FormDescription } from "@/components/ui/form";
+import { FormDescription, FormField, FormItem } from "@/components/ui/form";
 
 import { useFieldArray, useFormContext } from "react-hook-form";
 
@@ -10,7 +10,7 @@ const Experience = () => {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "experience",
+    name: "Experience",
   });
 
   return (
@@ -22,14 +22,22 @@ const Experience = () => {
             You can add multiple experience
           </FormDescription>
         </div>
-        {fields.map((_, index) => (
-          <ExperienceFields
-            key={index}
-            fields={fields}
-            index={index}
-            removeExperienceFields={(index) => remove(index)}
-          />
-        ))}
+        <FormField
+          name="Experience"
+          control={control}
+          render={() => (
+            <FormItem>
+              {fields.map((_, index) => (
+                <ExperienceFields
+                  key={index}
+                  fields={fields}
+                  index={index}
+                  removeExperienceFields={(index) => remove(index)}
+                />
+              ))}
+            </FormItem>
+          )}
+        />
 
         <div className={`${fields.length === 0 ? "h-64" : "h-fit"}`}>
           <Button
