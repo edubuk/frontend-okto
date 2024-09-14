@@ -30,13 +30,12 @@ type Props = {
 };
 
 const ExperienceFields = ({ index, removeExperienceFields, fields }: Props) => {
-  const { control, setValue, getValues } = useFormContext();
+  const { control, setValue } = useFormContext();
   const [date, setDate] = useState<DateRange | undefined>();
   // {
   //   from: new Date(2023, 0, 20),
   //   to: addDays(new Date(2024, 0, 20), 20),
   // }
-  console.log(getValues());
 
   const { remove } = useFieldArray({ control, name: "Experience" });
 

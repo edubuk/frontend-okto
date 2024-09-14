@@ -9,6 +9,7 @@ import PersonalDetails from "./PersonalDetails";
 import { useCvFromContext } from "@/context/CvForm.context";
 import Education from "./Education";
 import Experience from "./Experience";
+import Skills from "./Skills";
 const formSchema = z.object({
   name: z
     .string({
@@ -98,6 +99,12 @@ const formSchema = z.object({
         .min(1, { message: "description is required" }),
     })
   ),
+
+  // Step 4: Skills
+  Skills: z
+    .array(z.string())
+    .min(1, { message: "Please select or enter at least one skill" })
+    .default([]),
 });
 
 type CvFormDataType = z.infer<typeof formSchema>;
@@ -105,6 +112,9 @@ type CvFormDataType = z.infer<typeof formSchema>;
 const CvForm = () => {
   const form = useForm<CvFormDataType>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      Skills: [],
+    },
   });
 
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -172,7 +182,7 @@ const CvForm = () => {
     } else if (step === 3) {
       const currentFormData = form.getValues();
 
-      console.log("after save and next data", currentFormData);
+      // console.log("after save and next data", currentFormData);
 
       if (currentFormData.Experience && currentFormData.Experience.length > 0) {
         console.log("validation calls");
@@ -187,6 +197,12 @@ const CvForm = () => {
           );
         });
       }
+    } else if (step === 4) {
+      // console.log(selectedSkills);
+      // const currentFormData = form.getValues();
+      // currentFormData.Skills = selectedSkills.length > 0 ? selectedSkills : [];
+      // console.log(currentFormData);
+      fieldsToValidate = ["Skills"];
     }
 
     // validate step;
@@ -239,7 +255,7 @@ const CvForm = () => {
 
           {step === 2 && <Education />}
           {step === 3 && <Experience />}
-          {step === 4 && <h1>Hey im step 4</h1>}
+          {step === 4 && <Skills />}
           {/* save and next button */}
           <div className="w-full mt-40 px-12  flex gap-5 border">
             {step !== 1 && (
