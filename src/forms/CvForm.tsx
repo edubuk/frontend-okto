@@ -10,6 +10,8 @@ import { useCvFromContext } from "@/context/CvForm.context";
 import Education from "./Education";
 import Experience from "./Experience";
 import Skills from "./Skills";
+import Achievements from "./Achievements";
+import ProfileSummary from "./ProfileSummary";
 const formSchema = z.object({
   name: z
     .string({
@@ -105,6 +107,86 @@ const formSchema = z.object({
     .array(z.string())
     .min(1, { message: "Please select or enter at least one skill" })
     .default([]),
+  // Step 5 : Achievements
+  Awards: z.array(
+    z.object({
+      award_name: z
+        .string({ required_error: "Project name is required" })
+        .min(1, { message: "Project name is required" }),
+      awarding_organization: z
+        .string({ required_error: "Awarding organization is required" })
+        .min(1, "organization is required"),
+      date_of_achievement: z
+        .union([
+          z.date().optional(),
+          z.literal("").refine((val) => val === "", {
+            message: "Date of achievement is required",
+          }),
+        ])
+        .refine((data) => typeof data !== "string", {
+          message: "Date of achievement is required",
+        }),
+      description: z
+        .string({ required_error: "A brief description is required" })
+        .min(1, { message: "A brief description is required" }),
+    })
+  ),
+  Courses: z.array(
+    z.object({
+      course_name: z
+        .string({ required_error: "Course name is required" })
+        .min(1, { message: "Course name is required" }),
+      organization: z
+        .string({ required_error: "Institution/organization is required" })
+        .min(1, "Institution/organization is required"),
+      duration: z
+        .union([
+          z.object({
+            from: z.date().optional(),
+            to: z.date().optional(),
+          }),
+          z
+            .literal("")
+            .refine((val) => val === "", { message: "Duration is required" }),
+        ])
+        .refine(
+          (data) => typeof data !== "string" && (data?.from || data?.to),
+          {
+            message: "Duration is required",
+          }
+        ),
+      description: z
+        .string({ required_error: "Course description is required" })
+        .min(1, { message: "Course description is required" }),
+    })
+  ),
+  Projects: z.array(
+    z.object({
+      project_name: z
+        .string({ required_error: "Project name is required" })
+        .min(1, { message: "Project name is required" }),
+      project_url: z.string().optional(),
+      duration: z
+        .union([
+          z.object({
+            from: z.date().optional(),
+            to: z.date().optional(),
+          }),
+          z
+            .literal("")
+            .refine((val) => val === "", { message: "Duration is required" }),
+        ])
+        .refine(
+          (data) => typeof data !== "string" && (data?.from || data?.to),
+          {
+            message: "Duration is required",
+          }
+        ),
+      description: z
+        .string({ required_error: "Project description is required" })
+        .min(1, { message: "Project description is required" }),
+    })
+  ),
 });
 
 type CvFormDataType = z.infer<typeof formSchema>;
@@ -256,6 +338,8 @@ const CvForm = () => {
           {step === 2 && <Education />}
           {step === 3 && <Experience />}
           {step === 4 && <Skills />}
+          {step === 5 && <Achievements />}
+          {step === 6 && <ProfileSummary />}
           {/* save and next button */}
           <div className="w-full mt-40 px-12  flex gap-5 border">
             {step !== 1 && (
