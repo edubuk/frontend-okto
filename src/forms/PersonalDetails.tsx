@@ -11,22 +11,69 @@ import { IoCheckmarkOutline } from "react-icons/io5";
 import student from "/student.png";
 import employee from "/employee.png";
 
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { app } from "@/firebase";
+import { useState } from "react";
+
 type Props = {
   handleProfessionSelect: (profession: string) => void;
-  setImagePreview: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  imagePreview: string;
+  // setImagePreview: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  // imagePreview: string;
+  isImageUploading: boolean;
+  setIsImageUploading: React.Dispatch<React.SetStateAction<boolean>>;
   profession: string;
   setProfession: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 const PersonalDetails = ({
   handleProfessionSelect,
-  setImagePreview,
-  imagePreview,
   profession,
   setProfession,
+  isImageUploading,
+  setIsImageUploading,
 }: Props) => {
-  const { control } = useFormContext();
+  const { control, setValue } = useFormContext();
+  const [imagePreview, setImagePreview] = useState<string>("");
+  const [imageError, setImageError] = useState<string>("");
+  // const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
+
+  const uploadImageToDB = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    setImageError("");
+    setImagePreview("");
+    setIsImageUploading(true);
+    setValue("imageFile", e.target.files[0]);
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + e.target.files[0]?.name!;
+    const storageRef = ref(storage, fileName);
+
+    const uploadTask = uploadBytesResumable(storageRef, e.target.files[0]);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        console.log("image upload starting", snapshot);
+      },
+      (error) => {
+        console.log(`Error while uploading to the firebase, ${error}`);
+        setImageError("Could not upload image (file must be less than 2MB)");
+        setIsImageUploading(false);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+          // imageUrl = downloadUrl;
+          // console.log(downloadUrl);
+          setImagePreview(downloadUrl);
+          setValue("imageUrl", downloadUrl);
+          setIsImageUploading(false);
+        });
+      }
+    );
+  };
 
   return (
     <>
@@ -166,6 +213,8 @@ const PersonalDetails = ({
             </FormItem>
           )}
         />
+
+        {/* image section */}
         <FormField
           control={control}
           name="imageFile"
@@ -180,11 +229,22 @@ const PersonalDetails = ({
                     field.onChange(
                       event.target.files ? event.target.files[0] : null
                     );
-                    setImagePreview(event);
+                    uploadImageToDB(event);
+                    // setImagePreview(event);
                   }}
                 />
               </FormControl>
               <FormMessage />
+              {imageError && (
+                <p className="text-sm text-red-500  font-semibold">
+                  {imageError}
+                </p>
+              )}
+              {isImageUploading && (
+                <p className="text-sm text-green-500  font-semibold">
+                  Uploading image please wait
+                </p>
+              )}
               {imagePreview && (
                 <img
                   src={imagePreview}

@@ -32,7 +32,17 @@ const formSchema = z.object({
   phoneNumber: z
     .string({ required_error: "Phone number is required" })
     .regex(/^\d{10}$/, { message: "Phone number must be exactly 10 digits" }),
-  imageFile: z.instanceof(File, { message: "Photo is required" }),
+  imageFile: z
+    .union([z.instanceof(File, { message: "Image is required" }), z.string()])
+    .refine(
+      (value) =>
+        value instanceof File ||
+        (typeof value === "string" && value.length > 0),
+      {
+        message: "Image is required",
+      }
+    ),
+  imageUrl: z.string().optional(),
   //------------------>>  step2 fields;
   class10SchoolName: z.string({ required_error: "School name is required" }),
   class10Board: z.string({ required_error: "10th board is required" }),
@@ -40,7 +50,9 @@ const formSchema = z.object({
     .number({ required_error: "10th grade is required" })
     .max(100, { message: "Grades can not be greater than 100" })
     .min(0, { message: "Enter grades between 0 to 100" }),
-  class12CollegeName: z.string({ required_error: "College name is required" }),
+  class12CollegeName: z.string({
+    required_error: "College name is required",
+  }),
   class12Board: z.string({ required_error: "12th board is required" }),
   class12Grade: z
     .number({ required_error: "12th grade is required" })
@@ -194,8 +206,14 @@ const formSchema = z.object({
   profile_summary: z
     .string({ required_error: "Profile summary is required" })
     .min(1, { message: "Profile summary is required" })
-    .max(300, { message: "Enter profile summary within 300 characters only" }),
+    .max(300, {
+      message: "Enter profile summary within 300 characters only",
+    }),
 });
+// .refine((data) => data.imageFile || data.imageUrl, {
+//   message: "Either imageFile or imageUrl is required",
+//   path: ["imageFile"],
+// });
 
 type CvFormDataType = z.infer<typeof formSchema>;
 
@@ -207,9 +225,9 @@ const CvForm = () => {
     },
   });
 
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const { step, setStep } = useCvFromContext();
   const [profession, setProfession] = useState<string | null>(null);
+  const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>(new FormData());
 
   useEffect(() => {
@@ -222,11 +240,11 @@ const CvForm = () => {
     }
   }, [step]);
 
-  const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files) return null;
-    const file = event.target.files[0];
-    setImagePreview(file ? URL.createObjectURL(file) : null);
-  };
+  // const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (!event.target.files) return null;
+  //   const file = event.target.files[0];
+  //   setImagePreview(file ? URL.createObjectURL(file) : null);
+  // };
 
   const handleProfessionSelect = (profession: string) => {
     form.setValue("profession", profession);
@@ -379,8 +397,10 @@ const CvForm = () => {
           {step === 1 && (
             <PersonalDetails
               handleProfessionSelect={handleProfessionSelect}
-              setImagePreview={onImageChange}
-              imagePreview={imagePreview!}
+              // setImagePreview={onImageChange}
+              // imagePreview={imagePreview!}
+              isImageUploading={isImageUploading}
+              setIsImageUploading={setIsImageUploading}
               profession={profession!}
               setProfession={setProfession}
             />
@@ -416,7 +436,12 @@ const CvForm = () => {
               <Button
                 type="button"
                 onClick={stepsHandler}
-                className="w-full bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)] hover:opacity-90"
+                disabled={isImageUploading}
+                className={`w-full bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)] hover:opacity-90 ${
+                  isImageUploading
+                    ? "cursor-not-allowed opacity-100"
+                    : "cursor-pointer"
+                }`}
               >
                 Save and next
               </Button>
