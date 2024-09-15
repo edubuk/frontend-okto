@@ -5,12 +5,12 @@ const Stepper = () => {
   const { step } = useCvFromContext();
 
   return (
-    <div className="border h-[520px]  w-80 flex items-center px-12 rounded-md shadow-lg">
+    <div className="border h-[600px] pb-10  w-80 flex items-center px-12 rounded-md shadow-lg">
       <div className="flex rounded-lg gap-16">
         {/* counter */}
         <div className="relative h-[500px]">
           {/* red vertical line  */}
-          <div className="absolute inset-0 top-1/2 left-1/2 border border-dashed border-red-500 -translate-x-1/2 -translate-y-1/2 h-[365px]"></div>
+          <div className="absolute inset-0 top-1/2 left-1/2 border border-dashed border-red-500 -translate-x-1/2 -translate-y-1/2 h-[450px]"></div>
 
           {/* circles for count step */}
           <div
@@ -47,6 +47,13 @@ const Stepper = () => {
             } flex items-center justify-center text-white text-xl shadow-lg`}
           >
             05
+          </div>
+          <div
+            className={`absolute inset-0 top-[477px] left-1/2 -translate-x-1/2  h-12 w-12 rounded-full ${
+              step === 6 ? "bg-[#FB980E]" : "bg-[rgb(0,102,102)]"
+            } flex items-center justify-center text-white text-xl shadow-lg`}
+          >
+            06
           </div>
         </div>
         {/* step indicator */}
@@ -143,9 +150,31 @@ const Stepper = () => {
               Achievements
             </p>
 
-            {/* <p className="text-green-500 text-xs font-semibold flex items-center gap-.5">
-              Completed <IoMdCheckmark fontSize={16} className="" />
-            </p> */}
+            {step >= 6 && (
+              <p className="text-green-500 text-xs font-semibold flex items-center gap-.5">
+                Completed <IoMdCheckmark fontSize={16} className="" />
+              </p>
+            )}
+          </div>
+
+          {/* step 6 */}
+          <div
+            className={`flex flex-col  ${
+              step === 6 ? "opacity-100" : "opacity-30"
+            }`}
+          >
+            <h2 className="text-gray-500 text-sm uppercase font-semibold">
+              Step 06
+            </h2>
+            <p className="text-base font-semibold tracking-tight text-nowrap capitalize">
+              Profile summary
+            </p>
+
+            {/* {step >= 6 && (
+              <p className="text-green-500 text-xs font-semibold flex items-center gap-.5">
+                Completed <IoMdCheckmark fontSize={16} className="" />
+              </p>
+            )} */}
           </div>
         </div>
       </div>

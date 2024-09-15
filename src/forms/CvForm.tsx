@@ -24,9 +24,11 @@ const formSchema = z.object({
   profession: z.string({
     required_error: "Profession is required",
   }),
-  email: z.string({
-    required_error: "email is required",
-  }),
+  email: z
+    .string({
+      required_error: "email is required",
+    })
+    .email({ message: "Invalid email format" }),
   phoneNumber: z
     .string({ required_error: "Phone number is required" })
     .regex(/^\d{10}$/, { message: "Phone number must be exactly 10 digits" }),
@@ -187,6 +189,12 @@ const formSchema = z.object({
         .min(1, { message: "Project description is required" }),
     })
   ),
+
+  // step 6: Profile Summary;
+  profile_summary: z
+    .string({ required_error: "Profile summary is required" })
+    .min(1, { message: "Profile summary is required" })
+    .max(300, { message: "Enter profile summary within 300 characters only" }),
 });
 
 type CvFormDataType = z.infer<typeof formSchema>;
@@ -319,6 +327,8 @@ const CvForm = () => {
           )
         );
       }
+    } else if (step === 6) {
+      fieldsToValidate = ["profile_summary"];
     }
 
     // validate step;
@@ -354,10 +364,17 @@ const CvForm = () => {
     localStorage.setItem("currentStep", currentStep.toString());
   };
 
+  const onSubmit = (formDataJson: CvFormDataType) => {
+    console.log("Submitted form data", formDataJson);
+  };
+
   return (
     <div>
       <Form {...form}>
-        <form className="space-y-5 flex flex-col">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-5 flex flex-col"
+        >
           {/* step=1 */}
           {step === 1 && (
             <PersonalDetails
@@ -388,13 +405,22 @@ const CvForm = () => {
                 <GrLinkPrevious className="mr-3" /> Go to Previous step
               </Button>
             )}
-            <Button
-              type="button"
-              onClick={stepsHandler}
-              className="w-full bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)] hover:opacity-90"
-            >
-              Save and next
-            </Button>
+            {step === 6 ? (
+              <Button
+                type="submit"
+                className="w-full bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)] hover:opacity-90"
+              >
+                Submit
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                onClick={stepsHandler}
+                className="w-full bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)] hover:opacity-90"
+              >
+                Save and next
+              </Button>
+            )}
           </div>
         </form>
       </Form>
