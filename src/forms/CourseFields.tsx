@@ -41,7 +41,7 @@ const CourseFields = ({ index, removeCourseFields, fields }: Props) => {
 
   useEffect(() => {
     if (date?.from && date?.to) {
-      setValue(`Experience.${index}.duration`, {
+      setValue(`Courses.${index}.duration`, {
         from: date.from,
         to: date.to,
       });

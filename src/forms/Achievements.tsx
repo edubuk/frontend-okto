@@ -6,7 +6,8 @@ import ProjectFields from "./ProjectFields";
 import AwardFields from "./AwardFields";
 
 const Achievements = () => {
-  const { control } = useFormContext();
+  const { control, getValues } = useFormContext();
+  console.log(getValues());
   const { append, remove, fields } = useFieldArray({
     control,
     name: "Courses",
@@ -27,6 +28,7 @@ const Achievements = () => {
     control,
     name: "Awards",
   });
+
   return (
     <>
       {/* Achievements */}

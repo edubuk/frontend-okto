@@ -16,8 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
-import { DateRange } from "react-day-picker";
-import { CiCalendar } from "react-icons/ci";
+import { Calendar as CalendarIcon } from "lucide-react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { Calendar } from "@/components/ui/calendar";
 import { Textarea } from "@/components/ui/textarea";
@@ -31,7 +30,8 @@ type Props = {
 
 const AwardFields = ({ index, removeAwardFields, fields }: Props) => {
   const { control, setValue } = useFormContext();
-  const [date, setDate] = useState<DateRange | undefined>();
+
+  const [dateOfAchievement, setDateOfAchievement] = useState<Date>();
   // {
   //   from: new Date(2023, 0, 20),
   //   to: addDays(new Date(2024, 0, 20), 20),
@@ -40,13 +40,10 @@ const AwardFields = ({ index, removeAwardFields, fields }: Props) => {
   const { remove } = useFieldArray({ control, name: "Experience" });
 
   useEffect(() => {
-    if (date?.from && date?.to) {
-      setValue(`Experience.${index}.duration`, {
-        from: date.from,
-        to: date.to,
-      });
+    if (dateOfAchievement) {
+      setValue(`Awards.${index}.date_of_achievement`, dateOfAchievement);
     }
-  }, [date, setValue, index]);
+  }, [dateOfAchievement, setValue, index]);
 
   const deleteHandler = () => {
     remove(index);
@@ -92,39 +89,27 @@ const AwardFields = ({ index, removeAwardFields, fields }: Props) => {
               <FormControl>
                 <Popover>
                   <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        id="date"
-                        variant={"outline"}
-                        className={cn(
-                          "w-[300px] justify-start text-left font-normal",
-                          !date && "text-muted-foreground"
-                        )}
-                      >
-                        <CiCalendar className="mr-2 h-4 w-4" />
-                        {date?.from ? (
-                          date.to ? (
-                            <>
-                              {format(date.from, "LLL dd, y")} -{" "}
-                              {format(date.to, "LLL dd, y")}
-                            </>
-                          ) : (
-                            format(date.from, "LLL dd, y")
-                          )
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                      </Button>
-                    </FormControl>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-[280px] justify-start text-left font-normal",
+                        !dateOfAchievement && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {dateOfAchievement ? (
+                        format(dateOfAchievement, "PPP")
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                    </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
+                  <PopoverContent className="w-auto p-0">
                     <Calendar
+                      mode="single"
+                      selected={dateOfAchievement}
+                      onSelect={setDateOfAchievement}
                       initialFocus
-                      mode="range"
-                      defaultMonth={date?.from}
-                      selected={date}
-                      onSelect={setDate}
-                      numberOfMonths={2}
                     />
                   </PopoverContent>
                 </Popover>
@@ -134,7 +119,7 @@ const AwardFields = ({ index, removeAwardFields, fields }: Props) => {
           )}
         />
       </div>
-      {/* work description */}
+      {/* award description */}
       <div className="flex items-center gap-5">
         <FormField
           name={`Awards.${index}.description`}

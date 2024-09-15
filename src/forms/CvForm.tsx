@@ -267,7 +267,6 @@ const CvForm = () => {
       // console.log("after save and next data", currentFormData);
 
       if (currentFormData.Experience && currentFormData.Experience.length > 0) {
-        console.log("validation calls");
         currentFormData.Experience.forEach((_, index) => {
           fieldsToValidate.push(
             `Experience[${index}].company_name` as keyof CvFormDataType,
@@ -285,6 +284,41 @@ const CvForm = () => {
       // currentFormData.Skills = selectedSkills.length > 0 ? selectedSkills : [];
       // console.log(currentFormData);
       fieldsToValidate = ["Skills"];
+    } else if (step === 5) {
+      const currentFormData = form.getValues();
+      console.log("Step 5 validation calls");
+      console.log(currentFormData);
+
+      if (currentFormData.Awards && currentFormData.Awards.length > 0) {
+        currentFormData.Awards.forEach((_, index) =>
+          fieldsToValidate.push(
+            `Awards.${index}.award_name` as keyof CvFormDataType,
+            `Awards.${index}.awarding_organization` as keyof CvFormDataType,
+            `Awards.${index}.date_of_achievement` as keyof CvFormDataType,
+            `Awards.${index}.description` as keyof CvFormDataType
+          )
+        );
+      }
+      if (currentFormData.Courses && currentFormData.Courses.length > 0) {
+        currentFormData.Courses.forEach((_, index) =>
+          fieldsToValidate.push(
+            `Courses.${index}.course_name` as keyof CvFormDataType,
+            `Courses.${index}.organization` as keyof CvFormDataType,
+            `Courses.${index}.duration` as keyof CvFormDataType,
+            `Courses.${index}.description` as keyof CvFormDataType
+          )
+        );
+      }
+      if (currentFormData.Projects && currentFormData.Projects.length > 0) {
+        currentFormData.Projects.forEach((_, index) =>
+          fieldsToValidate.push(
+            `Projects.${index}.project_name` as keyof CvFormDataType,
+            `Projects.${index}.project_url` as keyof CvFormDataType,
+            `Projects.${index}.duration` as keyof CvFormDataType,
+            `Projects.${index}.description` as keyof CvFormDataType
+          )
+        );
+      }
     }
 
     // validate step;

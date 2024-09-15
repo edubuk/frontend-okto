@@ -41,7 +41,7 @@ const ProjectFields = ({ index, removeProjectFields, fields }: Props) => {
 
   useEffect(() => {
     if (date?.from && date?.to) {
-      setValue(`Experience.${index}.duration`, {
+      setValue(`Projects.${index}.duration`, {
         from: date.from,
         to: date.to,
       });
