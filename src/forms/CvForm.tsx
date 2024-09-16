@@ -107,6 +107,18 @@ const formSchema = z.object({
   ),
 
   // step 3 fields  (Experience)
+  Years_of_experience: z.preprocess(
+    (val) => {
+      const parsed = Number(val);
+      return isNaN(parsed) || val === "" ? undefined : parsed;
+    },
+    z
+      .number({
+        required_error: "Years of experience is required",
+      })
+      .min(0, { message: "Enter valid years of experience" })
+      .max(100, { message: "Enter valid years of experience" })
+  ),
   Experience: z.array(
     z.object({
       company_name: z
@@ -370,6 +382,8 @@ const CvForm = () => {
           );
         });
       }
+
+      fieldsToValidate.push("Years_of_experience");
     } else if (step === 4) {
       // console.log(selectedSkills);
       // const currentFormData = form.getValues();
@@ -457,7 +471,7 @@ const CvForm = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-5 flex flex-col"
+          className="space-y-5 flex flex-col mb-5 md:mb-0"
         >
           {/* step=1 */}
           {step === 1 && (
@@ -483,7 +497,7 @@ const CvForm = () => {
           {step === 5 && <Achievements />}
           {step === 6 && <ProfileSummary />}
           {/* save and next button */}
-          <div className="w-full mt-40 px-12  flex gap-5 border">
+          <div className="w-full mt-40 px-0 md:px-12  flex gap-5">
             {step !== 1 && (
               <Button
                 onClick={() => {

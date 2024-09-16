@@ -7,13 +7,13 @@ const Header = () => {
       <img
         src={logo}
         alt="logo"
-        className="h-16 w-16 object-cover"
+        className="md:h-16 md:w-16 h-10 w-10 object-cover"
         draggable={false}
       />
       <div className="ml-5">
         <HyperText
           text="CV ON BLOCKCHAIN BY EDUBUK"
-          className="text-4xl font-semibold text-[#006666]"
+          className="text-xl md:text-4xl font-semibold text-[#006666]"
         />
       </div>
     </div>

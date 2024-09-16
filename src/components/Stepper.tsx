@@ -5,51 +5,51 @@ const Stepper = () => {
   const { step } = useCvFromContext();
 
   return (
-    <div className="border h-[600px] pb-10  w-80 flex items-center px-12 rounded-md shadow-lg">
-      <div className="flex rounded-lg gap-16">
+    <div className="border  h-20 md:h-[600px] md:pb-10 w-full overflow-hidden md:w-80 flex items-center px-2 sm:px-12 rounded-md shadow-lg">
+      <div className="flex rounded-lg md:gap-16">
         {/* counter */}
-        <div className="relative h-[500px]">
+        <div className="relative  -rotate-90 md:rotate-0 md:h-[500px]">
           {/* red vertical line  */}
-          <div className="absolute inset-0 top-1/2 left-1/2 border border-dashed border-red-500 -translate-x-1/2 -translate-y-1/2 h-[450px]"></div>
+          <div className="absolute inset-0  top-1/2 left-1/2 border border-dashed border-red-500 -translate-x-1/2 -translate-y-0 md:-translate-y-1/2 h-[300px] sm:h-[475px] md:h-[450px]"></div>
 
           {/* circles for count step */}
           <div
-            className={`absolute inset-0 top-6 left-1/2 -translate-x-1/2  h-12 w-12 rounded-full ${
+            className={`absolute rotate-90 md:rotate-0 inset-0 top-0 md:top-6 left-1/2 -translate-x-1/2 h-10 w-10 sm:h-12 sm:w-12 rounded-full ${
               step === 1 ? "bg-[#FB980E]" : "bg-[rgb(0,102,102)]"
             }  flex items-center justify-center text-white text-xl`}
           >
             01
           </div>
           <div
-            className={`absolute inset-0 top-28 left-1/2 -translate-x-1/2  h-12 w-12 rounded-full ${
+            className={`absolute inset-0 rotate-90 md:rotate-0 top-14 sm:top-24 left-1/2 -translate-x-1/2 h-10 w-10 sm:h-12 sm:w-12 rounded-full ${
               step === 2 ? "bg-[#FB980E]" : "bg-[rgb(0,102,102)]"
             }  flex items-center justify-center text-white text-xl shadow-lg`}
           >
             02
           </div>
           <div
-            className={`absolute inset-0 top-[200px] left-1/2 -translate-x-1/2  h-12 w-12 rounded-full ${
+            className={`absolute inset-0 rotate-90 md:rotate-0 top-28 sm:top-48 md:top-[200px] left-1/2 -translate-x-1/2 h-10 w-10 sm:h-12 sm:w-12 rounded-full ${
               step === 3 ? "bg-[#FB980E]" : "bg-[rgb(0,102,102)]"
             } flex items-center justify-center text-white text-xl shadow-lg`}
           >
             03
           </div>
           <div
-            className={`absolute inset-0 top-72 left-1/2 -translate-x-1/2  h-12 w-12 rounded-full ${
+            className={`absolute inset-0 rotate-90 md:rotate-0 top-44 sm:top-72 left-1/2 -translate-x-1/2 h-10 w-10 sm:h-12 sm:w-12 rounded-full ${
               step === 4 ? "bg-[#FB980E]" : "bg-[rgb(0,102,102)]"
             } flex items-center justify-center text-white text-xl shadow-lg`}
           >
             04
           </div>
           <div
-            className={`absolute inset-0 top-96 left-1/2 -translate-x-1/2  h-12 w-12 rounded-full ${
+            className={`absolute inset-0 rotate-90 md:rotate-0 top-60 sm:top-96 left-1/2 -translate-x-1/2 h-10 w-10 sm:h-12 sm:w-12 rounded-full ${
               step === 5 ? "bg-[#FB980E]" : "bg-[rgb(0,102,102)]"
             } flex items-center justify-center text-white text-xl shadow-lg`}
           >
             05
           </div>
           <div
-            className={`absolute inset-0 top-[477px] left-1/2 -translate-x-1/2  h-12 w-12 rounded-full ${
+            className={`absolute inset-0 rotate-90 md:rotate-0 top-[299px] sm:top-[477px] left-1/2 -translate-x-1/2 h-10 w-10 sm:h-12 sm:w-12 rounded-full ${
               step === 6 ? "bg-[#FB980E]" : "bg-[rgb(0,102,102)]"
             } flex items-center justify-center text-white text-xl shadow-lg`}
           >
@@ -58,7 +58,9 @@ const Stepper = () => {
         </div>
         {/* step indicator */}
         <div
-          className={`flex flex-col mt-5 ${step === 1 ? "gap-11" : "gap-8"}`}
+          className={`hidden md:flex flex-col mt-5 ${
+            step === 1 ? "gap-11" : "gap-8"
+          }`}
         >
           {/* step label and status */}
           {/* step1 */}

@@ -1,9 +1,17 @@
 import { Button } from "@/components/ui/button";
-import { FormDescription, FormField, FormItem } from "@/components/ui/form";
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 import { useFieldArray, useFormContext } from "react-hook-form";
 
 import ExperienceFields from "./ExperienceFields";
+import { Input } from "@/components/ui/input";
 
 const Experience = () => {
   const { control } = useFormContext();
@@ -15,12 +23,30 @@ const Experience = () => {
 
   return (
     <>
-      <div className="flex flex-col px-10 gap-5  h-full">
+      <div className="flex flex-col px-10 gap-2  h-full">
         <div className="">
           <h1 className="text-2xl font-semibold">Experience</h1>
-          <FormDescription className="text-sm">
+          <FormDescription className="text-sm mb-4">
             You can add multiple experience
           </FormDescription>
+
+          <FormField
+            name="Years_of_experience"
+            control={control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>How many years of experience do you have?</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    {...field}
+                    placeholder="Enter years of experience"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
         <FormField
           name="Experience"

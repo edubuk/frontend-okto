@@ -76,9 +76,9 @@ const PersonalDetails = ({
   };
 
   return (
-    <>
+    <div className="flex flex-col gap-2 py-2">
       {/* name and email */}
-      <div className="flex  gap-5 px-10">
+      <div className="flex flex-col md:flex-row gap-2 px-2 md:px-10">
         <FormField
           control={control}
           name="name"
@@ -112,7 +112,7 @@ const PersonalDetails = ({
         />
       </div>
       {/* location and phone number */}
-      <div className="flex gap-5 px-10">
+      <div className="flex gap-2 md:gap-5 px-2 md:px-10">
         <FormField
           control={control}
           name="location"
@@ -145,7 +145,7 @@ const PersonalDetails = ({
         />
       </div>
       {/* profession and image */}
-      <div className="flex gap-5 px-10">
+      <div className="flex flex-col md:flex-row gap-2 md:gap-5 px-1 md:px-10">
         <FormField
           control={control}
           name="profession"
@@ -256,7 +256,7 @@ const PersonalDetails = ({
           )}
         />
       </div>
-    </>
+    </div>
   );
 };
 
