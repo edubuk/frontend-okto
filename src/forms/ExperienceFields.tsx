@@ -55,7 +55,7 @@ const ExperienceFields = ({ index, removeExperienceFields, fields }: Props) => {
 
   return (
     <>
-      <div className="flex gap-5 items-center">
+      <div className="flex flex-col xl:flex-row gap-2 xl:gap-5 xl:items-center">
         <FormField
           name={`Experience.${index}.company_name`}
           control={control}
@@ -135,7 +135,7 @@ const ExperienceFields = ({ index, removeExperienceFields, fields }: Props) => {
         />
       </div>
       {/* work description */}
-      <div className="flex items-center gap-5">
+      <div className="flex flex-col xl:flex-row xl:items-center gap-1 xl:gap-5">
         <FormField
           name={`Experience.${index}.description`}
           control={control}

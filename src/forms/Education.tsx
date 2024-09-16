@@ -31,20 +31,20 @@ const Education = ({
   // const [selectedQualification, setSelectedQualification] =
   //   useState<string>("");
 
-  console.log(selectedQualification);
+  // console.log(selectedQualification);
   return (
     <>
       {!isAnswered ? (
-        <div className="border px-10 mt-5 space-y-5">
+        <div className="px-1 md:px-10 mt-5 space-y-5">
           <h1 className="text-xl font-semibold">
             What is your highest qualification?
           </h1>
-          <div className="flex flex-wrap border gap-5">
+          <div className="flex flex-wrap gap-5">
             {highestQualification.map((qualification) => (
               <Button
                 type="button"
                 key={qualification}
-                className={`px-5 py-1 shadow-md bg-white text-black border border-[#FA9110] hover:bg-white hover:text-black text-md font-semibold`}
+                className={`px-5 py-1 flex-1 md:flex-none shadow-md bg-white text-black border border-[#FA9110] hover:bg-white hover:text-black text-md font-semibold`}
                 onClick={() => {
                   setIsAnswered(true);
                   setSelectedQualification(qualification);
@@ -58,7 +58,7 @@ const Education = ({
       ) : (
         <>
           {/* class 10th */}
-          <div className="flex px-10 gap-5">
+          <div className="flex flex-col xl:flex-row px-2 xl:px-10 gap-2 xl:gap-5">
             <FormField
               name="class10SchoolName"
               control={control}
@@ -107,7 +107,7 @@ const Education = ({
           {(selectedQualification === "class12" ||
             selectedQualification === "undergraduate" ||
             selectedQualification === "postgraduate") && (
-            <div className="flex px-10 gap-5">
+            <div className="flex flex-col xl:flex-row px-2 xl:px-10 gap-2 xl:gap-5">
               <FormField
                 name="class12CollegeName"
                 control={control}
@@ -205,13 +205,13 @@ const Education = ({
           {/* undergraduation */}
           {(selectedQualification === "undergraduate" ||
             selectedQualification === "postgraduate") && (
-            <div className="flex px-10 gap-5">
+            <div className="flex flex-col xl:flex-row px-2 xl:px-10 gap-2 xl:gap-5">
               <FormField
                 name="underGraduateCollegeName"
                 control={control}
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel>Undergraduation</FormLabel>
+                    <FormLabel>Undergraduation College name</FormLabel>
                     <FormControl>
                       <Input placeholder="Enter college name" {...field} />
                     </FormControl>
@@ -294,13 +294,13 @@ const Education = ({
           </div> */}
           {/* postgraduation */}
           {selectedQualification === "postgraduate" && (
-            <div className="flex px-10 gap-5">
+            <div className="flex flex-col xl:flex-row px-2 xl:px-10 gap-2 xl:gap-5">
               <FormField
                 name="postGraduateCollegeName"
                 control={control}
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel>Postgraduation</FormLabel>
+                    <FormLabel>Postgraduation College name</FormLabel>
                     <FormControl>
                       <Input placeholder="Enter college name" {...field} />
                     </FormControl>

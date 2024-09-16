@@ -23,7 +23,7 @@ const Experience = () => {
 
   return (
     <>
-      <div className="flex flex-col px-10 gap-2  h-full">
+      <div className="flex flex-col px-5 md:px-10 gap-2  h-full overflow-hidden">
         <div className="">
           <h1 className="text-2xl font-semibold">Experience</h1>
           <FormDescription className="text-sm mb-4">
