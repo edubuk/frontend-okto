@@ -457,7 +457,7 @@ const CvForm = () => {
     localStorage.setItem(`step${step}CvData`, JSON.stringify(currentFormData));
     setFormData(updatedFormData);
     const currentStep = step + 1;
-    console.log(currentStep);
+    // console.log(currentStep);
     setStep((prev) => prev + 1);
     localStorage.setItem("currentStep", currentStep.toString());
   };
