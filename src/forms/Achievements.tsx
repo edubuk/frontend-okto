@@ -32,9 +32,11 @@ const Achievements = () => {
   return (
     <>
       {/* Achievements */}
-      <div className="mt-3 px-10 flex flex-col">
-        <h1 className="text-2xl font-semibold">Awards and Achievements</h1>
-        <FormDescription className="text-sm">
+      <div className="mt-3 px-2 sm:px-10 flex flex-col">
+        <h1 className="text-xl sm:text-2xl font-semibold">
+          Awards and Achievements
+        </h1>
+        <FormDescription className="sm:text-sm">
           You can add multiple awards
         </FormDescription>
         <div className="flex flex-col gap-3">
@@ -75,10 +77,12 @@ const Achievements = () => {
       {/* Awards and achievements */}
 
       {/* Courses and certifications */}
-      <div className="flex flex-col px-10 gap-3 h-full border">
+      <div className="flex flex-col px-2 sm:px-10 gap-1 sm:gap-3 h-full">
         <div className="">
-          <h1 className="text-xl font-semibold">Certifications and Courses</h1>
-          <FormDescription className="text-sm">
+          <h1 className="text-xl sm:text-2xl font-semibold">
+            Certifications and Courses
+          </h1>
+          <FormDescription className="sm:text-sm">
             You can add multiple courses
           </FormDescription>
         </div>
@@ -117,12 +121,12 @@ const Achievements = () => {
         </div>
       </div>
       {/* Project  */}
-      <div className="flex flex-col gap-3 px-10">
+      <div className="flex flex-col gap-1 sm:gap-3 px-2 sm:px-10">
         <div className="mt-3">
-          <h1 className="text-xl font-semibold">
+          <h1 className="text-xl sm:text-2xl font-semibold">
             Personal Projects or Milestones
           </h1>
-          <FormDescription className="text-sm">
+          <FormDescription className="sm:text-sm">
             You can add multiple projects
           </FormDescription>
         </div>

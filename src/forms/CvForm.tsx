@@ -471,7 +471,7 @@ const CvForm = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-5 flex flex-col mb-5 md:mb-0"
+          className="space-y-5 flex flex-col mb-5 md:mb-0 px-2"
         >
           {/* step=1 */}
           {step === 1 && (

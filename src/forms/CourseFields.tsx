@@ -55,7 +55,7 @@ const CourseFields = ({ index, removeCourseFields, fields }: Props) => {
 
   return (
     <>
-      <div className="flex gap-5 items-center">
+      <div className="flex flex-col lg:flex-row gap-2 lg:gap-5 lg:items-center">
         <FormField
           name={`Courses.${index}.course_name`}
           control={control}
@@ -138,7 +138,7 @@ const CourseFields = ({ index, removeCourseFields, fields }: Props) => {
         />
       </div>
       {/* work description */}
-      <div className="flex items-center gap-5">
+      <div className="flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-5">
         <FormField
           name={`Courses.${index}.description`}
           control={control}

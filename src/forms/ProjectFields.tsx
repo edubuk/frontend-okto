@@ -55,7 +55,7 @@ const ProjectFields = ({ index, removeProjectFields, fields }: Props) => {
 
   return (
     <>
-      <div className="flex gap-5 items-center">
+      <div className="flex flex-col lg:flex-row gap-2 lg:gap-5 lg:items-center">
         <FormField
           name={`Projects.${index}.project_name`}
           control={control}
@@ -135,7 +135,7 @@ const ProjectFields = ({ index, removeProjectFields, fields }: Props) => {
         />
       </div>
       {/* work description */}
-      <div className="flex items-center gap-5">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:gap-5">
         <FormField
           name={`Projects.${index}.description`}
           control={control}

@@ -52,7 +52,7 @@ const AwardFields = ({ index, removeAwardFields, fields }: Props) => {
 
   return (
     <>
-      <div className="flex gap-5 items-center">
+      <div className="flex flex-col lg:flex-row gap-3 lg:gap-5 lg:items-center">
         <FormField
           name={`Awards.${index}.award_name`}
           control={control}
@@ -120,7 +120,7 @@ const AwardFields = ({ index, removeAwardFields, fields }: Props) => {
         />
       </div>
       {/* award description */}
-      <div className="flex items-center gap-5">
+      <div className="flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-5">
         <FormField
           name={`Awards.${index}.description`}
           control={control}

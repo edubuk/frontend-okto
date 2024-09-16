@@ -71,18 +71,24 @@ const Skills = () => {
     }
   };
 
+  const typeSkillClickHanlder = () => {
+    setSelectedSkills((prev) => [...prev, typerSkill]);
+    setValue("Skills", [...selectedSkills, typerSkill]);
+    setTyperSkill("");
+  };
+
   return (
     <div className="space-y-7">
-      <div className="flex px-10 mt-4">
+      <div className="flex px-5 sm:px-10 mt-4">
         <h1 className="text-2xl font-semibold">Skills</h1>
       </div>
 
-      <div className="flex flex-wrap border mt-4 px-10 gap-5">
+      <div className="flex flex-wrap  mt-4 px-2 sm:px-10 gap-5">
         {skills.map((skill) => (
           <Button
             type="button"
             key={skill}
-            className={`px-5 py-1 shadow-md bg-white text-black border border-[#FA9110] hover:bg-white hover:text-black text-md font-semibold ${
+            className={`px-2 sm:px-5 py-1 shadow-md bg-white text-black border border-[#FA9110] hover:bg-white hover:text-black text-sm sm:text-md font-semibold${
               selectedSkills.includes(skill)
                 ? "border-green-500 text-green-600 hover:border-green-500 hover:text-green-600"
                 : "border-[#FA9110]"
@@ -98,14 +104,14 @@ const Skills = () => {
         ))}
       </div>
 
-      <div className="flex px-10">
-        <div className="border rounded-md flex flex-wrap w-full gap-2">
+      <div className="flex px-2 sm:px-10">
+        <div className="border p-1 rounded-md flex flex-wrap w-full gap-2">
           {selectedSkills.length > 0 &&
             selectedSkills.map((skill) => (
               <Button
                 key={skill}
                 type="button"
-                className="px-4  bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)] flex items-center text-base"
+                className="px-2 sm:px-4  bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)] flex items-center text-xs sm:text-base"
               >
                 {skill}
                 <X
@@ -138,7 +144,8 @@ const Skills = () => {
                   </FormControl>
                   {typerSkill && (
                     <div
-                      className={`border border-zinc-300 absolute top-full left-5 px-5  max-w-xl w-full rounded-md ${
+                      onClick={typeSkillClickHanlder}
+                      className={`border border-zinc-300 absolute top-full left-5 px-5  max-w-xl w-full rounded-md cursor-pointer ${
                         isKeyDown ? "bg-[#F4F4F5]" : "bg-white"
                       } py-2  mt-2 overflow-hidden text-wrap z-10`}
                     >
