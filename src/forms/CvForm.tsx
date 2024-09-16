@@ -46,18 +46,27 @@ const formSchema = z.object({
   //------------------>>  step2 fields;
   class10SchoolName: z.string({ required_error: "School name is required" }),
   class10Board: z.string({ required_error: "10th board is required" }),
-  class10Grade: z
-    .number({ required_error: "10th grade is required" })
-    .max(100, { message: "Grades can not be greater than 100" })
-    .min(0, { message: "Enter grades between 0 to 100" }),
+  class10Grade: z.preprocess(
+    (val) => {
+      const parsed = Number(val);
+      return isNaN(parsed) || val === "" ? undefined : parsed;
+    },
+    z
+      .number({
+        required_error: "10th grade is required",
+      })
+      .max(100, { message: "Grades cannot be greater than 100" })
+      .min(0, { message: "Enter grades between 0 and 100" })
+  ),
+
   class12CollegeName: z.string({
     required_error: "College name is required",
   }),
   class12Board: z.string({ required_error: "12th board is required" }),
-  class12Grade: z
-    .number({ required_error: "12th grade is required" })
-    .max(100, "Grades can not be greater than 100")
-    .min(0, { message: "Enter grades between 0 to 100" }),
+  class12Grade: z.preprocess((val) => {
+    const parsed = Number(val);
+    return isNaN(parsed) || val === "" ? undefined : parsed;
+  }, z.number({ required_error: "12th grade is required" }).max(100, "Grades can not be greater than 100").min(0, { message: "Enter grades between 0 to 100" })),
   // undergraduation
   underGraduateCollegeName: z.string({
     required_error: "undergraduation college is required",
@@ -65,12 +74,18 @@ const formSchema = z.object({
   underGraduateDegreeName: z.string({
     required_error: "undergraduation Degree name is required",
   }),
-  underGraduateGPA: z
-    .number({
-      required_error: "undergraduation GPA till time is required",
-    })
-    .min(0, { message: "Enter GPA between 0 to 10" })
-    .max(10, { message: "Enter GPA between 0 to 10" }),
+  underGraduateGPA: z.preprocess(
+    (val) => {
+      const parsed = Number(val);
+      return isNaN(parsed) || val === "" ? undefined : parsed;
+    },
+    z
+      .number({
+        required_error: "undergraduation GPA till time is required",
+      })
+      .min(0, { message: "Enter GPA between 0 to 10" })
+      .max(10, { message: "Enter GPA between 0 to 10" })
+  ),
   //postgraduation
   postGraduateCollegeName: z.string({
     required_error: "post graduation college is required",
@@ -78,12 +93,18 @@ const formSchema = z.object({
   postGraduateDegreeName: z.string({
     required_error: "post graduation Degree name is required",
   }),
-  postGraduateGPA: z
-    .number({
-      required_error: "post graduation GPA till time is required",
-    })
-    .min(0, { message: "Enter GPA between 0 to 10" })
-    .max(10, { message: "Enter GPA between 0 to 10" }),
+  postGraduateGPA: z.preprocess(
+    (val) => {
+      const parsed = Number(val);
+      return isNaN(parsed) || val === "" ? undefined : parsed;
+    },
+    z
+      .number({
+        required_error: "post graduation GPA till time is required",
+      })
+      .min(0, { message: "Enter GPA between 0 to 10" })
+      .max(10, { message: "Enter GPA between 0 to 10" })
+  ),
 
   // step 3 fields  (Experience)
   Experience: z.array(
@@ -229,6 +250,8 @@ const CvForm = () => {
   const [profession, setProfession] = useState<string | null>(null);
   const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>(new FormData());
+  const [selectedQualification, setSelectedQualification] =
+    useState<string>("");
 
   useEffect(() => {
     const savedData = localStorage.getItem(`step${step}CvData`);
@@ -266,27 +289,70 @@ const CvForm = () => {
       ];
     } else if (step === 2) {
       const currentFormData = form.getValues();
+
       form.setValue("class10Grade", Number(currentFormData.class10Grade));
-      form.setValue("class12Grade", Number(currentFormData.class12Grade));
-      form.setValue(
-        "underGraduateGPA",
-        Number(currentFormData.underGraduateGPA)
-      );
-      form.setValue("postGraduateGPA", Number(currentFormData.postGraduateGPA));
+      if (currentFormData.class12Grade) {
+        form.setValue("class12Grade", Number(currentFormData.class12Grade));
+      }
+      if (currentFormData.underGraduateGPA) {
+        form.setValue(
+          "underGraduateGPA",
+          Number(currentFormData.underGraduateGPA)
+        );
+      }
+      if (currentFormData.postGraduateGPA) {
+        form.setValue(
+          "postGraduateGPA",
+          Number(currentFormData.postGraduateGPA)
+        );
+      }
       fieldsToValidate = [
         "class10SchoolName",
         "class10Board",
         "class10Grade",
-        "class12CollegeName",
-        "class12Board",
-        "class12Grade",
-        "underGraduateCollegeName",
-        "underGraduateDegreeName",
-        "underGraduateGPA",
-        "postGraduateCollegeName",
-        "postGraduateDegreeName",
-        "postGraduateGPA",
+        // "class12CollegeName",
+        // "class12Board",
+        // "class12Grade",
+        // "underGraduateCollegeName",
+        // "underGraduateDegreeName",
+        // "underGraduateGPA",
+        // "postGraduateCollegeName",
+        // "postGraduateDegreeName",
+        // "postGraduateGPA",
       ];
+
+      // dynamically set class 12 validations based on selectedQualification of client;
+      if (
+        selectedQualification === "class12" ||
+        selectedQualification === "undergraduate" ||
+        selectedQualification === "postgraduate"
+      ) {
+        fieldsToValidate.push(
+          "class12CollegeName",
+          "class12Board",
+          "class12Grade"
+        );
+      }
+      // dynamically set undergraduate validations based on selectedQualification of client;
+      if (
+        selectedQualification === "undergraduate" ||
+        selectedQualification === "postgraduate"
+      ) {
+        fieldsToValidate.push(
+          "underGraduateCollegeName",
+          "underGraduateDegreeName",
+          "underGraduateGPA"
+        );
+      }
+
+      // dynamically set postgraduate validations based on selectedQualification of client;
+      if (selectedQualification === "postgraduate") {
+        fieldsToValidate.push(
+          "postGraduateCollegeName",
+          "postGraduateDegreeName",
+          "postGraduateGPA"
+        );
+      }
     } else if (step === 3) {
       const currentFormData = form.getValues();
 
@@ -406,7 +472,12 @@ const CvForm = () => {
             />
           )}
 
-          {step === 2 && <Education />}
+          {step === 2 && (
+            <Education
+              selectedQualification={selectedQualification}
+              setSelectedQualification={setSelectedQualification}
+            />
+          )}
           {step === 3 && <Experience />}
           {step === 4 && <Skills />}
           {step === 5 && <Achievements />}
