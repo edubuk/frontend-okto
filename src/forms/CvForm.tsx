@@ -13,6 +13,7 @@ import Skills from "./Skills";
 import Achievements from "./Achievements";
 import ProfileSummary from "./ProfileSummary";
 import { useCV } from "@/api/cv.apis";
+import LoadingButton from "@/components/LoadingButton";
 const formSchema = z.object({
   name: z
     .string({
@@ -266,7 +267,7 @@ const CvForm = () => {
   const [selectedQualification, setSelectedQualification] =
     useState<string>("");
 
-  const { createCVInBackend } = useCV();
+  const { createCVInBackend, isLoading } = useCV();
 
   useEffect(() => {
     const savedData = localStorage.getItem(`step${step}CvData`);
@@ -465,19 +466,21 @@ const CvForm = () => {
     setFormData(updatedFormData);
     const currentStep = step + 1;
     // console.log(currentStep);
-    setStep((prev) => prev + 1);
-    localStorage.setItem("currentStep", currentStep.toString());
+    if (step !== 6) {
+      setStep((prev) => prev + 1);
+      localStorage.setItem("currentStep", currentStep.toString());
+    }
   };
-  console.log(form.formState.errors);
-  const onSubmit = (formDataJson: CvFormDataType) => {
-    console.log("Submitted form data", formDataJson);
-  };
+  // console.log(form.formState.errors);
+  // const onSubmit = (formDataJson: CvFormDataType) => {
+  //   console.log("Submitted form data", formDataJson);
+  // };
 
   return (
     <div>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          // onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-5 flex flex-col mb-5 md:mb-0 px-2"
         >
           {/* step=1 */}
@@ -518,18 +521,22 @@ const CvForm = () => {
               </Button>
             )}
 
-            <Button
-              type="button"
-              onClick={stepsHandler}
-              disabled={isImageUploading}
-              className={`w-full bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)] hover:opacity-90 ${
-                isImageUploading
-                  ? "cursor-not-allowed opacity-100"
-                  : "cursor-pointer"
-              }`}
-            >
-              {step === 6 ? "Submit" : "Save and next"}
-            </Button>
+            {isLoading ? (
+              <LoadingButton className="w-full bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)]" />
+            ) : (
+              <Button
+                type="button"
+                onClick={stepsHandler}
+                disabled={isImageUploading}
+                className={`w-full bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)] hover:opacity-90 ${
+                  isImageUploading
+                    ? "cursor-not-allowed opacity-100"
+                    : "cursor-pointer"
+                }`}
+              >
+                {step === 6 ? "Submit" : "Save and next"}
+              </Button>
+            )}
           </div>
         </form>
       </Form>

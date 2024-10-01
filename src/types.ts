@@ -59,9 +59,9 @@ type PersonalDetailsType = {
 };
 
 type AchievementsObjectType = {
-  awards?: AwardObjectType[] | [];
-  courses?: CourseObjectType[] | [];
-  projects?: ProjectObjectType[] | [];
+  awards: AwardObjectType[] | [];
+  courses: CourseObjectType[] | [];
+  projects: ProjectObjectType[] | [];
 };
 
 // Main data type with personal details and education
@@ -71,6 +71,6 @@ export type Cv_resoponse_type = {
   education: EducationType;
   experience: ExperienceObjectType[] | [];
   skills: string[] | [];
-  achievements?: AchievementsObjectType;
+  achievements: AchievementsObjectType;
   profile_summary: string;
 };
