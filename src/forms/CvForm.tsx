@@ -160,11 +160,11 @@ const formSchema = z.object({
   Awards: z.array(
     z.object({
       award_name: z
-        .string({ required_error: "Project name is required" })
-        .min(1, { message: "Project name is required" }),
+        .string({ required_error: "Award name is required" })
+        .min(1, { message: "Award name is required" }),
       awarding_organization: z
         .string({ required_error: "Awarding organization is required" })
-        .min(1, "organization is required"),
+        .min(1, "Awarding organization is required"),
       date_of_achievement: z
         .union([
           z.date().optional(),

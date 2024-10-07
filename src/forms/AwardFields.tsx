@@ -22,6 +22,9 @@ import { Calendar } from "@/components/ui/calendar";
 import { Textarea } from "@/components/ui/textarea";
 import { MdDeleteOutline } from "react-icons/md";
 import { Separator } from "@/components/ui/separator";
+import SelfAttestButton from "@/components/Buttons/SelfAttest";
+import UploadProofButton from "@/components/Buttons/UploadProofButton";
+import IssuerButton from "@/components/Buttons/IssuerButton";
 type Props = {
   fields: Record<"id", string>[];
   index: number;
@@ -149,6 +152,11 @@ const AwardFields = ({ index, removeAwardFields, fields }: Props) => {
             <MdDeleteOutline className="text-xl ml-2" />
           </Button>
         )}
+      </div>
+      <div className="flex flex-col xl:flex-row xl:gap-5 gap-3 py-3">
+        <SelfAttestButton className="mt-0" />
+        <UploadProofButton className="mt-0" />
+        <IssuerButton className="mt-0 text-xs sm:text-sm" />
       </div>
       {fields.length > 1 && <Separator />}
     </>

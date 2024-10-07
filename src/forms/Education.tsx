@@ -1,3 +1,6 @@
+import IssuerButton from "@/components/Buttons/IssuerButton";
+import SelfAttestButton from "@/components/Buttons/SelfAttest";
+import UploadProofButton from "@/components/Buttons/UploadProofButton";
 import { Button } from "@/components/ui/button";
 import {
   FormControl,
@@ -103,242 +106,185 @@ const Education = ({
               )}
             />
           </div>
+          <div className="flex flex-col  xl:flex-row px-2 xl:px-10 xl:gap-5 gap-3">
+            <SelfAttestButton className="mt-0" />
+            <UploadProofButton className="mt-0" />
+            <IssuerButton className="mt-0" />
+          </div>
           {/* class 12th */}
           {(selectedQualification === "class12" ||
             selectedQualification === "undergraduate" ||
             selectedQualification === "postgraduate") && (
-            <div className="flex flex-col xl:flex-row px-2 xl:px-10 gap-2 xl:gap-5">
-              <FormField
-                name="class12CollegeName"
-                control={control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>Class 12th college name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter 12th college name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="class12Board"
-                control={control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel className="text-nowrap">
-                      12th Board (Ex:CBSE,ICSE,regional)
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter 12 th Board" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="class12Grade"
-                control={control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>Class 12th Grade</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="Enter 12th Grade"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <>
+              <div className="flex flex-col xl:flex-row px-2 xl:px-10 gap-2 xl:gap-5">
+                <FormField
+                  name="class12CollegeName"
+                  control={control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Class 12th college name</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter 12th college name"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="class12Board"
+                  control={control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel className="text-nowrap">
+                        12th Board (Ex:CBSE,ICSE,regional)
+                      </FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter 12 th Board" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="class12Grade"
+                  control={control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Class 12th Grade</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="Enter 12th Grade"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="flex flex-col  xl:flex-row px-2 xl:px-10 xl:gap-5 gap-3">
+                <SelfAttestButton className="mt-0" />
+                <UploadProofButton className="mt-0" />
+                <IssuerButton className="mt-0" />
+              </div>
+            </>
           )}
-          {/* <div className="flex px-10 gap-5">
-            <FormField
-              name="class12CollegeName"
-              control={control}
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel>Class 12th college name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter 12th college name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="class12Board"
-              control={control}
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel className="text-nowrap">
-                    12th Board (Ex:CBSE,ICSE,regional)
-                  </FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter 12 th Board" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="class12Grade"
-              control={control}
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel>Class 12th Grade</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="Enter 12th Grade"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div> */}
+
           {/* undergraduation */}
           {(selectedQualification === "undergraduate" ||
             selectedQualification === "postgraduate") && (
-            <div className="flex flex-col xl:flex-row px-2 xl:px-10 gap-2 xl:gap-5">
-              <FormField
-                name="underGraduateCollegeName"
-                control={control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>Undergraduation College name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter college name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="underGraduateDegreeName"
-                control={control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>Degree (Ex:B-tech)</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter degree" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="underGraduateGPA"
-                control={control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>CGPA</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="Enter CGPA"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <>
+              <div className="flex flex-col xl:flex-row px-2 xl:px-10 gap-2 xl:gap-5">
+                <FormField
+                  name="underGraduateCollegeName"
+                  control={control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Undergraduation College name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter college name" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="underGraduateDegreeName"
+                  control={control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Degree (Ex:B-tech)</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter degree" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="underGraduateGPA"
+                  control={control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>CGPA</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="Enter CGPA"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="flex flex-col  xl:flex-row px-2 xl:px-10 xl:gap-5 gap-3">
+                <SelfAttestButton className="mt-0" />
+                <UploadProofButton className="mt-0" />
+                <IssuerButton className="mt-0" />
+              </div>
+            </>
           )}
-          {/* <div className="flex px-10 gap-5">
-            <FormField
-              name="underGraduateCollegeName"
-              control={control}
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel>Undergraduation</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter college name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="underGraduateDegreeName"
-              control={control}
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel>Degree (Ex:B-tech)</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter degree" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="underGraduateGPA"
-              control={control}
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel>CGPA</FormLabel>
-                  <FormControl>
-                    <Input type="number" placeholder="Enter CGPA" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div> */}
+
           {/* postgraduation */}
           {selectedQualification === "postgraduate" && (
-            <div className="flex flex-col xl:flex-row px-2 xl:px-10 gap-2 xl:gap-5">
-              <FormField
-                name="postGraduateCollegeName"
-                control={control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>Postgraduation College name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter college name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="postGraduateDegreeName"
-                control={control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>Degree</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter degree" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="postGraduateGPA"
-                control={control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>CGPA</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="Enter CGPA"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <>
+              <div className="flex flex-col xl:flex-row px-2 xl:px-10 gap-2 xl:gap-5">
+                <FormField
+                  name="postGraduateCollegeName"
+                  control={control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Postgraduation College name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter college name" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="postGraduateDegreeName"
+                  control={control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Degree</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter degree" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="postGraduateGPA"
+                  control={control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>CGPA</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="Enter CGPA"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="flex flex-col  xl:flex-row px-2 xl:px-10 xl:gap-5 gap-3">
+                <SelfAttestButton className="mt-0" />
+                <UploadProofButton className="mt-0" />
+                <IssuerButton className="mt-0" />
+              </div>
+            </>
           )}
           {/* <div className="flex px-10 gap-5">
             <FormField

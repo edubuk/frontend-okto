@@ -19,6 +19,7 @@ import {
 } from "firebase/storage";
 import { app } from "@/firebase";
 import { useState } from "react";
+import SelfAttestButton from "@/components/Buttons/SelfAttest";
 
 type Props = {
   handleProfessionSelect: (profession: string) => void;
@@ -83,140 +84,155 @@ const PersonalDetails = ({
     <div className="flex flex-col gap-2 py-2">
       {/* name and email */}
       <div className="flex flex-col md:flex-row gap-2 px-2 md:px-10">
-        <FormField
-          control={control}
-          name="name"
-          render={({ field }) => (
-            <FormItem className="flex-1">
-              <FormLabel>Full name</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter full name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={control}
-          name="email"
-          render={({ field }) => (
-            <FormItem className="flex-1">
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input
-                  required
-                  type="email"
-                  placeholder="Enter email"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex-1">
+          <FormField
+            control={control}
+            name="name"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>Full name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter full name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <SelfAttestButton />
+        </div>
+        <div className="flex-1">
+          <FormField
+            control={control}
+            name="email"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    required
+                    type="email"
+                    placeholder="Enter email"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <SelfAttestButton />
+        </div>
       </div>
       {/* location and phone number */}
       <div className="flex gap-2 md:gap-5 px-2 md:px-10">
-        <FormField
-          control={control}
-          name="location"
-          render={({ field }) => (
-            <FormItem className="flex-1">
-              <FormLabel>Location</FormLabel>
-              <FormControl>
-                <Input placeholder="Your current location" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={control}
-          name="phoneNumber"
-          render={({ field }) => (
-            <FormItem className="flex-1">
-              <FormLabel>Phone number</FormLabel>
-              <FormControl>
-                <Input
-                  type="number"
-                  placeholder="Enter phone number"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex-1">
+          <FormField
+            control={control}
+            name="location"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>Location</FormLabel>
+                <FormControl>
+                  <Input placeholder="Your current location" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <SelfAttestButton />
+        </div>
+        <div className="flex-1">
+          <FormField
+            control={control}
+            name="phoneNumber"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>Phone number</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder="Enter phone number"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <SelfAttestButton />
+        </div>
       </div>
       {/* profession and image */}
       <div className="flex flex-col md:flex-row gap-2 md:gap-5 px-1 md:px-10">
-        <FormField
-          control={control}
-          name="profession"
-          render={() => (
-            <FormItem className="lg:flex-1">
-              <FormLabel>Profession</FormLabel>
-              <FormControl>
-                <div className="flex gap-10 lg:px-12">
-                  {/* student */}
-                  <div
-                    onClick={() => {
-                      setProfession("student");
-                      handleProfessionSelect("student");
-                    }}
-                  >
+        <div className="lg:flex-1">
+          <FormField
+            control={control}
+            name="profession"
+            render={() => (
+              <FormItem className="lg:flex-1">
+                <FormLabel>Profession</FormLabel>
+                <FormControl>
+                  <div className="flex gap-10 lg:px-12">
+                    {/* student */}
                     <div
-                      className={`border-2 cursor-pointer border-[rgb(0,102,102)] p-2 rounded-full relative`}
+                      onClick={() => {
+                        setProfession("student");
+                        handleProfessionSelect("student");
+                      }}
                     >
-                      {/* check selector for profession */}
-                      {profession && profession === "student" && (
-                        <>
-                          <div className="absolute inset-0 top-0 left-0 bg-green-500 rounded-full opacity-70 m-1"></div>
-                          <IoCheckmarkOutline className="absolute inset-0 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-black opacity-80 text-6xl " />
-                        </>
-                      )}
-                      <img
-                        src={student}
-                        alt="student"
-                        className="h-20 w-20 object-cover rounded-full"
-                      />
+                      <div
+                        className={`border-2 cursor-pointer border-[rgb(0,102,102)] p-2 rounded-full relative`}
+                      >
+                        {/* check selector for profession */}
+                        {profession && profession === "student" && (
+                          <>
+                            <div className="absolute inset-0 top-0 left-0 bg-green-500 rounded-full opacity-70 m-1"></div>
+                            <IoCheckmarkOutline className="absolute inset-0 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-black opacity-80 text-6xl " />
+                          </>
+                        )}
+                        <img
+                          src={student}
+                          alt="student"
+                          className="h-20 w-20 object-cover rounded-full"
+                        />
+                      </div>
+                      <h1 className="text-center font-semibold text-base tracking-tight">
+                        Student
+                      </h1>
                     </div>
-                    <h1 className="text-center font-semibold text-base tracking-tight">
-                      Student
-                    </h1>
-                  </div>
-                  {/* Employee */}
-                  <div
-                    onClick={() => {
-                      setProfession("employee");
-                      handleProfessionSelect("employee");
-                    }}
-                    className=""
-                  >
-                    <div className="border-2 cursor-pointer border-[rgb(0,102,102)] p-2 rounded-full relative">
-                      {/* check selector for profession */}
-                      {profession && profession === "employee" && (
-                        <>
-                          <div className="absolute inset-0 top-0 left-0 bg-green-500 rounded-full opacity-70 m-1"></div>
-                          <IoCheckmarkOutline className="absolute inset-0 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-black opacity-80 text-6xl " />
-                        </>
-                      )}
-                      <img
-                        src={employee}
-                        alt="employee"
-                        className="h-20 w-20 object-cover rounded-full"
-                      />
+                    {/* Employee */}
+                    <div
+                      onClick={() => {
+                        setProfession("employee");
+                        handleProfessionSelect("employee");
+                      }}
+                      className=""
+                    >
+                      <div className="border-2 cursor-pointer border-[rgb(0,102,102)] p-2 rounded-full relative">
+                        {/* check selector for profession */}
+                        {profession && profession === "employee" && (
+                          <>
+                            <div className="absolute inset-0 top-0 left-0 bg-green-500 rounded-full opacity-70 m-1"></div>
+                            <IoCheckmarkOutline className="absolute inset-0 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-black opacity-80 text-6xl " />
+                          </>
+                        )}
+                        <img
+                          src={employee}
+                          alt="employee"
+                          className="h-20 w-20 object-cover rounded-full"
+                        />
+                      </div>
+                      <h1 className="text-center font-semibold text-base tracking-tight">
+                        Employee
+                      </h1>
                     </div>
-                    <h1 className="text-center font-semibold text-base tracking-tight">
-                      Employee
-                    </h1>
                   </div>
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <SelfAttestButton />
+        </div>
 
         {/* image section */}
         <FormField
@@ -250,11 +266,14 @@ const PersonalDetails = ({
                 </p>
               )}
               {imagePreview && (
-                <img
-                  src={imagePreview}
-                  alt="previewImage"
-                  className="h-48 w-full object-cover rounded-lg shadow-lg"
-                />
+                <>
+                  <img
+                    src={imagePreview}
+                    alt="previewImage"
+                    className="h-48 w-full object-cover rounded-lg shadow-lg"
+                  />
+                  <SelfAttestButton />
+                </>
               )}
             </FormItem>
           )}
