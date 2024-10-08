@@ -12,9 +12,6 @@ import {
 } from "@/components/ui/form";
 import { useFormContext } from "react-hook-form";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import SelfAttestButton from "@/components/Buttons/SelfAttest";
-import UploadProofButton from "@/components/Buttons/UploadProofButton";
-import IssuerButton from "@/components/Buttons/IssuerButton";
 import { AnimatedSkillsVerification } from "@/components/ui/AnimatedSkillsVerification";
 const skills: string[] = [
   "Project management",
