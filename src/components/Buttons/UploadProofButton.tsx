@@ -3,10 +3,12 @@ import { Button } from "../ui/button";
 import { ComponentPropsWithoutRef } from "react";
 import { twMerge } from "tailwind-merge";
 
-const UploadProofButton = (props: ComponentPropsWithoutRef<"button">) => {
-  const { className } = props;
+const UploadProofButton = (
+  props: ComponentPropsWithoutRef<"button"> & { col?: boolean }
+) => {
+  const { className, col } = props;
   return (
-    <div className="flex items-center gap-1">
+    <div className={twMerge("flex items-center gap-1", col && "flex-col")}>
       <Button
         type="button"
         className={twMerge(
@@ -16,7 +18,7 @@ const UploadProofButton = (props: ComponentPropsWithoutRef<"button">) => {
       >
         <Paperclip size={26} className="size-5 mr-3" /> Upload proof
       </Button>
-      <span className="text-zinc-500/70 text-sm text-nowrap">
+      <span className={"text-zinc-500/70 text-sm text-nowrap"}>
         (png/jpeg/pdf) accepted
       </span>
     </div>

@@ -1,3 +1,4 @@
+import SelfAttestButton from "@/components/Buttons/SelfAttest";
 import {
   FormControl,
   FormDescription,
@@ -34,6 +35,7 @@ const ProfileSummary = () => {
           </FormItem>
         )}
       />
+      <SelfAttestButton className="lg:ml-5" />
     </div>
   );
 };

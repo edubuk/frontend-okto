@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { IoMdCheckmark } from "react-icons/io";
-import { X } from "lucide-react";
+import { AlertCircle, X } from "lucide-react";
 import { useCvFromContext } from "@/context/CvForm.context";
 import {
   FormControl,
@@ -11,6 +11,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useFormContext } from "react-hook-form";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import SelfAttestButton from "@/components/Buttons/SelfAttest";
+import UploadProofButton from "@/components/Buttons/UploadProofButton";
+import IssuerButton from "@/components/Buttons/IssuerButton";
+import { AnimatedSkillsVerification } from "@/components/ui/AnimatedSkillsVerification";
 const skills: string[] = [
   "Project management",
   "Software proficiency",
@@ -174,6 +179,22 @@ const Skills = () => {
             )} */}
           </div>
         </div>
+      </div>
+      {/* alert instruction */}
+      <div className="px-2 sm:px-10">
+        <Alert className="">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Attention! You need to verify your skills</AlertTitle>
+          <AlertDescription>
+            Please self-attest, upload the required proof, or send an email to
+            the issuer for verification.
+          </AlertDescription>
+        </Alert>
+      </div>
+      <div className="flex flex-col gap-4 sm:px-2">
+        {selectedSkills.map((skill, i) => (
+          <AnimatedSkillsVerification key={i} skill={skill} />
+        ))}
       </div>
     </div>
   );

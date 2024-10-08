@@ -3,8 +3,10 @@ import { Button } from "../ui/button";
 import { ComponentPropsWithoutRef } from "react";
 import { Mail } from "lucide-react";
 
-const IssuerButton = (props: ComponentPropsWithoutRef<"button">) => {
-  const { className } = props;
+const IssuerButton = (
+  props: ComponentPropsWithoutRef<"button"> & { text?: string }
+) => {
+  const { className, text } = props;
   return (
     <Button
       type="button"
@@ -13,8 +15,8 @@ const IssuerButton = (props: ComponentPropsWithoutRef<"button">) => {
         className
       )}
     >
-      <Mail size={26} className="size-5 mr-3 flex-none" /> Send an email to
-      issuer for verification
+      <Mail size={26} className="size-5 mr-3 flex-none" />
+      {(text && text) || "Send an email to issuer for verification"}
     </Button>
   );
 };

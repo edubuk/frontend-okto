@@ -7,6 +7,7 @@ import { BiSolidBriefcase } from "react-icons/bi";
 import { GraduationCap, Mail, MapPinned, Phone } from "lucide-react";
 import { MdSchool } from "react-icons/md";
 import { format } from "date-fns";
+import HyperText from "@/components/ui/AnimateHypertext";
 const CvOutputPage = () => {
   const { id } = useParams();
 
@@ -26,6 +27,28 @@ const CvOutputPage = () => {
 
   return (
     <div className="px-1 mt-5 md:mt-0 md:px-10 mb-10">
+      {/* <div className="border flex">
+        <div className="mx-auto">
+          <HyperText
+            text="POWERED BY EDUBUK"
+            className="text-xl md:text-4xl self-center  font-semibold text-[#006666]"
+          />
+        </div>
+      </div> */}
+      <div className="flex items-center justify-center  px-10 py-2">
+        <img
+          src="/edubuklogo.jpg"
+          alt="logo"
+          className="md:h-16 md:w-16 h-10 w-10 object-cover"
+          draggable={false}
+        />
+        <div className="ml-5">
+          <HyperText
+            text="POWERED BY EDUBUK"
+            className="text-xl md:text-4xl font-semibold text-[#006666]"
+          />
+        </div>
+      </div>
       <div className="mt-2 max-w-6xl mx-auto w-full border  border-l-0 shadow-lg der-black  rounded-md">
         <div className="flex gap-3 md:gap-7">
           {/* left sidebar */}
