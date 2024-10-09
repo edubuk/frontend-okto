@@ -1,5 +1,6 @@
 import { useCvFromContext } from "@/context/CvForm.context";
 import { IoMdCheckmark } from "react-icons/io";
+import { twMerge } from "tailwind-merge";
 
 const Stepper = () => {
   const { step } = useCvFromContext();
@@ -58,9 +59,15 @@ const Stepper = () => {
         </div>
         {/* step indicator */}
         <div
-          className={`hidden md:flex flex-col mt-5 ${
-            step === 1 ? "gap-11" : "gap-8"
-          }`}
+          className={twMerge(
+            "hidden md:flex flex-col mt-5",
+            step === 1 && "gap-11 mt-7",
+            step === 2 && "gap-11",
+            step === 3 && "gap-9",
+            step === 4 && "gap-9",
+            step === 5 && "gap-8",
+            step === 6 && "gap-7"
+          )}
         >
           {/* step label and status */}
           {/* step1 */}
@@ -161,9 +168,14 @@ const Stepper = () => {
 
           {/* step 6 */}
           <div
-            className={`flex flex-col  ${
-              step === 6 ? "opacity-100" : "opacity-30"
-            }`}
+            // className={`flex flex-col  ${
+            //   step === 6 ? "opacity-100" : "opacity-30"
+            // }`}
+            className={twMerge(
+              "flex flex-col",
+              step === 6 ? "opacity-100 mt-2" : "opacity-30",
+              step === 3 && "mt-4"
+            )}
           >
             <h2 className="text-gray-500 text-sm uppercase font-semibold">
               Step 06
@@ -171,12 +183,6 @@ const Stepper = () => {
             <p className="text-base font-semibold tracking-tight text-nowrap capitalize">
               Profile summary
             </p>
-
-            {/* {step >= 6 && (
-              <p className="text-green-500 text-xs font-semibold flex items-center gap-.5">
-                Completed <IoMdCheckmark fontSize={16} className="" />
-              </p>
-            )} */}
           </div>
         </div>
       </div>
