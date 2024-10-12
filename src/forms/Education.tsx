@@ -1,4 +1,4 @@
-import { AnimatedSkillsVerification } from "@/components/ui/AnimatedVerification";
+import { AnimatedVerification } from "@/components/ui/AnimatedVerification";
 import { Button } from "@/components/ui/button";
 import {
   FormControl,
@@ -107,7 +107,7 @@ const Education = ({
 
           {/* Animated skills section */}
           <div className="flex flex-col gap-4  sm:px-10">
-            <AnimatedSkillsVerification firstButtonText={"Class 10"} />
+            <AnimatedVerification firstButtonText={"Class 10"} />
           </div>
 
           {/* <div className="flex flex-col  xl:flex-row px-2 xl:px-10 xl:gap-5 gap-3">
@@ -172,7 +172,7 @@ const Education = ({
               </div>
               {/* Animated skills section */}
               <div className="flex flex-col gap-4 sm:px-10">
-                <AnimatedSkillsVerification firstButtonText={"Class 12"} />
+                <AnimatedVerification firstButtonText={"Class 12"} />
               </div>
             </>
           )}
@@ -230,13 +230,11 @@ const Education = ({
               <div className="flex flex-col gap-4 sm:px-10">
                 {/* for tablets and desktops */}
                 <div className="hidden sm:block">
-                  <AnimatedSkillsVerification
-                    firstButtonText={"Undergraduation"}
-                  />
+                  <AnimatedVerification firstButtonText={"Undergraduation"} />
                 </div>
                 {/* for mobile  */}
                 <div className="sm:hidden">
-                  <AnimatedSkillsVerification
+                  <AnimatedVerification
                     buttonClass="py-1 px-4 font-semibold"
                     firstButtonText={"UG"}
                   />
@@ -297,13 +295,11 @@ const Education = ({
               <div className="flex flex-col gap-4 sm:px-10">
                 {/* for tablets and desktops */}
                 <div className="hidden sm:block">
-                  <AnimatedSkillsVerification
-                    firstButtonText={"Postgraduation"}
-                  />
+                  <AnimatedVerification firstButtonText={"Postgraduation"} />
                 </div>
                 {/* for mobile  */}
                 <div className="sm:hidden">
-                  <AnimatedSkillsVerification
+                  <AnimatedVerification
                     buttonClass="py-1 px-4 font-semibold"
                     firstButtonText={"PG"}
                   />

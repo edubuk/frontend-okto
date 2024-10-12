@@ -26,6 +26,7 @@ import { Separator } from "@/components/ui/separator";
 import SelfAttestButton from "@/components/Buttons/SelfAttest";
 import UploadProofButton from "@/components/Buttons/UploadProofButton";
 import IssuerButton from "@/components/Buttons/IssuerButton";
+import { AnimatedVerification } from "@/components/ui/AnimatedVerification";
 type Props = {
   fields: Record<"id", string>[];
   index: number;
@@ -33,12 +34,13 @@ type Props = {
 };
 
 const ProjectFields = ({ index, removeProjectFields, fields }: Props) => {
-  const { control, setValue } = useFormContext();
+  const { control, setValue, getValues } = useFormContext();
   const [date, setDate] = useState<DateRange | undefined>();
   // {
   //   from: new Date(2023, 0, 20),
   //   to: addDays(new Date(2024, 0, 20), 20),
   // }
+  const { Projects } = getValues();
 
   const { remove } = useFieldArray({ control, name: "Experience" });
 
@@ -167,10 +169,12 @@ const ProjectFields = ({ index, removeProjectFields, fields }: Props) => {
           </Button>
         )}
       </div>
-      <div className="flex flex-col xl:flex-row xl:gap-5 gap-3 py-3">
-        <SelfAttestButton className="mt-0" />
-        <UploadProofButton className="mt-0" />
-        <IssuerButton className="mt-0 text-xs sm:text-sm" />
+      {/* Animated Verification section */}
+      <div className="flex flex-col gap-4 sm:px-2">
+        <AnimatedVerification
+          firstButtonText={Projects[index].project_name || "Project"}
+          buttonClass=""
+        />
       </div>
       {fields.length > 1 && <Separator />}
     </>

@@ -26,7 +26,7 @@ const Circle = forwardRef<
 
 Circle.displayName = "Circle";
 
-export function AnimatedSkillsVerification({
+export function AnimatedVerification({
   className,
   firstButtonText,
   buttonClass,
