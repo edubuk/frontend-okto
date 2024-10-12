@@ -9,8 +9,33 @@ interface AppState {
   setSkillError: React.Dispatch<React.SetStateAction<string>>;
   showSkillError: boolean;
   setSkillShowError: React.Dispatch<React.SetStateAction<boolean>>;
+  // verifications;
+  // step1;
+  personalDetailsVerifications: PersonalVerificationsType;
+  setPersonalDetailsVerifications: React.Dispatch<
+    React.SetStateAction<PersonalVerificationsType>
+  >;
 }
-
+type PersonalVerificationsType = {
+  name: {
+    isSelfAttested: boolean;
+  };
+  email: {
+    isSelfAttested: boolean;
+  };
+  location: {
+    isSelfAttested: boolean;
+  };
+  profession: {
+    isSelfAttested: boolean;
+  };
+  imageUrl: {
+    isSelfAttested: boolean;
+  };
+  phoneNumber: {
+    isSelfAttested: boolean;
+  };
+};
 const AppContext = createContext<AppState | undefined>(undefined);
 
 export const CvFomContextProvider = ({
@@ -22,6 +47,27 @@ export const CvFomContextProvider = ({
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [skillError, setSkillError] = useState("");
   const [showSkillError, setSkillShowError] = useState(false);
+  const [personalDetailsVerifications, setPersonalDetailsVerifications] =
+    useState<PersonalVerificationsType>({
+      name: {
+        isSelfAttested: false,
+      },
+      email: {
+        isSelfAttested: false,
+      },
+      location: {
+        isSelfAttested: false,
+      },
+      profession: {
+        isSelfAttested: false,
+      },
+      imageUrl: {
+        isSelfAttested: false,
+      },
+      phoneNumber: {
+        isSelfAttested: false,
+      },
+    });
   return (
     <AppContext.Provider
       value={{
@@ -33,6 +79,8 @@ export const CvFomContextProvider = ({
         setSkillError,
         showSkillError,
         setSkillShowError,
+        personalDetailsVerifications,
+        setPersonalDetailsVerifications,
       }}
     >
       {children}

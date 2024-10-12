@@ -20,6 +20,7 @@ import {
 import { app } from "@/firebase";
 import { useState } from "react";
 import SelfAttestButton from "@/components/Buttons/SelfAttest";
+import { useCvFromContext } from "@/context/CvForm.context";
 
 type Props = {
   handleProfessionSelect: (profession: string) => void;
@@ -31,6 +32,27 @@ type Props = {
   setProfession: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
+type PersonalVerificationsType = {
+  name: {
+    isSelfAttested: boolean;
+  };
+  email: {
+    isSelfAttested: boolean;
+  };
+  location: {
+    isSelfAttested: boolean;
+  };
+  profession: {
+    isSelfAttested: boolean;
+  };
+  imageUrl: {
+    isSelfAttested: boolean;
+  };
+  phoneNumber: {
+    isSelfAttested: boolean;
+  };
+};
+
 const PersonalDetails = ({
   handleProfessionSelect,
   profession,
@@ -38,15 +60,26 @@ const PersonalDetails = ({
   isImageUploading,
   setIsImageUploading,
 }: Props) => {
-  const { control, setValue } = useFormContext();
+  const { control, setValue, getValues } = useFormContext();
   const storedData = localStorage.getItem("step1CvData");
   const localDataImage = storedData ? JSON.parse(storedData) : null;
   const [imagePreview, setImagePreview] = useState<string>(
     localDataImage?.imageUrl || ""
   );
   const [imageError, setImageError] = useState<string>("");
-  // const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
+  const { personalDetailsVerifications, setPersonalDetailsVerifications } =
+    useCvFromContext();
 
+  // verification states;
+  //   name
+  // email
+  // location
+  // profession
+  // imageUrl
+  // phoneNumber
+
+  // const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
+  console.log(getValues());
   const uploadImageToDB = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     setImageError("");
@@ -79,7 +112,17 @@ const PersonalDetails = ({
       }
     );
   };
+  const handleSelfAttest = (field: keyof PersonalVerificationsType) => {
+    setPersonalDetailsVerifications((prev) => ({
+      ...prev,
+      [field]: {
+        isSelfAttested: true,
+      },
+    }));
+    setValue(`personalDetailsVerification.${field}.isSelfAttested`, true);
+  };
 
+  console.log(personalDetailsVerifications);
   return (
     <div className="flex flex-col gap-2 py-2">
       {/* name and email */}
@@ -98,7 +141,12 @@ const PersonalDetails = ({
               </FormItem>
             )}
           />
-          <SelfAttestButton />
+          <SelfAttestButton
+            onClick={() => {
+              handleSelfAttest("name");
+            }}
+            isAttested={personalDetailsVerifications.name.isSelfAttested}
+          />
         </div>
         <div className="flex-1">
           <FormField
@@ -119,7 +167,12 @@ const PersonalDetails = ({
               </FormItem>
             )}
           />
-          <SelfAttestButton />
+          <SelfAttestButton
+            onClick={() => {
+              handleSelfAttest("email");
+            }}
+            isAttested={personalDetailsVerifications.email.isSelfAttested}
+          />
         </div>
       </div>
       {/* location and phone number */}
@@ -138,7 +191,12 @@ const PersonalDetails = ({
               </FormItem>
             )}
           />
-          <SelfAttestButton />
+          <SelfAttestButton
+            onClick={() => {
+              handleSelfAttest("location");
+            }}
+            isAttested={personalDetailsVerifications.location.isSelfAttested}
+          />
         </div>
         <div className="flex-1">
           <FormField
@@ -158,7 +216,12 @@ const PersonalDetails = ({
               </FormItem>
             )}
           />
-          <SelfAttestButton />
+          <SelfAttestButton
+            onClick={() => {
+              handleSelfAttest("phoneNumber");
+            }}
+            isAttested={personalDetailsVerifications.phoneNumber.isSelfAttested}
+          />
         </div>
       </div>
       {/* profession and image */}
@@ -231,7 +294,12 @@ const PersonalDetails = ({
               </FormItem>
             )}
           />
-          <SelfAttestButton />
+          <SelfAttestButton
+            onClick={() => {
+              handleSelfAttest("profession");
+            }}
+            isAttested={personalDetailsVerifications.profession.isSelfAttested}
+          />
         </div>
 
         {/* image section */}
@@ -272,7 +340,14 @@ const PersonalDetails = ({
                     alt="previewImage"
                     className="h-48 w-full object-cover rounded-lg shadow-lg"
                   />
-                  <SelfAttestButton />
+                  <SelfAttestButton
+                    onClick={() => {
+                      handleSelfAttest("imageUrl");
+                    }}
+                    isAttested={
+                      personalDetailsVerifications.imageUrl.isSelfAttested
+                    }
+                  />
                 </>
               )}
             </FormItem>

@@ -245,6 +245,29 @@ const formSchema = z.object({
     .max(300, {
       message: "Enter profile summary within 300 characters only",
     }),
+  // verifications;
+
+  // 1) personal Details;
+  personalDetailsVerifications: z.object({
+    name: z.object({
+      isSelfAttested: z.boolean(),
+    }),
+    email: z.object({
+      isSelfAttested: z.boolean(),
+    }),
+    location: z.object({
+      isSelfAttested: z.boolean(),
+    }),
+    profession: z.object({
+      isSelfAttested: z.boolean(),
+    }),
+    imageUrl: z.object({
+      isSelfAttested: z.boolean(),
+    }),
+    phoneNumber: z.object({
+      isSelfAttested: z.boolean(),
+    }),
+  }),
 });
 // .refine((data) => data.imageFile || data.imageUrl, {
 //   message: "Either imageFile or imageUrl is required",
@@ -258,6 +281,26 @@ const CvForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       Skills: [],
+      // personalDetailsVerifications: {
+      //   name: {
+      //     isSelfAttested: false,
+      //   },
+      //   email: {
+      //     isSelfAttested: false,
+      //   },
+      //   profession: {
+      //     isSelfAttested: false,
+      //   },
+      //   imageUrl: {
+      //     isSelfAttested: false,
+      //   },
+      //   location: {
+      //     isSelfAttested: false,
+      //   },
+      //   phoneNumber: {
+      //     isSelfAttested: false,
+      //   },
+      // },
     },
   });
 
@@ -458,6 +501,8 @@ const CvForm = () => {
       if (currentFormData.imageFile) {
         updatedFormData.append("imageFile", currentFormData.imageFile);
       }
+
+      // adding verifications;
     } else if (step === 6) {
       console.log("Form is getting submitted now");
       createCVInBackend(currentFormData);
