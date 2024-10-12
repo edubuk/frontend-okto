@@ -23,9 +23,6 @@ import { Calendar } from "@/components/ui/calendar";
 import { Textarea } from "@/components/ui/textarea";
 import { MdDeleteOutline } from "react-icons/md";
 import { Separator } from "@/components/ui/separator";
-import SelfAttestButton from "@/components/Buttons/SelfAttest";
-import UploadProofButton from "@/components/Buttons/UploadProofButton";
-import IssuerButton from "@/components/Buttons/IssuerButton";
 import { AnimatedVerification } from "@/components/ui/AnimatedVerification";
 type Props = {
   fields: Record<"id", string>[];

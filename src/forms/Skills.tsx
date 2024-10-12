@@ -30,13 +30,34 @@ const skills: string[] = [
 ];
 
 const Skills = () => {
-  const { selectedSkills, setSelectedSkills } = useCvFromContext();
+  const {
+    selectedSkills,
+    setSelectedSkills,
+    skillError,
+    setSkillError,
+    showSkillError,
+    setSkillShowError,
+  } = useCvFromContext();
   const [typerSkill, setTyperSkill] = useState<string>("");
+  // const [skillError, setSkillError] = useState("");
+  // const [showSkillError, setSkillShowError] = useState(false);
   const [isKeyDown, setIsKeyDown] = useState<boolean>(false);
   const { control, setValue } = useFormContext();
+  console.log(skillError);
+
+  // useEffect(() => {
+  //   if (selectedSkills.length < 5) {
+  //     setSkillShowError(false);
+  //   }
+  // }, [skillError, showSkillError]);
 
   const selectSkillsHandler = (skill: string) => {
     if (!selectedSkills.includes(skill)) {
+      if (selectedSkills.length >= 5) {
+        setSkillShowError(true);
+        setSkillError("You can only select 5 skills");
+        return;
+      }
       setSelectedSkills((prev) => [...prev, skill]);
       setValue("Skills", [...selectedSkills, skill]);
       return;
@@ -58,6 +79,10 @@ const Skills = () => {
     const filteredSkills = selectedSkills.filter(
       (prevSkill) => prevSkill !== skill
     );
+    if (filteredSkills.length < 5) {
+      setSkillShowError(false);
+      setSkillError("");
+    }
     setValue("Skills", filteredSkills);
   };
 
@@ -66,6 +91,12 @@ const Skills = () => {
       setIsKeyDown(true);
     } else if (e.key === "Enter") {
       e.preventDefault();
+      if (selectedSkills.length >= 5) {
+        setTyperSkill("");
+        setSkillShowError(true);
+        setSkillError("You can only add 5 skills");
+        return;
+      }
       setSelectedSkills((prev) => [...prev, typerSkill]);
       setValue("Skills", [...selectedSkills, typerSkill]);
       setIsKeyDown(false);
@@ -74,6 +105,11 @@ const Skills = () => {
   };
 
   const typeSkillClickHanlder = () => {
+    if (selectedSkills.length >= 5) {
+      setSkillShowError(true);
+      setSkillError("You can only add 5 skills");
+      return;
+    }
     setSelectedSkills((prev) => [...prev, typerSkill]);
     setValue("Skills", [...selectedSkills, typerSkill]);
     setTyperSkill("");
@@ -155,6 +191,11 @@ const Skills = () => {
                     </div>
                   )}
                   <FormMessage />
+                  {showSkillError && (
+                    <p className="text-[0.9rem] font-medium text-red-500">
+                      {skillError}
+                    </p>
+                  )}
                 </FormItem>
               )}
             />

@@ -5,6 +5,10 @@ interface AppState {
   setStep: React.Dispatch<React.SetStateAction<number>>;
   selectedSkills: string[];
   setSelectedSkills: React.Dispatch<React.SetStateAction<string[]>>;
+  skillError: string;
+  setSkillError: React.Dispatch<React.SetStateAction<string>>;
+  showSkillError: boolean;
+  setSkillShowError: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AppContext = createContext<AppState | undefined>(undefined);
@@ -16,9 +20,20 @@ export const CvFomContextProvider = ({
 }) => {
   const [step, setStep] = useState<number>(1);
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+  const [skillError, setSkillError] = useState("");
+  const [showSkillError, setSkillShowError] = useState(false);
   return (
     <AppContext.Provider
-      value={{ step, setStep, selectedSkills, setSelectedSkills }}
+      value={{
+        step,
+        setStep,
+        selectedSkills,
+        setSelectedSkills,
+        skillError,
+        setSkillError,
+        showSkillError,
+        setSkillShowError,
+      }}
     >
       {children}
     </AppContext.Provider>

@@ -155,6 +155,7 @@ const formSchema = z.object({
   Skills: z
     .array(z.string())
     .min(1, { message: "Please select or enter at least one skill" })
+    .max(5, { message: "You can only select 5 skills" })
     .default([]),
   // Step 5 : Achievements
   Awards: z.array(
