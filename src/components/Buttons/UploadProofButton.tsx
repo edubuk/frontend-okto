@@ -18,7 +18,7 @@ const UploadProofButton = (
       >
         <Paperclip size={26} className="size-5 mr-3" /> Upload proof
       </Button>
-      <span className={"text-zinc-500/70 text-sm text-nowrap"}>
+      <span className={"text-[#006666] font-semibold text-xs text-nowrap"}>
         (png/jpeg/pdf) accepted
       </span>
     </div>

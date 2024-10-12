@@ -5,6 +5,7 @@ import { AnimatedBeam } from "./animated-beam";
 import SelfAttestButton from "../Buttons/SelfAttest";
 import UploadProofButton from "../Buttons/UploadProofButton";
 import IssuerButton from "../Buttons/IssuerButton";
+import { twMerge } from "tailwind-merge";
 
 const Circle = forwardRef<
   HTMLDivElement,
@@ -27,10 +28,12 @@ Circle.displayName = "Circle";
 
 export function AnimatedSkillsVerification({
   className,
-  skill,
+  firstButtonText,
+  buttonClass,
 }: {
   className?: string;
-  skill: string;
+  firstButtonText: string;
+  buttonClass?: string;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   // const div1Ref = useRef<HTMLDivElement>(null);
@@ -49,18 +52,22 @@ export function AnimatedSkillsVerification({
       )}
       ref={containerRef}
     >
-      <div className="flex size-full max-w-2xl flex-row items-stretch justify-between gap-10 ">
+      <div className="flex size-full max-w-2xl flex-row items-stretch justify-between gap-8 sm:gap-10">
         <div className="flex flex-col justify-center">
-          <div className="w-36 sm:w-48 z-50">
+          <div className="w-30 sm:w-48 z-50">
+            {/* first button */}
             <div
               ref={div7Ref}
-              className="px-2 sm:px-4 py-4 text-white  rounded-lg  bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)] flex items-center text-xs sm:text-base font-semibold w-fit line-clamp-1"
+              className={twMerge(
+                "px-2 sm:px-4 py-4 text-white  rounded-lg  bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)] flex items-center text-xs sm:text-base font-semibold w-fit text-center sm:line-clamp-1",
+                buttonClass
+              )}
             >
-              {skill}
+              {firstButtonText}
             </div>
           </div>
         </div>
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col justify-center translate-x-0 sm:translate-x-0 z-10">
           <Circle ref={div6Ref} className="size-16">
             <img
               src="/edubuk-crop.jpg"
@@ -69,7 +76,7 @@ export function AnimatedSkillsVerification({
             />
           </Circle>
         </div>
-        <div className="flex flex-col justify-center  gap-2">
+        <div className="flex flex-col justify-center  gap-2 -translate-x-1 sm:translate-x-0 z-30">
           {/* <Circle ref={div1Ref}>
             <Icons.googleDrive />
           </Circle> */}
@@ -80,7 +87,7 @@ export function AnimatedSkillsVerification({
           <div ref={div3Ref} className="z-50 mt-2">
             <UploadProofButton
               col
-              className="-ml-12 text-xs sm:text-base sm:ml-0"
+              className="-ml-7 text-xs sm:text-base sm:ml-0"
             />
           </div>
           <div ref={div4Ref} className="z-50">
@@ -133,7 +140,6 @@ export function AnimatedSkillsVerification({
   );
 }
 
-// const Icons = {
 //   notion: () => (
 //     <svg
 //       width="100"

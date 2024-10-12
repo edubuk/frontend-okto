@@ -1,6 +1,4 @@
-import IssuerButton from "@/components/Buttons/IssuerButton";
-import SelfAttestButton from "@/components/Buttons/SelfAttest";
-import UploadProofButton from "@/components/Buttons/UploadProofButton";
+import { AnimatedSkillsVerification } from "@/components/ui/AnimatedVerification";
 import { Button } from "@/components/ui/button";
 import {
   FormControl,
@@ -106,11 +104,17 @@ const Education = ({
               )}
             />
           </div>
-          <div className="flex flex-col  xl:flex-row px-2 xl:px-10 xl:gap-5 gap-3">
+
+          {/* Animated skills section */}
+          <div className="flex flex-col gap-4  sm:px-10">
+            <AnimatedSkillsVerification firstButtonText={"Class 10"} />
+          </div>
+
+          {/* <div className="flex flex-col  xl:flex-row px-2 xl:px-10 xl:gap-5 gap-3">
             <SelfAttestButton className="mt-0" />
             <UploadProofButton className="mt-0" />
             <IssuerButton className="mt-0" />
-          </div>
+          </div> */}
           {/* class 12th */}
           {(selectedQualification === "class12" ||
             selectedQualification === "undergraduate" ||
@@ -166,10 +170,9 @@ const Education = ({
                   )}
                 />
               </div>
-              <div className="flex flex-col  xl:flex-row px-2 xl:px-10 xl:gap-5 gap-3">
-                <SelfAttestButton className="mt-0" />
-                <UploadProofButton className="mt-0" />
-                <IssuerButton className="mt-0" />
+              {/* Animated skills section */}
+              <div className="flex flex-col gap-4 sm:px-10">
+                <AnimatedSkillsVerification firstButtonText={"Class 12"} />
               </div>
             </>
           )}
@@ -223,10 +226,21 @@ const Education = ({
                   )}
                 />
               </div>
-              <div className="flex flex-col  xl:flex-row px-2 xl:px-10 xl:gap-5 gap-3">
-                <SelfAttestButton className="mt-0" />
-                <UploadProofButton className="mt-0" />
-                <IssuerButton className="mt-0" />
+              {/* Animated skills section */}
+              <div className="flex flex-col gap-4 sm:px-10">
+                {/* for tablets and desktops */}
+                <div className="hidden sm:block">
+                  <AnimatedSkillsVerification
+                    firstButtonText={"Undergraduation"}
+                  />
+                </div>
+                {/* for mobile  */}
+                <div className="sm:hidden">
+                  <AnimatedSkillsVerification
+                    buttonClass="py-1 px-4 font-semibold"
+                    firstButtonText={"UG"}
+                  />
+                </div>
               </div>
             </>
           )}
@@ -279,10 +293,21 @@ const Education = ({
                   )}
                 />
               </div>
-              <div className="flex flex-col  xl:flex-row px-2 xl:px-10 xl:gap-5 gap-3">
-                <SelfAttestButton className="mt-0" />
-                <UploadProofButton className="mt-0" />
-                <IssuerButton className="mt-0" />
+              {/* Animated skills section */}
+              <div className="flex flex-col gap-4 sm:px-10">
+                {/* for tablets and desktops */}
+                <div className="hidden sm:block">
+                  <AnimatedSkillsVerification
+                    firstButtonText={"Postgraduation"}
+                  />
+                </div>
+                {/* for mobile  */}
+                <div className="sm:hidden">
+                  <AnimatedSkillsVerification
+                    buttonClass="py-1 px-4 font-semibold"
+                    firstButtonText={"PG"}
+                  />
+                </div>
               </div>
             </>
           )}

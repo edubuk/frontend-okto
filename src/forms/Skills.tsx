@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 import { useFormContext } from "react-hook-form";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AnimatedSkillsVerification } from "@/components/ui/AnimatedSkillsVerification";
+import { AnimatedSkillsVerification } from "@/components/ui/AnimatedVerification";
 const skills: string[] = [
   "Project management",
   "Software proficiency",
@@ -188,9 +188,14 @@ const Skills = () => {
           </AlertDescription>
         </Alert>
       </div>
+      {/* Animated skills section */}
       <div className="flex flex-col gap-4 sm:px-2">
         {selectedSkills.map((skill, i) => (
-          <AnimatedSkillsVerification key={i} skill={skill} />
+          <AnimatedSkillsVerification
+            key={i}
+            firstButtonText={skill}
+            buttonClass=""
+          />
         ))}
       </div>
     </div>
