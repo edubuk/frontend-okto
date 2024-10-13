@@ -31,17 +31,40 @@ type Props = {
 };
 
 const ExperienceFields = ({ index, removeExperienceFields, fields }: Props) => {
-  const { control, setValue, getValues } = useFormContext();
+  const { control, setValue, getValues, watch } = useFormContext();
   const [date, setDate] = useState<DateRange | undefined>();
-
+  const [experienceVerifications, setExperienceVerifications] = useState({});
   // {
   //   from: new Date(2023, 0, 20),
   //   to: addDays(new Date(2024, 0, 20), 20),
   // }
+
+  const watchExperienceArray = watch(`Experience[${index}].company_name`);
+
   const { Experience } = getValues();
   console.log(Experience);
 
+  // if (Experience.length > 0 && experienceVerifications.length > 0) {
+  //   console.log(experienceVerifications[index][Experience[index].company_name]);
+  // }
+
   const { remove } = useFieldArray({ control, name: "Experience" });
+
+  // testing useeffect for verifications;
+  useEffect(() => {
+    if (Experience.length > 0) {
+      const verificationObject = Experience.reduce((acc: any, exp: any) => {
+        acc[exp.company_name] = {
+          isSelfAttested: false,
+          proof: "",
+          mailStatus: "",
+        };
+        return acc;
+      }, {});
+      console.log("New verification object", verificationObject);
+      setExperienceVerifications(verificationObject);
+    }
+  }, [watchExperienceArray, Experience]);
 
   useEffect(() => {
     if (date?.from && date?.to) {
@@ -56,6 +79,8 @@ const ExperienceFields = ({ index, removeExperienceFields, fields }: Props) => {
     remove(index);
     removeExperienceFields(index);
   };
+
+  // verification object testing;
 
   return (
     <>
@@ -172,10 +197,15 @@ const ExperienceFields = ({ index, removeExperienceFields, fields }: Props) => {
       </div>
       {/* Animated Verification section */}
       <div className="flex flex-col gap-4 sm:px-2">
-        <AnimatedVerification
-          firstButtonText={Experience[index].company_name || "Company"}
-          buttonClass=""
-        />
+        {Experience.length > 0 && Experience[index].company_name && (
+          <AnimatedVerification
+            firstButtonText={Experience[index].company_name || "Company"}
+            field={`${Experience[index].company_name}`}
+            verificationStep="experienceVerifications"
+            verificationObject={experienceVerifications}
+            setterVerificationObject={setExperienceVerifications}
+          />
+        )}
       </div>
       {fields.length > 1 && <Separator />}
     </>

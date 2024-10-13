@@ -67,7 +67,8 @@ export function AnimatedVerification({
 
   console.log("Verification custom object", verificationObject);
   const { getValues, setValue } = useFormContext();
-
+  // Safely check if the verificationObject contains the field
+  const verificationData = verificationObject[field] || {};
   console.log("form object", getValues());
 
   const handleSelfAttest = (field: string) => {
@@ -80,6 +81,9 @@ export function AnimatedVerification({
     }));
     setValue(`${verificationStep}[${field}].isSelfAttested`, true); //setting updated value in form;
   };
+  console.log("field name", field);
+  console.log("check verification object", verificationObject);
+  // console.log("check error", verificationObject[field].isSelfAttested);
 
   return (
     <div
@@ -122,7 +126,8 @@ export function AnimatedVerification({
             <SelfAttestButton
               className="text-xs sm:text-base"
               onClick={() => handleSelfAttest(field)}
-              isAttested={verificationObject[field].isSelfAttested}
+              // isAttested={verificationObject[field].isSelfAttested}
+              isAttested={verificationData.isSelfAttested} // Safely access isSelfAttested
             />
           </div>
           <div ref={div3Ref} className="z-50 mt-2">
