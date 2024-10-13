@@ -23,6 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { MdDeleteOutline } from "react-icons/md";
 import { Separator } from "@/components/ui/separator";
 import { AnimatedVerification } from "@/components/ui/AnimatedVerification";
+import { useCvFromContext } from "@/context/CvForm.context";
 type Props = {
   fields: Record<"id", string>[];
   index: number;
@@ -30,16 +31,16 @@ type Props = {
 };
 
 const AwardFields = ({ index, removeAwardFields, fields }: Props) => {
-  const { control, setValue, getValues } = useFormContext();
+  const { control, setValue, getValues, watch } = useFormContext();
 
   const [dateOfAchievement, setDateOfAchievement] = useState<Date>();
-  // {
-  //   from: new Date(2023, 0, 20),
-  //   to: addDays(new Date(2024, 0, 20), 20),
-  // }
-  const { Awards } = getValues();
+  const { AwardVerification, setAwardVerification } = useCvFromContext();
 
+  const { Awards } = getValues();
+  // console.log(Awards);
   const { remove } = useFieldArray({ control, name: "Experience" });
+
+  const watchAwardsArray = watch(`Awards[${index}].award_name`);
 
   useEffect(() => {
     if (dateOfAchievement) {
@@ -47,9 +48,33 @@ const AwardFields = ({ index, removeAwardFields, fields }: Props) => {
     }
   }, [dateOfAchievement, setValue, index]);
 
+  useEffect(() => {
+    if (Awards.length > 0) {
+      const verificationObject = Awards.reduce((acc: any, awrd: any) => {
+        acc[awrd.award_name] = {
+          isSelfAttested: false,
+          proof: "",
+          mailStatus: "",
+        };
+
+        return acc;
+      }, {});
+      console.log("Award custom verification object", verificationObject);
+      setAwardVerification(verificationObject);
+      setValue("awardVerifications", verificationObject);
+    }
+  }, [watchAwardsArray, Awards]);
+
+  // const keys = Object.keys(AwardVerification);
+  // const firstKey = AwardVerification[keys[0]];
+
   const deleteHandler = () => {
     remove(index);
     removeAwardFields(index);
+    // deleting award key from the awardverification object;
+    const keys = Object.keys(AwardVerification);
+    delete AwardVerification[keys[index]];
+    setValue("awardVerifications", AwardVerification); //updating store object in the form ;
   };
 
   return (
@@ -156,7 +181,10 @@ const AwardFields = ({ index, removeAwardFields, fields }: Props) => {
       <div className="flex flex-col gap-4 sm:px-2">
         <AnimatedVerification
           firstButtonText={Awards[index].award_name || "Award"}
-          buttonClass=""
+          field={Awards[index].award_name}
+          verificationObject={AwardVerification}
+          setterVerificationObject={setAwardVerification}
+          verificationStep="awardVerifications"
         />
       </div>
       {fields.length > 1 && <Separator />}

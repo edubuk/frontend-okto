@@ -23,6 +23,10 @@ interface AppState {
   setSkillsVerification: React.Dispatch<
     React.SetStateAction<SkillsVerificationType>
   >;
+  AwardVerification: SkillsVerificationType;
+  setAwardVerification: React.Dispatch<
+    React.SetStateAction<SkillsVerificationType>
+  >;
 }
 type PersonalVerificationsType = {
   name: {
@@ -133,6 +137,8 @@ export const CvFomContextProvider = ({
     });
   const [skillsVerification, setSkillsVerification] =
     useState<SkillsVerificationType>({});
+  const [AwardVerification, setAwardVerification] =
+    useState<SkillsVerificationType>({});
   return (
     <AppContext.Provider
       value={{
@@ -150,6 +156,8 @@ export const CvFomContextProvider = ({
         setEducationVerifications,
         skillsVerification,
         setSkillsVerification,
+        AwardVerification,
+        setAwardVerification,
       }}
     >
       {children}
