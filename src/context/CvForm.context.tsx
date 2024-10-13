@@ -19,6 +19,10 @@ interface AppState {
   setEducationVerifications: React.Dispatch<
     React.SetStateAction<EducationVerificationsType>
   >;
+  skillsVerification: SkillsVerificationType;
+  setSkillsVerification: React.Dispatch<
+    React.SetStateAction<SkillsVerificationType>
+  >;
 }
 type PersonalVerificationsType = {
   name: {
@@ -62,6 +66,16 @@ type EducationVerificationsType = {
     mailStatus?: string;
   };
 };
+type VerificationType = {
+  isSelfAttested: boolean;
+  proof: string;
+  mailStatus: string;
+};
+
+type SkillsVerificationType = {
+  [key: string]: VerificationType;
+};
+
 const AppContext = createContext<AppState | undefined>(undefined);
 
 export const CvFomContextProvider = ({
@@ -117,6 +131,8 @@ export const CvFomContextProvider = ({
         mailStatus: "",
       },
     });
+  const [skillsVerification, setSkillsVerification] =
+    useState<SkillsVerificationType>({});
   return (
     <AppContext.Provider
       value={{
@@ -132,6 +148,8 @@ export const CvFomContextProvider = ({
         setPersonalDetailsVerifications,
         educationVerifications,
         setEducationVerifications,
+        skillsVerification,
+        setSkillsVerification,
       }}
     >
       {children}

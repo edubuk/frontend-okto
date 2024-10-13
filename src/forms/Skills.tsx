@@ -29,6 +29,16 @@ const skills: string[] = [
   "Ui/Ux design",
 ];
 
+// type VerificationType = {
+//   isSelfAttested: boolean;
+//   proof: string;
+//   mailStatus: string;
+// };
+
+// type SkillsVerificationType = {
+//   [key: string]: VerificationType;
+// };
+
 const Skills = () => {
   const {
     selectedSkills,
@@ -37,19 +47,17 @@ const Skills = () => {
     setSkillError,
     showSkillError,
     setSkillShowError,
+    skillsVerification,
+    setSkillsVerification,
   } = useCvFromContext();
   const [typerSkill, setTyperSkill] = useState<string>("");
-  // const [skillError, setSkillError] = useState("");
-  // const [showSkillError, setSkillShowError] = useState(false);
   const [isKeyDown, setIsKeyDown] = useState<boolean>(false);
-  const { control, setValue } = useFormContext();
-  console.log(skillError);
-
-  // useEffect(() => {
-  //   if (selectedSkills.length < 5) {
-  //     setSkillShowError(false);
-  //   }
-  // }, [skillError, showSkillError]);
+  const { control, setValue, getValues } = useFormContext();
+  // const [skillsVerification, setSkillsVerification] =
+  //   useState<SkillsVerificationType>({});
+  // console.log(skillError);
+  console.log("skills verification", skillsVerification);
+  console.log("form object", getValues());
 
   const selectSkillsHandler = (skill: string) => {
     if (!selectedSkills.includes(skill)) {
@@ -60,6 +68,25 @@ const Skills = () => {
       }
       setSelectedSkills((prev) => [...prev, skill]);
       setValue("Skills", [...selectedSkills, skill]);
+      const updatedSKillsVerifications = {
+        ...skillsVerification,
+        [skill]: {
+          isSelfAttested: false,
+          proof: "",
+          mailStatus: "",
+        },
+      };
+      // setting skills verification object;
+      setSkillsVerification(updatedSKillsVerifications);
+      // setSkillsVerification((prev) => ({
+      //   ...prev,
+      //   [skill]: {
+      //     isSelfAttested: false,
+      //     proof: "",
+      //     mailStatus: "",
+      //   },
+      // }));
+      setValue("skillsVerifications", updatedSKillsVerifications);
       return;
     }
 
@@ -70,6 +97,12 @@ const Skills = () => {
       (prevSkill) => prevSkill !== skill
     );
     setValue("Skills", filteredSkills);
+    setSkillsVerification((prev) => {
+      let updatedSkillsVerifications = { ...prev };
+      delete updatedSkillsVerifications[skill];
+      setValue("skillsVerifications", updatedSkillsVerifications);
+      return updatedSkillsVerifications;
+    });
   };
 
   const removeSkillHandler = (skill: string) => {
@@ -84,8 +117,16 @@ const Skills = () => {
       setSkillError("");
     }
     setValue("Skills", filteredSkills);
+    // remove from the sKillsVerificationObject;
+    setSkillsVerification((prev) => {
+      let updatedSkillsVerification = { ...prev };
+      delete updatedSkillsVerification[skill];
+      setValue("skillsVerifications", updatedSkillsVerification); //removing skills from the skillsVerifications object on the form object;
+      return updatedSkillsVerification;
+    });
   };
 
+  // handling typing skill / custom skills;
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "ArrowDown") {
       setIsKeyDown(true);
@@ -97,8 +138,20 @@ const Skills = () => {
         setSkillError("You can only add 5 skills");
         return;
       }
+
       setSelectedSkills((prev) => [...prev, typerSkill]);
       setValue("Skills", [...selectedSkills, typerSkill]);
+      const updatedSkillsVerifications = {
+        ...skillsVerification,
+        [typerSkill]: {
+          isSelfAttested: false,
+          proof: "",
+          mailStatus: "",
+        },
+      };
+      // setting skills verification object;
+      setSkillsVerification(updatedSkillsVerifications);
+      setValue("skillsVerifications", updatedSkillsVerifications);
       setIsKeyDown(false);
       setTyperSkill("");
     }
@@ -112,6 +165,17 @@ const Skills = () => {
     }
     setSelectedSkills((prev) => [...prev, typerSkill]);
     setValue("Skills", [...selectedSkills, typerSkill]);
+    const updatedSkillsVerifications = {
+      ...skillsVerification,
+      [typerSkill]: {
+        isSelfAttested: false,
+        proof: "",
+        mailStatus: "",
+      },
+    };
+    // setting skills verification object;
+    setSkillsVerification(updatedSkillsVerifications);
+    setValue("skillsVerifications", updatedSkillsVerifications);
     setTyperSkill("");
   };
 
@@ -235,7 +299,10 @@ const Skills = () => {
           <AnimatedVerification
             key={i}
             firstButtonText={skill}
-            buttonClass=""
+            field={skill}
+            verificationObject={skillsVerification}
+            setterVerificationObject={setSkillsVerification}
+            verificationStep="skillsVerifications"
           />
         ))}
       </div>
