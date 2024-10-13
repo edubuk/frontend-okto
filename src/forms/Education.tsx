@@ -8,6 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useCvFromContext } from "@/context/CvForm.context";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 
@@ -29,10 +30,9 @@ const Education = ({
 }: Props) => {
   const { control } = useFormContext();
   const [isAnswered, setIsAnswered] = useState<boolean>(false);
-  // const [selectedQualification, setSelectedQualification] =
-  //   useState<string>("");
+  const { educationVerifications, setEducationVerifications } =
+    useCvFromContext();
 
-  // console.log(selectedQualification);
   return (
     <>
       {!isAnswered ? (
@@ -107,14 +107,15 @@ const Education = ({
 
           {/* Animated skills section */}
           <div className="flex flex-col gap-4  sm:px-10">
-            <AnimatedVerification firstButtonText={"Class 10"} />
+            <AnimatedVerification
+              firstButtonText={"Class 10"}
+              field="class10"
+              verificationStep={"educationVerifications"}
+              verificationObject={educationVerifications}
+              setterVerificationObject={setEducationVerifications}
+            />
           </div>
 
-          {/* <div className="flex flex-col  xl:flex-row px-2 xl:px-10 xl:gap-5 gap-3">
-            <SelfAttestButton className="mt-0" />
-            <UploadProofButton className="mt-0" />
-            <IssuerButton className="mt-0" />
-          </div> */}
           {/* class 12th */}
           {(selectedQualification === "class12" ||
             selectedQualification === "undergraduate" ||
@@ -172,7 +173,13 @@ const Education = ({
               </div>
               {/* Animated skills section */}
               <div className="flex flex-col gap-4 sm:px-10">
-                <AnimatedVerification firstButtonText={"Class 12"} />
+                <AnimatedVerification
+                  firstButtonText={"Class 12"}
+                  field="class12"
+                  verificationStep={"educationVerifications"}
+                  verificationObject={educationVerifications}
+                  setterVerificationObject={setEducationVerifications}
+                />
               </div>
             </>
           )}
@@ -230,13 +237,23 @@ const Education = ({
               <div className="flex flex-col gap-4 sm:px-10">
                 {/* for tablets and desktops */}
                 <div className="hidden sm:block">
-                  <AnimatedVerification firstButtonText={"Undergraduation"} />
+                  <AnimatedVerification
+                    firstButtonText={"Undergraduation"}
+                    field="undergraduation"
+                    verificationStep={"educationVerifications"}
+                    verificationObject={educationVerifications}
+                    setterVerificationObject={setEducationVerifications}
+                  />
                 </div>
                 {/* for mobile  */}
                 <div className="sm:hidden">
                   <AnimatedVerification
                     buttonClass="py-1 px-4 font-semibold"
                     firstButtonText={"UG"}
+                    verificationStep={"educationVerifications"}
+                    field="undergraduation"
+                    verificationObject={educationVerifications}
+                    setterVerificationObject={setEducationVerifications}
                   />
                 </div>
               </div>
@@ -295,59 +312,28 @@ const Education = ({
               <div className="flex flex-col gap-4 sm:px-10">
                 {/* for tablets and desktops */}
                 <div className="hidden sm:block">
-                  <AnimatedVerification firstButtonText={"Postgraduation"} />
+                  <AnimatedVerification
+                    firstButtonText={"Postgraduation"}
+                    field="postgraduation"
+                    verificationStep={"educationVerifications"}
+                    verificationObject={educationVerifications}
+                    setterVerificationObject={setEducationVerifications}
+                  />
                 </div>
                 {/* for mobile  */}
                 <div className="sm:hidden">
                   <AnimatedVerification
                     buttonClass="py-1 px-4 font-semibold"
                     firstButtonText={"PG"}
+                    field="postgraduation"
+                    verificationStep={"educationVerifications"}
+                    verificationObject={educationVerifications}
+                    setterVerificationObject={setEducationVerifications}
                   />
                 </div>
               </div>
             </>
           )}
-          {/* <div className="flex px-10 gap-5">
-            <FormField
-              name="postGraduateCollegeName"
-              control={control}
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel>Postgraduation</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter college name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="postGraduateDegreeName"
-              control={control}
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel>Degree</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter degree" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="postGraduateGPA"
-              control={control}
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel>CGPA</FormLabel>
-                  <FormControl>
-                    <Input type="number" placeholder="Enter CGPA" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div> */}
         </>
       )}
     </>

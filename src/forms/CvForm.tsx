@@ -268,6 +268,28 @@ const formSchema = z.object({
       isSelfAttested: z.boolean(),
     }),
   }),
+  educationVerifications: z.object({
+    class10: z.object({
+      isSelfAttested: z.boolean(),
+      proof: z.string(),
+      mailStatus: z.string(),
+    }),
+    class12: z.object({
+      isSelfAttested: z.boolean(),
+      proof: z.string(),
+      mailStatus: z.string(),
+    }),
+    undergraduation: z.object({
+      isSelfAttested: z.boolean(),
+      proof: z.string(),
+      mailStatus: z.string(),
+    }),
+    postgraduation: z.object({
+      isSelfAttested: z.boolean(),
+      proof: z.string(),
+      mailStatus: z.string(),
+    }),
+  }),
 });
 // .refine((data) => data.imageFile || data.imageUrl, {
 //   message: "Either imageFile or imageUrl is required",

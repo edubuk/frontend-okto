@@ -15,6 +15,10 @@ interface AppState {
   setPersonalDetailsVerifications: React.Dispatch<
     React.SetStateAction<PersonalVerificationsType>
   >;
+  educationVerifications: EducationVerificationsType;
+  setEducationVerifications: React.Dispatch<
+    React.SetStateAction<EducationVerificationsType>
+  >;
 }
 type PersonalVerificationsType = {
   name: {
@@ -34,6 +38,28 @@ type PersonalVerificationsType = {
   };
   phoneNumber: {
     isSelfAttested: boolean;
+  };
+};
+type EducationVerificationsType = {
+  class10: {
+    isSelfAttested?: boolean;
+    proof?: string;
+    mailStatus?: string;
+  };
+  class12: {
+    isSelfAttested?: boolean;
+    proof?: string;
+    mailStatus?: string;
+  };
+  undergraduation: {
+    isSelfAttested?: boolean;
+    proof?: string;
+    mailStatus?: string;
+  };
+  postgraduation: {
+    isSelfAttested?: boolean;
+    proof?: string;
+    mailStatus?: string;
   };
 };
 const AppContext = createContext<AppState | undefined>(undefined);
@@ -68,6 +94,29 @@ export const CvFomContextProvider = ({
         isSelfAttested: false,
       },
     });
+  const [educationVerifications, setEducationVerifications] =
+    useState<EducationVerificationsType>({
+      class10: {
+        isSelfAttested: false,
+        proof: "",
+        mailStatus: "",
+      },
+      class12: {
+        isSelfAttested: false,
+        proof: "",
+        mailStatus: "",
+      },
+      undergraduation: {
+        isSelfAttested: false,
+        proof: "",
+        mailStatus: "",
+      },
+      postgraduation: {
+        isSelfAttested: false,
+        proof: "",
+        mailStatus: "",
+      },
+    });
   return (
     <AppContext.Provider
       value={{
@@ -81,6 +130,8 @@ export const CvFomContextProvider = ({
         setSkillShowError,
         personalDetailsVerifications,
         setPersonalDetailsVerifications,
+        educationVerifications,
+        setEducationVerifications,
       }}
     >
       {children}

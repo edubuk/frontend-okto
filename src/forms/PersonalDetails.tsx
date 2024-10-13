@@ -79,7 +79,7 @@ const PersonalDetails = ({
   // phoneNumber
 
   // const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
-  console.log(getValues());
+  // console.log(getValues());
   const uploadImageToDB = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     setImageError("");
@@ -122,7 +122,7 @@ const PersonalDetails = ({
     setValue(`personalDetailsVerification.${field}.isSelfAttested`, true);
   };
 
-  console.log(personalDetailsVerifications);
+  // console.log(personalDetailsVerifications);
   return (
     <div className="flex flex-col gap-2 py-2">
       {/* name and email */}
