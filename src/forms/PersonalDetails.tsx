@@ -60,7 +60,7 @@ const PersonalDetails = ({
   isImageUploading,
   setIsImageUploading,
 }: Props) => {
-  const { control, setValue, getValues } = useFormContext();
+  const { control, setValue } = useFormContext();
   const storedData = localStorage.getItem("step1CvData");
   const localDataImage = storedData ? JSON.parse(storedData) : null;
   const [imagePreview, setImagePreview] = useState<string>(

@@ -35,6 +35,10 @@ interface AppState {
   setProjectVerification: React.Dispatch<
     React.SetStateAction<SkillsVerificationType>
   >;
+  profileSummaryVerification: ProfileSummaryVerificationType;
+  setProfileSummaryVerification: React.Dispatch<
+    React.SetStateAction<ProfileSummaryVerificationType>
+  >;
 }
 type PersonalVerificationsType = {
   name: {
@@ -53,6 +57,11 @@ type PersonalVerificationsType = {
     isSelfAttested: boolean;
   };
   phoneNumber: {
+    isSelfAttested: boolean;
+  };
+};
+type ProfileSummaryVerificationType = {
+  profile_summary: {
     isSelfAttested: boolean;
   };
 };
@@ -151,6 +160,12 @@ export const CvFomContextProvider = ({
     useState<SkillsVerificationType>({});
   const [projectVerification, setProjectVerification] =
     useState<SkillsVerificationType>({});
+  const [profileSummaryVerification, setProfileSummaryVerification] =
+    useState<ProfileSummaryVerificationType>({
+      profile_summary: {
+        isSelfAttested: false,
+      },
+    });
   return (
     <AppContext.Provider
       value={{
@@ -174,6 +189,8 @@ export const CvFomContextProvider = ({
         setCourseVerification,
         projectVerification,
         setProjectVerification,
+        profileSummaryVerification,
+        setProfileSummaryVerification,
       }}
     >
       {children}

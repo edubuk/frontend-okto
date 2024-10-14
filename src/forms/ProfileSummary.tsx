@@ -7,11 +7,28 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
+import { useCvFromContext } from "@/context/CvForm.context";
 import { useFormContext } from "react-hook-form";
-
+// type ProfileSummaryVerificationType = {
+//   profile_summary: {
+//     isSelfAttested: boolean;
+//   };
+// };
 const ProfileSummary = () => {
-  const { control } = useFormContext();
+  const { control, setValue, getValues } = useFormContext();
+  const { profileSummaryVerification, setProfileSummaryVerification } =
+    useCvFromContext();
+  console.log(profileSummaryVerification);
+  const handleSelfAttest = () => {
+    setProfileSummaryVerification({
+      profile_summary: {
+        isSelfAttested: true,
+      },
+    });
+    setValue(`profileSummaryVerification.profile_summary.isSelfAttested`, true);
+  };
 
+  console.log("form object", getValues());
   return (
     <div className="flex flex-col gap-5 px-6 sm:px-10 mt-5">
       <div>
@@ -35,7 +52,11 @@ const ProfileSummary = () => {
           </FormItem>
         )}
       />
-      <SelfAttestButton className="lg:ml-5" />
+      <SelfAttestButton
+        className="lg:ml-5"
+        onClick={handleSelfAttest}
+        isAttested={profileSummaryVerification.profile_summary.isSelfAttested}
+      />
     </div>
   );
 };
