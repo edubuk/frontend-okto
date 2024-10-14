@@ -24,6 +24,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { MdDeleteOutline } from "react-icons/md";
 import { Separator } from "@/components/ui/separator";
 import { AnimatedVerification } from "@/components/ui/AnimatedVerification";
+import { useCvFromContext } from "@/context/CvForm.context";
 type Props = {
   fields: Record<"id", string>[];
   index: number;
@@ -31,15 +32,32 @@ type Props = {
 };
 
 const CourseFields = ({ index, removeCourseFields, fields }: Props) => {
-  const { control, setValue, getValues } = useFormContext();
+  const { control, setValue, getValues, watch } = useFormContext();
   const [date, setDate] = useState<DateRange | undefined>();
-  // {
-  //   from: new Date(2023, 0, 20),
-  //   to: addDays(new Date(2024, 0, 20), 20),
-  // }
+  const { courseVerification, setCourseVerification } = useCvFromContext();
+
+  const watchCoursesArray = watch(`Courses[${index}].course_name`);
 
   const { remove } = useFieldArray({ control, name: "Experience" });
   const { Courses } = getValues();
+  // console.log(Courses);
+
+  useEffect(() => {
+    if (Courses.length > 0) {
+      const verificationObject = Courses.reduce((acc: any, awrd: any) => {
+        acc[awrd.course_name] = {
+          isSelfAttested: false,
+          proof: "",
+          mailStatus: "",
+        };
+
+        return acc;
+      }, {});
+      console.log("Courses custom verification object", verificationObject);
+      setCourseVerification(verificationObject);
+      setValue("courseVerifications", verificationObject);
+    }
+  }, [watchCoursesArray, Courses]);
 
   useEffect(() => {
     if (date?.from && date?.to) {
@@ -53,6 +71,10 @@ const CourseFields = ({ index, removeCourseFields, fields }: Props) => {
   const deleteHandler = () => {
     remove(index);
     removeCourseFields(index);
+    // deleting award key from the awardverification object;
+    const keys = Object.keys(courseVerification);
+    delete courseVerification[keys[index]];
+    setValue("awardVerifications", courseVerification); //updating store object in the form ;
   };
 
   return (
@@ -174,7 +196,10 @@ const CourseFields = ({ index, removeCourseFields, fields }: Props) => {
       <div className="flex flex-col gap-4 sm:px-2">
         <AnimatedVerification
           firstButtonText={Courses[index].course_name || "Course"}
-          buttonClass=""
+          field={Courses[index].course_name}
+          verificationObject={courseVerification}
+          setterVerificationObject={setCourseVerification}
+          verificationStep="courseVerifications"
         />
       </div>
       {fields.length > 1 && <Separator />}

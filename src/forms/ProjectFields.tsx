@@ -24,6 +24,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { MdDeleteOutline } from "react-icons/md";
 import { Separator } from "@/components/ui/separator";
 import { AnimatedVerification } from "@/components/ui/AnimatedVerification";
+import { useCvFromContext } from "@/context/CvForm.context";
 type Props = {
   fields: Record<"id", string>[];
   index: number;
@@ -31,14 +32,13 @@ type Props = {
 };
 
 const ProjectFields = ({ index, removeProjectFields, fields }: Props) => {
-  const { control, setValue, getValues } = useFormContext();
+  const { control, setValue, getValues, watch } = useFormContext();
   const [date, setDate] = useState<DateRange | undefined>();
-  // {
-  //   from: new Date(2023, 0, 20),
-  //   to: addDays(new Date(2024, 0, 20), 20),
-  // }
+  const { projectVerification, setProjectVerification } = useCvFromContext();
   const { Projects } = getValues();
 
+  const watchProjectArray = watch(`Projects[${index}].project_name`);
+  // console.log(Projects);
   const { remove } = useFieldArray({ control, name: "Experience" });
 
   useEffect(() => {
@@ -50,9 +50,30 @@ const ProjectFields = ({ index, removeProjectFields, fields }: Props) => {
     }
   }, [date, setValue, index]);
 
+  useEffect(() => {
+    if (Projects.length > 0) {
+      const verificationObject = Projects.reduce((acc: any, awrd: any) => {
+        acc[awrd.project_name] = {
+          isSelfAttested: false,
+          proof: "",
+          mailStatus: "",
+        };
+
+        return acc;
+      }, {});
+      console.log("Project custom verification object", verificationObject);
+      setProjectVerification(verificationObject);
+      setValue("projectsVerifications", verificationObject);
+    }
+  }, [watchProjectArray, Projects]);
+
   const deleteHandler = () => {
     remove(index);
     removeProjectFields(index);
+    // deleting award key from the projectverification object;
+    const keys = Object.keys(projectVerification);
+    delete projectVerification[keys[index]];
+    setValue("awardVerifications", projectVerification); //updating store object in the form ;
   };
 
   return (
@@ -170,7 +191,10 @@ const ProjectFields = ({ index, removeProjectFields, fields }: Props) => {
       <div className="flex flex-col gap-4 sm:px-2">
         <AnimatedVerification
           firstButtonText={Projects[index].project_name || "Project"}
-          buttonClass=""
+          field={Projects[index].project_name}
+          verificationObject={projectVerification}
+          setterVerificationObject={setProjectVerification}
+          verificationStep="projectsVerifications"
         />
       </div>
       {fields.length > 1 && <Separator />}

@@ -65,11 +65,11 @@ export function AnimatedVerification({
   const div6Ref = useRef<HTMLDivElement>(null);
   const div7Ref = useRef<HTMLDivElement>(null);
 
-  console.log("Verification custom object", verificationObject);
-  const { getValues, setValue } = useFormContext();
+  // console.log("Verification custom object", verificationObject);
+  const { setValue } = useFormContext();
   // Safely check if the verificationObject contains the field
   const verificationData = verificationObject[field] || {};
-  console.log("form object", getValues());
+  // console.log("form object", getValues());
 
   const handleSelfAttest = (field: string) => {
     setterVerificationObject((prev: any) => ({
@@ -81,8 +81,8 @@ export function AnimatedVerification({
     }));
     setValue(`${verificationStep}[${field}].isSelfAttested`, true); //setting updated value in form;
   };
-  console.log("field name", field);
-  console.log("check verification object", verificationObject);
+  // console.log("field name", field);
+  // console.log("check verification object", verificationObject);
   // console.log("check error", verificationObject[field].isSelfAttested);
 
   return (
