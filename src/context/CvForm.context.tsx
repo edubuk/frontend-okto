@@ -89,7 +89,7 @@ type EducationVerificationsType = {
 };
 type VerificationType = {
   isSelfAttested: boolean;
-  proof: [];
+  proof: any[];
   mailStatus: string;
 };
 

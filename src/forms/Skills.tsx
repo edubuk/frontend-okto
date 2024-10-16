@@ -72,7 +72,7 @@ const Skills = () => {
         ...skillsVerification,
         [skill]: {
           isSelfAttested: false,
-          proof: "",
+          proof: [],
           mailStatus: "",
         },
       };
@@ -145,7 +145,7 @@ const Skills = () => {
         ...skillsVerification,
         [typerSkill]: {
           isSelfAttested: false,
-          proof: "",
+          proof: [],
           mailStatus: "",
         },
       };
@@ -169,7 +169,7 @@ const Skills = () => {
       ...skillsVerification,
       [typerSkill]: {
         isSelfAttested: false,
-        proof: "",
+        proof: [],
         mailStatus: "",
       },
     };
