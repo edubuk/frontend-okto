@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef } from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { AnimatedBeam } from "./animated-beam";
@@ -7,6 +7,15 @@ import UploadProofButton from "../Buttons/UploadProofButton";
 import IssuerButton from "../Buttons/IssuerButton";
 import { twMerge } from "tailwind-merge";
 import { useFormContext } from "react-hook-form";
+import { Dialog, DialogContent, DialogTrigger } from "./dialog";
+import { FileUpload } from "./file-upload";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { app } from "@/firebase";
 
 const Circle = forwardRef<
   HTMLDivElement,
@@ -50,7 +59,7 @@ export function AnimatedVerification({
   verificationObject: {
     [key: string]: {
       isSelfAttested?: boolean;
-      proof?: string;
+      proof?: string[];
       mailStatus?: string;
     };
   };
@@ -65,11 +74,20 @@ export function AnimatedVerification({
   const div6Ref = useRef<HTMLDivElement>(null);
   const div7Ref = useRef<HTMLDivElement>(null);
 
-  // console.log("Verification custom object", verificationObject);
-  const { setValue } = useFormContext();
+  // states;
+  const [files, setFiles] = useState<File[]>([]);
+
+  const { setValue, getValues } = useFormContext();
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   // Safely check if the verificationObject contains the field
   const verificationData = verificationObject[field] || {};
+  console.log(files);
   // console.log("form object", getValues());
+  const formObject = getValues();
+  useEffect(() => {
+    console.log("form object ", formObject);
+  }, [formObject]);
 
   const handleSelfAttest = (field: string) => {
     setterVerificationObject((prev: any) => ({
@@ -81,9 +99,84 @@ export function AnimatedVerification({
     }));
     setValue(`${verificationStep}[${field}].isSelfAttested`, true); //setting updated value in form;
   };
-  // console.log("field name", field);
-  // console.log("check verification object", verificationObject);
-  // console.log("check error", verificationObject[field].isSelfAttested);
+
+  const uploadImageToDB = async () => {
+    if (files.length === 0) return;
+
+    const proofArray: string[] = [];
+    const storage = getStorage(app);
+
+    const uploadPromises = files.map((file) => {
+      setIsUploading(true);
+      const fileName = new Date().getTime() + file.name;
+      const storageRef = ref(storage, fileName);
+
+      return new Promise<void>((resolve, reject) => {
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log(`Upload is ${progress}% done`);
+          },
+          (error) => {
+            console.log(`Error while uploading to Firebase: ${error}`);
+            reject(error);
+          },
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+              proofArray.push(downloadUrl); // Add download URL to the array
+              resolve();
+            });
+          }
+        );
+      });
+    });
+
+    try {
+      // Wait for all uploads to complete
+      await Promise.all(uploadPromises);
+      console.log("Proof Array:", proofArray); // Ensure proofArray is correct
+
+      // for updating ui to proof uploaded updating verifications object using its setter;
+      setterVerificationObject((prev: any) => ({
+        ...prev,
+        [field]: {
+          ...prev[field],
+          proof: proofArray,
+        },
+      }));
+
+      setIsUploading(false);
+      setDialogOpen(false); //closing dialog after upload;
+      // Ensure setValue is called after all uploads are complete
+      setValue(`${verificationStep}[${field}].proof`, proofArray, {
+        shouldValidate: true, // Optionally trigger validation
+        shouldDirty: true, // Optionally mark the field as dirty
+      });
+
+      console.log("Form after setting value:", getValues()); // Debug to see the updated form values
+    } catch (error) {
+      console.error("Error uploading files:", error);
+      setIsUploading(false);
+    }
+  };
+
+  // uploadProof button onClick handler;
+  const uploadProofOnclickHandler = () => {
+    console.log("onclick called for upload button");
+    uploadImageToDB().then(() => {
+      setFiles([]);
+    });
+  };
+
+  // handle files and setting files;
+  const handleUploadProof = (files: File[]) => {
+    console.log(files);
+    setFiles((prev) => [...prev, ...files]);
+  };
 
   return (
     <div
@@ -131,10 +224,23 @@ export function AnimatedVerification({
             />
           </div>
           <div ref={div3Ref} className="z-50 mt-2">
-            <UploadProofButton
-              col
-              className="-ml-7 text-xs sm:text-base sm:ml-0"
-            />
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+              <DialogTrigger>
+                {/* triggering dialogue */}
+                <UploadProofButton
+                  col
+                  className="-ml-7 text-xs sm:text-base sm:ml-0"
+                  isUploaded={(verificationData.proof || []).length > 0}
+                />
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-2xl">
+                <FileUpload
+                  onChange={handleUploadProof}
+                  uploadButtonOnClick={uploadProofOnclickHandler}
+                  isLoading={isUploading}
+                />
+              </DialogContent>
+            </Dialog>
           </div>
           <div ref={div4Ref} className="z-50">
             <IssuerButton

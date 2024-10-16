@@ -68,28 +68,28 @@ type ProfileSummaryVerificationType = {
 type EducationVerificationsType = {
   class10: {
     isSelfAttested?: boolean;
-    proof?: string;
+    proof?: [];
     mailStatus?: string;
   };
   class12: {
     isSelfAttested?: boolean;
-    proof?: string;
+    proof?: [];
     mailStatus?: string;
   };
   undergraduation: {
     isSelfAttested?: boolean;
-    proof?: string;
+    proof?: [];
     mailStatus?: string;
   };
   postgraduation: {
     isSelfAttested?: boolean;
-    proof?: string;
+    proof?: [];
     mailStatus?: string;
   };
 };
 type VerificationType = {
   isSelfAttested: boolean;
-  proof: string;
+  proof: [];
   mailStatus: string;
 };
 
@@ -133,22 +133,22 @@ export const CvFomContextProvider = ({
     useState<EducationVerificationsType>({
       class10: {
         isSelfAttested: false,
-        proof: "",
+        proof: [],
         mailStatus: "",
       },
       class12: {
         isSelfAttested: false,
-        proof: "",
+        proof: [],
         mailStatus: "",
       },
       undergraduation: {
         isSelfAttested: false,
-        proof: "",
+        proof: [],
         mailStatus: "",
       },
       postgraduation: {
         isSelfAttested: false,
-        proof: "",
+        proof: [],
         mailStatus: "",
       },
     });
