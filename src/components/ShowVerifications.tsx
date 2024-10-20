@@ -9,9 +9,21 @@ const ShowVerifications = (
     onlySelfAttest?: boolean;
     textClass?: string;
     badge?: boolean;
+    fillCheck?: boolean;
+    linkClass?: string;
+    fillcheckClass?: string;
   }
 ) => {
-  const { className, isAttested, onlySelfAttest, textClass, badge } = props;
+  const {
+    className,
+    isAttested,
+    onlySelfAttest,
+    textClass,
+    badge,
+    fillCheck,
+    linkClass,
+    fillcheckClass,
+  } = props;
   return (
     <div className={twMerge("flex items-center gap-1", className)}>
       {badge && onlySelfAttest ? (
@@ -21,14 +33,28 @@ const ShowVerifications = (
         </Badge>
       ) : (
         <>
-          <img src="/verified.svg" alt="verified logo" className="size-5 " />
+          {fillCheck ? (
+            <TbRosetteDiscountCheckFilled
+              className={twMerge(
+                "size-4 mr-1 flex-none self-start",
+                fillcheckClass
+              )}
+            />
+          ) : (
+            <img src="/verified.svg" alt="verified logo" className="size-5 " />
+          )}
           <p className={twMerge("text-[#006666] text-md", textClass)}>
-            {isAttested && <span>Self attested</span>}
+            {isAttested && <span>Self attested{!onlySelfAttest && ","}</span>}
             {!onlySelfAttest && (
               <>
-                <span>,verified by issuer </span>{" "}
-                <span className="text-blue-600 text-md cursor-pointer inline-flex items-center gap-1 ml-1">
-                  click here
+                <span>verified by issuer </span>{" "}
+                <span
+                  className={twMerge(
+                    "text-blue-600 text-md cursor-pointer inline-flex items-center gap-1 ml-1 hover:underline",
+                    linkClass
+                  )}
+                >
+                  click here to view
                   <ExternalLink className="inline-flex size-4 mt-1" />
                 </span>
               </>
