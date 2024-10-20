@@ -8,6 +8,7 @@ import { GraduationCap, Mail, MapPinned, Phone } from "lucide-react";
 import { MdSchool } from "react-icons/md";
 import { format } from "date-fns";
 import HyperText from "@/components/ui/AnimateHypertext";
+import ShowVerifications from "@/components/ShowVerifications";
 const CvOutputPage = () => {
   const { id } = useParams();
 
@@ -49,7 +50,8 @@ const CvOutputPage = () => {
           />
         </div>
       </div>
-      <div className="mt-2 max-w-6xl mx-auto w-full border  border-l-0 shadow-lg der-black  rounded-md">
+      <div className="mt-2 max-w-6xl mx-auto w-full border  border-l-0 shadow-lg   rounded-md">
+        {/* main */}
         <div className="flex gap-3 md:gap-7">
           {/* left sidebar */}
           <div className="w-72  h-auto  bg-[#006666] rounded-ss-2xl px-5 text-white py-2 space-y-20 md:space-y-10">
@@ -180,9 +182,21 @@ const CvOutputPage = () => {
           {/* right bar */}
           <div className="flex-1">
             <div className="mt-5 px-2 flex flex-col gap-3">
-              <h1 className="text-4xl text-[#333B4D] tracking-wide capitalize">
-                {cvData.personalDetails.name}
-              </h1>
+              <div className="flex items-center">
+                <h1 className="text-4xl text-[#333B4D] tracking-wide capitalize w-[600px] border line-clamp-1 ">
+                  {cvData.personalDetails.name} Lorem ipsum dolor sit amet
+                  consectetur adipisicing elit. Aspernatur aperiam eum sequi, ut
+                  labore nostrum deleniti suscipit magni veritatis fugiat?
+                </h1>
+
+                <ShowVerifications
+                  isAttested={
+                    cvData.personalDetailsVerification.name.isSelfAttested
+                  }
+                  onlySelfAttest
+                  badge
+                />
+              </div>
               {/* personal details */}
               <div className="bg-[#006666] rounded-md text-white px-5 py-1 flex md:max-w-3xl w-full gap-2">
                 {/* email and location */}
@@ -199,6 +213,16 @@ const CvOutputPage = () => {
                       <h1 className="text-sm md:text-base tracking-wider font-normal">
                         {cvData.personalDetails.email}
                       </h1>
+                      <ShowVerifications
+                        isAttested={
+                          cvData.personalDetailsVerification.email
+                            .isSelfAttested
+                        }
+                        className="self-start"
+                        onlySelfAttest
+                        textClass="text-white"
+                        badge
+                      />
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="self-start">
@@ -208,8 +232,19 @@ const CvOutputPage = () => {
                         />
                       </div>
                       <h1 className="text-sm md:text-base tracking-wider font-normal">
-                        {cvData.personalDetails.location}
+                        {cvData.personalDetails.location} Lorem ipsum, dolor sit
+                        amet consectetur adipisicing elit. Qui, deleniti.
                       </h1>
+                      <ShowVerifications
+                        isAttested={
+                          cvData.personalDetailsVerification.location
+                            .isSelfAttested
+                        }
+                        className="self-start mt-2"
+                        onlySelfAttest
+                        textClass="text-white"
+                        badge
+                      />
                     </div>
                   </div>
                 </div>
@@ -227,6 +262,16 @@ const CvOutputPage = () => {
                       <h1 className="text-sm md:text-base tracking-wider font-normal">
                         {cvData.personalDetails.phoneNumber}
                       </h1>
+                      <ShowVerifications
+                        isAttested={
+                          cvData.personalDetailsVerification.phoneNumber
+                            .isSelfAttested
+                        }
+                        // className="self-start mt-2"
+                        onlySelfAttest
+                        textClass="text-white"
+                        badge
+                      />
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="self-start">
@@ -245,6 +290,16 @@ const CvOutputPage = () => {
                       <h1 className="text-sm md:text-base tracking-wider font-normal">
                         {cvData.personalDetails.profession}
                       </h1>
+                      <ShowVerifications
+                        isAttested={
+                          cvData.personalDetailsVerification.phoneNumber
+                            .isSelfAttested
+                        }
+                        // className="self-start mt-2"
+                        onlySelfAttest
+                        textClass="text-white"
+                        badge
+                      />
                     </div>
                   </div>
                 </div>
