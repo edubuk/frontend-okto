@@ -71,6 +71,7 @@ const CvOutputPage = () => {
                 onlySelfAttest
                 textClass="text-white"
                 fillCheck
+                fillcheckClass="mt-1"
               />
             </div>
 

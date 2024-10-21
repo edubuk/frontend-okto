@@ -60,7 +60,7 @@ const PersonalDetails = ({
   isImageUploading,
   setIsImageUploading,
 }: Props) => {
-  const { control, setValue } = useFormContext();
+  const { control, setValue, getValues } = useFormContext();
   const storedData = localStorage.getItem("step1CvData");
   const localDataImage = storedData ? JSON.parse(storedData) : null;
   const [imagePreview, setImagePreview] = useState<string>(
@@ -79,7 +79,7 @@ const PersonalDetails = ({
   // phoneNumber
 
   // const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
-  // console.log(getValues());
+  console.log(getValues());
   const uploadImageToDB = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     setImageError("");
@@ -120,6 +120,7 @@ const PersonalDetails = ({
       },
     }));
     setValue(`personalDetailsVerification.${field}.isSelfAttested`, true);
+    setValue(`personalVerifications.${field}.isSelfAttested`, true);
   };
 
   // console.log(personalDetailsVerifications);
@@ -141,11 +142,22 @@ const PersonalDetails = ({
               </FormItem>
             )}
           />
-          <SelfAttestButton
-            onClick={() => {
-              handleSelfAttest("name");
-            }}
-            isAttested={personalDetailsVerifications.name.isSelfAttested}
+          {/* self attest button */}
+          <FormField
+            control={control}
+            name="personalVerifications.name.isSelfAttested"
+            render={() => (
+              <FormItem className="flex-1">
+                <SelfAttestButton
+                  onClick={() => {
+                    handleSelfAttest("name");
+                  }}
+                  isAttested={personalDetailsVerifications.name.isSelfAttested}
+                />
+                <FormMessage />
+                {/* {fieldState && <p>fieldState.error</p>} */}
+              </FormItem>
+            )}
           />
         </div>
         <div className="flex-1">
@@ -167,11 +179,21 @@ const PersonalDetails = ({
               </FormItem>
             )}
           />
-          <SelfAttestButton
-            onClick={() => {
-              handleSelfAttest("email");
-            }}
-            isAttested={personalDetailsVerifications.email.isSelfAttested}
+          {/* self attest button */}
+          <FormField
+            control={control}
+            name="personalVerifications.email.isSelfAttested"
+            render={() => (
+              <FormItem className="flex-1">
+                <SelfAttestButton
+                  onClick={() => {
+                    handleSelfAttest("email");
+                  }}
+                  isAttested={personalDetailsVerifications.email.isSelfAttested}
+                />
+                <FormMessage />
+              </FormItem>
+            )}
           />
         </div>
       </div>
@@ -191,11 +213,23 @@ const PersonalDetails = ({
               </FormItem>
             )}
           />
-          <SelfAttestButton
-            onClick={() => {
-              handleSelfAttest("location");
-            }}
-            isAttested={personalDetailsVerifications.location.isSelfAttested}
+          {/* self attest button */}
+          <FormField
+            control={control}
+            name="personalVerifications.location.isSelfAttested"
+            render={() => (
+              <FormItem className="flex-1">
+                <SelfAttestButton
+                  onClick={() => {
+                    handleSelfAttest("location");
+                  }}
+                  isAttested={
+                    personalDetailsVerifications.location.isSelfAttested
+                  }
+                />
+                <FormMessage />
+              </FormItem>
+            )}
           />
         </div>
         <div className="flex-1">
@@ -216,11 +250,23 @@ const PersonalDetails = ({
               </FormItem>
             )}
           />
-          <SelfAttestButton
-            onClick={() => {
-              handleSelfAttest("phoneNumber");
-            }}
-            isAttested={personalDetailsVerifications.phoneNumber.isSelfAttested}
+          {/* self attest button */}
+          <FormField
+            control={control}
+            name="personalVerifications.phoneNumber.isSelfAttested"
+            render={() => (
+              <FormItem className="flex-1">
+                <SelfAttestButton
+                  onClick={() => {
+                    handleSelfAttest("phoneNumber");
+                  }}
+                  isAttested={
+                    personalDetailsVerifications.phoneNumber.isSelfAttested
+                  }
+                />
+                <FormMessage />
+              </FormItem>
+            )}
           />
         </div>
       </div>
@@ -294,11 +340,23 @@ const PersonalDetails = ({
               </FormItem>
             )}
           />
-          <SelfAttestButton
-            onClick={() => {
-              handleSelfAttest("profession");
-            }}
-            isAttested={personalDetailsVerifications.profession.isSelfAttested}
+          {/* self attest button */}
+          <FormField
+            control={control}
+            name="personalVerifications.profession.isSelfAttested"
+            render={() => (
+              <FormItem className="flex-1">
+                <SelfAttestButton
+                  onClick={() => {
+                    handleSelfAttest("profession");
+                  }}
+                  isAttested={
+                    personalDetailsVerifications.profession.isSelfAttested
+                  }
+                />
+                <FormMessage />
+              </FormItem>
+            )}
           />
         </div>
 
@@ -340,13 +398,23 @@ const PersonalDetails = ({
                     alt="previewImage"
                     className="h-48 w-full object-cover rounded-lg shadow-lg"
                   />
-                  <SelfAttestButton
-                    onClick={() => {
-                      handleSelfAttest("imageUrl");
-                    }}
-                    isAttested={
-                      personalDetailsVerifications.imageUrl.isSelfAttested
-                    }
+                  {/* self attest button */}
+                  <FormField
+                    control={control}
+                    name="personalVerifications.imageUrl.isSelfAttested"
+                    render={() => (
+                      <FormItem className="flex-1">
+                        <SelfAttestButton
+                          onClick={() => {
+                            handleSelfAttest("imageUrl");
+                          }}
+                          isAttested={
+                            personalDetailsVerifications.imageUrl.isSelfAttested
+                          }
+                        />
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
                 </>
               )}

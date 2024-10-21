@@ -248,26 +248,81 @@ const formSchema = z.object({
   // verifications;
 
   // 1) personal Details;
-  personalDetailsVerifications: z.object({
-    name: z.object({
-      isSelfAttested: z.boolean(),
-    }),
-    email: z.object({
-      isSelfAttested: z.boolean(),
-    }),
-    location: z.object({
-      isSelfAttested: z.boolean(),
-    }),
-    profession: z.object({
-      isSelfAttested: z.boolean(),
-    }),
-    imageUrl: z.object({
-      isSelfAttested: z.boolean(),
-    }),
-    phoneNumber: z.object({
-      isSelfAttested: z.boolean(),
-    }),
+  personalVerifications: z.object({
+    name: z.object(
+      {
+        isSelfAttested: z.boolean({
+          message: "Name needs to be self-attested",
+        }),
+        // .refine((val) => val === false, {
+        //   message: "Name needs to be self-attested",
+        // }),
+      },
+      { message: "Name need to self attested" }
+    ),
+    email: z.object(
+      {
+        isSelfAttested: z.boolean({
+          message: "Email needs to be self-attested",
+        }),
+        // .refine((val) => val === false, {
+        //   message: "Email needs to be self-attested",
+        // }),
+      },
+      { message: "Email need to self attested" }
+    ),
+    location: z.object(
+      {
+        isSelfAttested: z.boolean({
+          message: "Location needs to be self-attested",
+        }),
+        // .refine((val) => val === false, {
+        //   message: "location needs to be self-attested",
+        // }),
+      },
+      { message: "Location needs to self attested" }
+    ),
+    profession: z.object(
+      {
+        isSelfAttested: z.boolean({
+          message: "Profession needs to be self-attested",
+        }),
+        // .refine((val) => val === false, {
+        //   message: "Profession needs to be self-attested",
+        // }),
+      },
+      {
+        message: "Profession needs to be self-attested",
+      }
+    ),
+    imageUrl: z.object(
+      {
+        isSelfAttested: z.boolean({
+          message: "Image needs to be self attested",
+        }),
+        // .refine((val) => val === false, {
+        //   message: "Profile needs to be self-attested",
+        // }),
+      },
+      {
+        message: "Your photo needs to be self-attested",
+      }
+    ),
+    phoneNumber: z.object(
+      {
+        isSelfAttested: z.boolean({
+          message: "Phone number needs to be self attested",
+        }),
+        // .refine((val) => val === false, {
+        //   message: "Phone number needs to be self-attested",
+        // }),
+      },
+      {
+        message: "Phone number needs to be self-attested",
+      }
+    ),
   }),
+  // 2) Education verifications
   educationVerifications: z.object({
     class10: z.object({
       isSelfAttested: z.boolean(),
@@ -360,8 +415,10 @@ const CvForm = () => {
     console.log("stepHandler runs");
     let fieldsToValidate: (keyof CvFormDataType)[] = [];
     if (step == 1) {
-      // const currentFormData = form.getValues();
+      const currentFormData = form.getValues();
       // form.setValue("phoneNumber", Number(currentFormData.phoneNumber));
+      console.log(currentFormData);
+
       fieldsToValidate = [
         "name",
         "email",
@@ -369,6 +426,20 @@ const CvForm = () => {
         "location",
         "imageFile",
         "phoneNumber",
+        // "personalDetailsVerifications",
+        "personalVerifications.name.isSelfAttested" as any,
+        "personalVerifications.email.isSelfAttested" as any,
+        "personalVerifications.profession.isSelfAttested" as any,
+        "personalVerifications.location.isSelfAttested" as any,
+        "personalVerifications.imageUrl.isSelfAttested" as any,
+        "personalVerifications.phoneNumber.isSelfAttested" as any,
+        // "personalDetailsVerifications.email.isSelfAttested",
+        // "personalDetailsVerifications.location.isSelfAttested",
+        // "personalDetailsVerifications.profession.isSelfAttested",
+        // "personalDetailsVerifications.phoneNumber.isSelfAttested",
+        // "personalDetailsVerifications.imageUrl.isSelfAttested",
+
+        // "personalDetailsVerifications.email.isSelfAttested",
       ];
     } else if (step === 2) {
       const currentFormData = form.getValues();
@@ -502,7 +573,8 @@ const CvForm = () => {
 
     // validate step;
     const isValid = await form.trigger(fieldsToValidate);
-
+    console.log("is valid ?? ", isValid);
+    console.log("form erros are", form.formState.errors);
     if (!isValid) return; //stop if validation fails;
 
     const currentFormData = form.getValues();
