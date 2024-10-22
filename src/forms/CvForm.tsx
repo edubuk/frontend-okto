@@ -247,7 +247,7 @@ const formSchema = z.object({
     }),
   // verifications;
 
-  // 1) personal Details;
+  // 1) personal Details verifications validations;
   personalVerifications: z.object({
     name: z.object(
       {
@@ -322,7 +322,7 @@ const formSchema = z.object({
       }
     ),
   }),
-  // 2) Education verifications
+  // 2) Education verifications validations
   educationVerificationValidations: z.object({
     class10: z
       .object(
@@ -414,7 +414,7 @@ const formSchema = z.object({
       ),
   }),
 
-  // 3) Experience verifications
+  // 3) Experience verifications validations
   experienceVerificationsValidations: z.record(
     z
       .object(
@@ -440,8 +440,86 @@ const formSchema = z.object({
       )
   ),
 
-  // 4) Skills verifications;
+  // 4) Skills verifications validations;
   skillsVerificationsValidations: z.record(
+    z
+      .object(
+        {
+          isSelfAttested: z.boolean().optional(),
+          mailStatus: z.string().optional(),
+          proof: z.array(z.string()).optional(),
+        },
+        {
+          message:
+            "At least one of selfAssested, mail to Issuer, or proofs is required",
+        }
+      )
+      .refine(
+        (data) =>
+          data.isSelfAttested !== undefined ||
+          data.mailStatus !== undefined ||
+          (data.proof && data.proof.length > 0),
+        {
+          message:
+            "At least one of selfAssested, mail to Issuer, or proofs is required",
+        }
+      )
+  ),
+
+  // 5) award verifications validations;
+  awardVerificationsValidations: z.record(
+    z
+      .object(
+        {
+          isSelfAttested: z.boolean().optional(),
+          mailStatus: z.string().optional(),
+          proof: z.array(z.string()).optional(),
+        },
+        {
+          message:
+            "At least one of selfAssested, mail to Issuer, or proofs is required",
+        }
+      )
+      .refine(
+        (data) =>
+          data.isSelfAttested !== undefined ||
+          data.mailStatus !== undefined ||
+          (data.proof && data.proof.length > 0),
+        {
+          message:
+            "At least one of selfAssested, mail to Issuer, or proofs is required",
+        }
+      )
+  ),
+
+  // 6) course verifications validations;
+  courseVerificationsValidations: z.record(
+    z
+      .object(
+        {
+          isSelfAttested: z.boolean().optional(),
+          mailStatus: z.string().optional(),
+          proof: z.array(z.string()).optional(),
+        },
+        {
+          message:
+            "At least one of selfAssested, mail to Issuer, or proofs is required",
+        }
+      )
+      .refine(
+        (data) =>
+          data.isSelfAttested !== undefined ||
+          data.mailStatus !== undefined ||
+          (data.proof && data.proof.length > 0),
+        {
+          message:
+            "At least one of selfAssested, mail to Issuer, or proofs is required",
+        }
+      )
+  ),
+
+  //7) project verifications validations;
+  projectVerificationsValidations: z.record(
     z
       .object(
         {
@@ -671,32 +749,35 @@ const CvForm = () => {
       console.log(currentFormData);
 
       if (currentFormData.Awards && currentFormData.Awards.length > 0) {
-        currentFormData.Awards.forEach((_, index) =>
+        currentFormData.Awards.forEach((award, index) =>
           fieldsToValidate.push(
             `Awards.${index}.award_name` as keyof CvFormDataType,
             `Awards.${index}.awarding_organization` as keyof CvFormDataType,
             `Awards.${index}.date_of_achievement` as keyof CvFormDataType,
-            `Awards.${index}.description` as keyof CvFormDataType
+            `Awards.${index}.description` as keyof CvFormDataType,
+            `awardVerificationsValidations[${award.award_name}]` as any
           )
         );
       }
       if (currentFormData.Courses && currentFormData.Courses.length > 0) {
-        currentFormData.Courses.forEach((_, index) =>
+        currentFormData.Courses.forEach((course, index) =>
           fieldsToValidate.push(
             `Courses.${index}.course_name` as keyof CvFormDataType,
             `Courses.${index}.organization` as keyof CvFormDataType,
             `Courses.${index}.duration` as keyof CvFormDataType,
-            `Courses.${index}.description` as keyof CvFormDataType
+            `Courses.${index}.description` as keyof CvFormDataType,
+            `courseVerificationsValidations[${course.course_name}]` as any
           )
         );
       }
       if (currentFormData.Projects && currentFormData.Projects.length > 0) {
-        currentFormData.Projects.forEach((_, index) =>
+        currentFormData.Projects.forEach((project, index) =>
           fieldsToValidate.push(
             `Projects.${index}.project_name` as keyof CvFormDataType,
             `Projects.${index}.project_url` as keyof CvFormDataType,
             `Projects.${index}.duration` as keyof CvFormDataType,
-            `Projects.${index}.description` as keyof CvFormDataType
+            `Projects.${index}.description` as keyof CvFormDataType,
+            `projectVerificationsValidations[${project.project_name}]` as any
           )
         );
       }

@@ -189,13 +189,25 @@ const ProjectFields = ({ index, removeProjectFields, fields }: Props) => {
       </div>
       {/* Animated Verification section */}
       <div className="flex flex-col gap-4 sm:px-2">
-        <AnimatedVerification
-          firstButtonText={Projects[index].project_name || "Project"}
-          field={Projects[index].project_name}
-          verificationObject={projectVerification}
-          setterVerificationObject={setProjectVerification}
-          verificationStep="projectsVerifications"
-        />
+        {Projects.length > 0 && Projects[index].project_name && (
+          <FormField
+            name={`projectVerificationsValidations[${Projects[index].project_name}]`}
+            control={control}
+            render={() => (
+              <FormItem className="">
+                <AnimatedVerification
+                  firstButtonText={Projects[index].project_name || "Project"}
+                  field={Projects[index].project_name}
+                  verificationObject={projectVerification}
+                  validationStep="projectVerificationsValidations"
+                  setterVerificationObject={setProjectVerification}
+                  verificationStep="projectsVerifications"
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
       </div>
       {fields.length > 1 && <Separator />}
     </>

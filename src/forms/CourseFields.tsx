@@ -194,13 +194,25 @@ const CourseFields = ({ index, removeCourseFields, fields }: Props) => {
       </div>
       {/* Animated Verification section */}
       <div className="flex flex-col gap-4 sm:px-2">
-        <AnimatedVerification
-          firstButtonText={Courses[index].course_name || "Course"}
-          field={Courses[index].course_name}
-          verificationObject={courseVerification}
-          setterVerificationObject={setCourseVerification}
-          verificationStep="courseVerifications"
-        />
+        {Courses.length > 0 && Courses[index].course_name && (
+          <FormField
+            name={`courseVerificationsValidations[${Courses[index].course_name}]`}
+            control={control}
+            render={() => (
+              <FormItem className="">
+                <AnimatedVerification
+                  firstButtonText={Courses[index].course_name || "Course"}
+                  field={Courses[index].course_name}
+                  verificationObject={courseVerification}
+                  validationStep="courseVerificationsValidations"
+                  setterVerificationObject={setCourseVerification}
+                  verificationStep="courseVerifications"
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
       </div>
       {fields.length > 1 && <Separator />}
     </>

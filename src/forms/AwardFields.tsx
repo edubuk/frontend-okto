@@ -179,13 +179,25 @@ const AwardFields = ({ index, removeAwardFields, fields }: Props) => {
       </div>
       {/* Animated Verification section */}
       <div className="flex flex-col gap-4 sm:px-2">
-        <AnimatedVerification
-          firstButtonText={Awards[index].award_name || "Award"}
-          field={Awards[index].award_name}
-          verificationObject={AwardVerification}
-          setterVerificationObject={setAwardVerification}
-          verificationStep="awardVerifications"
-        />
+        {Awards.length > 0 && Awards[index].award_name && (
+          <FormField
+            name={`awardVerificationsValidations[${Awards[index].award_name}]`}
+            control={control}
+            render={() => (
+              <FormItem className="">
+                <AnimatedVerification
+                  firstButtonText={Awards[index].award_name || "Award"}
+                  field={Awards[index].award_name}
+                  verificationObject={AwardVerification}
+                  validationStep="awardVerificationsValidations"
+                  setterVerificationObject={setAwardVerification}
+                  verificationStep="awardVerifications"
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
       </div>
       {fields.length > 1 && <Separator />}
     </>
