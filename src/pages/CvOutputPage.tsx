@@ -28,7 +28,7 @@ const CvOutputPage = () => {
   }
   console.log(cvData.experienceVerifications);
   return (
-    <div className="px-1 mt-5 md:mt-0 md:px-10 mb-10">
+    <div className="px-1 mt-5 md:mt-0 md:px-10 mb-10 border border-red-500 overflow-hidden">
       {/* <div className="border flex">
         <div className="mx-auto">
           <HyperText
@@ -51,11 +51,11 @@ const CvOutputPage = () => {
           />
         </div>
       </div>
-      <div className="mt-2 max-w-6xl mx-auto w-full border  border-l-0 shadow-lg   rounded-md">
+      <div className="mt-2 max-w-6xl mx-auto w-full border  border-l-0 shadow-lg   rounded-md overflow-x-scroll">
         {/* main */}
         <div className="flex gap-3 md:gap-7">
           {/* left sidebar */}
-          <div className="w-72  h-auto  bg-[#006666] rounded-ss-2xl px-5 text-white py-2 space-y-20 md:space-y-10">
+          <div className="w-72  h-auto  bg-[#006666] rounded-ss-2xl px-2 md:px-5 text-white py-2 space-y-20 md:space-y-10">
             {/* image */}
             <div className="mt-5">
               <img
@@ -87,13 +87,13 @@ const CvOutputPage = () => {
               </div>
 
               {/* showcasing education higher to lower*/}
-              <div className="flex flex-col gap-4 md:gap-5 mt-3">
+              <div className="flex flex-col gap-10 md:gap-5 mt-3">
                 {/* postgraduation */}
                 {cvData.education.postGraduateCollege &&
                   cvData.education.postGraduateDegree &&
                   cvData.education.postGraduateGPA && (
                     <div className="flex flex-col">
-                      <h1 className="font-semibold">
+                      <h1 className="font-semibold text-sm md:text-base">
                         {cvData.education.postGraduateCollege}
                       </h1>
                       <ShowVerifications
@@ -105,7 +105,7 @@ const CvOutputPage = () => {
                         textClass="text-white"
                         fillCheck
                         fillcheckClass="mt-1"
-                        linkClass="text-[#FB980E] font-semibold text-md"
+                        linkClass="text-[#FB980E] font-semibold text-md mt-2"
                       />
                       <div className="flex justify-end text-nowrap">
                         <span className="font-normal text-sm">
@@ -123,8 +123,10 @@ const CvOutputPage = () => {
                   cvData.education.underGraduateDegree &&
                   cvData.education.underGraduateGPA && (
                     <div className="flex flex-col">
-                      <h1 className="font-semibold">
-                        {cvData.education.underGraduateCollege}
+                      <h1 className="font-semibold text-sm md:text-base">
+                        {cvData.education.underGraduateCollege} Lorem ipsum
+                        dolor sit amet consectetur adipisicing elit. Omnis,
+                        veritatis?
                       </h1>
                       <ShowVerifications
                         isAttested={
@@ -135,7 +137,7 @@ const CvOutputPage = () => {
                         textClass="text-white"
                         fillCheck
                         fillcheckClass="mt-2"
-                        linkClass="text-[#FB980E] font-semibold text-md"
+                        linkClass="text-[#FB980E] font-semibold text-md mt-2"
                       />
                       <div className="flex justify-end text-nowrap">
                         <span className="font-normal text-sm">
@@ -153,7 +155,7 @@ const CvOutputPage = () => {
                   cvData.education.class12Board &&
                   cvData.education.class12Grade && (
                     <div className="flex flex-col">
-                      <h1 className="font-semibold">
+                      <h1 className="font-semibold text-sm md:text-base">
                         {cvData.education.class12College}
                       </h1>
                       <ShowVerifications
@@ -165,7 +167,7 @@ const CvOutputPage = () => {
                         textClass="text-white"
                         fillCheck
                         fillcheckClass="mt-2"
-                        linkClass="text-[#FB980E] font-semibold text-md"
+                        linkClass="text-[#FB980E] font-semibold text-md mt-2"
                       />
                       <div className="flex justify-end text-nowrap">
                         <span className="font-normal text-sm">
@@ -183,7 +185,7 @@ const CvOutputPage = () => {
                   cvData.education.class10Board &&
                   cvData.education.class10Grade && (
                     <div className="flex flex-col">
-                      <h1 className="font-semibold">
+                      <h1 className="font-semibold text-sm md:text-base">
                         {cvData.education.class10School}
                       </h1>
                       <ShowVerifications
@@ -195,7 +197,7 @@ const CvOutputPage = () => {
                         textClass="text-white"
                         fillCheck
                         fillcheckClass="mt-2"
-                        linkClass="text-[#FB980E] font-semibold text-md"
+                        linkClass="text-[#FB980E] font-semibold text-md mt-2"
                       />
                       <div className="flex justify-end text-nowrap">
                         <span className="font-normal text-sm">
@@ -218,7 +220,10 @@ const CvOutputPage = () => {
           <div className="flex-1">
             <div className="mt-5 px-2 flex flex-col gap-3">
               <div className="flex items-center">
-                <h1 className="text-4xl text-[#333B4D] tracking-wide capitalize w-[600px] border line-clamp-1 ">
+                <h1
+                  className="text-4xl text-[#333B4D] tracking-wide capitalize 
+                w-[500px] lg:w-[600px] border line-clamp-1 "
+                >
                   {cvData.personalDetails.name} Lorem ipsum dolor sit amet
                   consectetur adipisicing elit. Aspernatur aperiam eum sequi, ut
                   labore nostrum deleniti suscipit magni veritatis fugiat?
@@ -340,7 +345,7 @@ const CvOutputPage = () => {
               </div>
               {/* profile summary */}
               <div className="border flex gap-5 overflow-hidden">
-                <p className="text-sm md:text-base font-semibold border max-w-2xl w-full">
+                <p className="text-sm md:text-base font-semibold border max-w-md lg:max-w-2xl w-full">
                   {cvData.profile_summary} Lorem ipsum dolor sit amet
                   consectetur adipisicing elit. Pariatur, facere! Repellat,
                   nisi, excepturi eaque reprehenderit temporibus nemo
@@ -372,7 +377,7 @@ const CvOutputPage = () => {
 
                 {/* showcasing skills */}
                 <div className="border">
-                  <div className="flex flex-col  mt-2 gap-2 md:gap-3 border border-red-500">
+                  <div className="flex flex-col  mt-2 gap-5 md:gap-3 border border-red-500">
                     {cvData.skills.length > 0 &&
                       cvData.skills.map((skill) => {
                         const isSelfAttested =
@@ -388,6 +393,7 @@ const CvOutputPage = () => {
                         </div> */}
                             <ShowAnimatedVerifications
                               firstButtonText={skill}
+                              // buttonClass="text-sm lg:text-base"
                               isSelfAttested={isSelfAttested}
                             />
                           </div>
@@ -430,11 +436,11 @@ const CvOutputPage = () => {
                             <div
                               className={`absolute bg-[#FB980E] h-3 w-3 rounded-full top-2 -left-[21px]`}
                             ></div>
-                            <h1 className="text-md md:text-xl font-semibold tracking-tight">
+                            <h1 className="text-md md:text-xl font-semibold tracking-tight line-clamp-1">
                               {exp.job_role}
                             </h1>
                             <div className="flex flex-col">
-                              <p className="text-sm md:text-lg capitalize border border-red-500">
+                              <p className="text-sm md:text-lg capitalize line-clamp-1">
                                 {exp.company_name}
                               </p>{" "}
                               <ShowVerifications
@@ -445,7 +451,7 @@ const CvOutputPage = () => {
                           </div>
                           {/* duration */}
                           <div className="">
-                            <p className="text-[#FB980E] italic text-xs md:text-base">
+                            <p className="text-[#FB980E] italic text-xs md:text-base text-nowrap">
                               <>
                                 {format(exp.duration.from, "LLL dd, y")} -{" "}
                                 {format(exp.duration.to, "LLL dd, y")}
@@ -474,7 +480,7 @@ const CvOutputPage = () => {
               {(cvData.achievements.awards.length > 0 ||
                 cvData.achievements.courses.length > 0 ||
                 cvData.achievements.projects.length > 0) && (
-                <div className="my-10">
+                <div className="my-10 space-y-5">
                   {/* title */}
                   <div className="flex items-center gap-5">
                     <div className="h-10 w-10 bg-[#FB980E] rounded-full text-white flex items-center justify-center">
@@ -505,17 +511,25 @@ const CvOutputPage = () => {
                               <div key={index} className="flex flex-col ml-3">
                                 <div className="flex justify-between">
                                   {/* job role,company name  */}
-                                  <div className="w-64 md:max-w-xl md:w-full relative">
+                                  <div className="max-w-xl w-full relative">
                                     {/* bulletdot */}
                                     <div
                                       className={`absolute bg-[#FB980E] h-3 w-3 rounded-full top-2 left-[-17px]`}
                                     ></div>
-                                    <h1 className="text-lg md:text-xl font-semibold tracking-tight">
-                                      {award.award_name}
+                                    <h1 className="text-md md:text-xl font-semibold tracking-tight line-clamp-1">
+                                      {award.award_name} Lorem ipsum dolor sit
+                                      amet, consectetur adipisicing elit.
+                                      Adipisci, odio. Lorem, ipsum dolor sit
+                                      amet consectetur adipisicing elit. Ipsa,
+                                      inventore.
                                     </h1>
-                                    <div className="flex flex-col">
-                                      <p className="text-sm md:text-lg capitalize">
-                                        {award.awarding_organization}
+                                    <div className="flex flex-col border border-red-500">
+                                      <p className="text-sm md:text-lg capitalize line-clamp-1 mb-1">
+                                        {award.awarding_organization} Lorem
+                                        ipsum dolor sit amet consectetur
+                                        adipisicing elit. Quia earum commodi
+                                        nostrum ab magni quo veritatis at
+                                        molestias architecto voluptates!
                                       </p>
                                       <ShowVerifications
                                         isAttested={isSelfAttetsted}
@@ -577,8 +591,13 @@ const CvOutputPage = () => {
                                         className={`absolute bg-[#FB980E] h-3 w-3 rounded-full top-2 -left-[17px]`}
                                       ></div>
                                       <div className="flex flex-col">
-                                        <h1 className="text-sm md:text-xl font-semibold tracking-tight">
-                                          {project.project_name}
+                                        <h1 className="text-md md:text-xl font-semibold tracking-tight line-clamp-2">
+                                          {project.project_name} Lorem ipsum
+                                          dolor sit amet consectetur,
+                                          adipisicing elit. A, modi? Lorem ipsum
+                                          dolor sit amet. Lorem ipsum dolor sit
+                                          amet consectetur adipisicing elit.
+                                          Fugiat, autem.
                                         </h1>
                                         <ShowVerifications
                                           isAttested={isSelfAttested}
@@ -589,7 +608,7 @@ const CvOutputPage = () => {
                                         <a
                                           href={project.project_url}
                                           target="_blank"
-                                          className="hover:underline text-blue-600 cursor-pointer text-sm font-medium text-nowrap"
+                                          className="hover:underline text-blue-600 cursor-pointer text-sm font-medium text-nowrap mt-5 lg:mt-0"
                                         >
                                           Live link
                                         </a>
@@ -597,7 +616,7 @@ const CvOutputPage = () => {
                                     </div>
                                     {/* duration */}
                                     <div className="">
-                                      <p className="text-[#FB980E] italic text-xs md:text-base">
+                                      <p className="text-[#FB980E] italic text-xs md:text-base text-nowrap">
                                         {
                                           <>
                                             {format(
@@ -657,12 +676,20 @@ const CvOutputPage = () => {
                                     <div
                                       className={`absolute bg-[#FB980E] h-3 w-3 rounded-full top-2 -left-[19px]`}
                                     ></div>
-                                    <h1 className="text-lg md:text-xl font-semibold tracking-tight">
-                                      {course.course_name}
+                                    <h1 className="text-md md:text-xl font-semibold tracking-tight line-clamp-1">
+                                      {course.course_name} Lorem ipsum, dolor
+                                      sit amet consectetur adipisicing elit.
+                                      Eos, harum accusamus! Officiis incidunt
+                                      rerum vel, animi necessitatibus soluta
+                                      reiciendis dolor.
                                     </h1>
-                                    <div className="flex flex-col">
-                                      <p className="text-sm md:text-lg capitalize">
-                                        {course.organization}
+                                    <div className="flex flex-col mb-1">
+                                      <p className="text-sm md:text-lg capitalize line-clamp-1">
+                                        {course.organization} Lorem ipsum dolor,
+                                        sit amet consectetur adipisicing elit.
+                                        Alias minus ducimus ipsam distinctio
+                                        architecto molestiae eveniet quasi qui
+                                        assumenda aliquam.
                                       </p>
                                       <ShowVerifications
                                         isAttested={isSelfAttested}
@@ -672,7 +699,7 @@ const CvOutputPage = () => {
                                   </div>
                                   {/* duration */}
                                   <div className="">
-                                    <p className="text-[#FB980E] italic text-xs md:text-base">
+                                    <p className="text-[#FB980E] italic text-xs md:text-base text-nowrap">
                                       {
                                         <>
                                           {format(
@@ -695,7 +722,15 @@ const CvOutputPage = () => {
                                     {course.description} Lorem ipsum dolor sit
                                     amet consectetur adipisicing elit. A est sit
                                     sed quos reiciendis ratione obcaecati nisi
-                                    qui provident officia.
+                                    qui provident officia. Lorem ipsum dolor
+                                    sit, amet consectetur adipisicing elit. Nam
+                                    necessitatibus, blanditiis accusantium,
+                                    pariatur enim rerum autem totam debitis
+                                    numquam consequatur assumenda, eum ea
+                                    aliquam aliquid? Tempore harum tenetur
+                                    nesciunt quisquam repellat dolores, fugit
+                                    voluptatibus, optio commodi sapiente neque
+                                    consequuntur recusandae.
                                   </p>
                                 </div>
                               </div>

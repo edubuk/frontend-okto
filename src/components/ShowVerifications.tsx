@@ -43,8 +43,15 @@ const ShowVerifications = (
           ) : (
             <img src="/verified.svg" alt="verified logo" className="size-5 " />
           )}
-          <p className={twMerge("text-[#006666] text-md", textClass)}>
-            {isAttested && <span>Self attested{!onlySelfAttest && ","}</span>}
+          <p
+            className={twMerge(
+              "text-[#006666] text-sm md:text-base",
+              textClass
+            )}
+          >
+            {isAttested && (
+              <span className="">Self attested{!onlySelfAttest && ","}</span>
+            )}
             {!onlySelfAttest && (
               <>
                 <span>verified by issuer </span>{" "}

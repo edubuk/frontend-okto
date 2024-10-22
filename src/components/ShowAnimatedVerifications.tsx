@@ -67,7 +67,7 @@ export function ShowAnimatedVerifications({
     >
       <div className="flex size-full flex-row  justify-between gap-8 sm:gap-10 ">
         <div className="flex flex-col justify-center">
-          <div className="w-30 sm:w-48 z-50 border">
+          <div className="w-48 sm:w-48 z-50 border border-red-500">
             {/* first button */}
             {/* <div
               ref={div7Ref}
@@ -80,18 +80,18 @@ export function ShowAnimatedVerifications({
             </div> */}
             <div
               ref={div7Ref}
-              className="px-2 py-1  text-sm tracking-wide font-semibold rounded-sm bg-[#006666] text-white w-fit"
+              className="px-2 py-1 text-xs lg:text-sm tracking-wide font-semibold rounded-sm bg-[#006666] text-white w-fit"
             >
               {firstButtonText}
             </div>
           </div>
         </div>
         <div className="flex flex-col justify-center translate-x-0 sm:-translate-x-0 z-10">
-          <Circle ref={div6Ref} className="size-14">
+          <Circle ref={div6Ref} className="size-12 lg:size-14">
             <img
               src="/edubuk-crop.jpg"
               alt="edubuk"
-              className="size-9 object-cover"
+              className="size-6 lg:size-9 object-cover"
               draggable={false}
             />
           </Circle>
