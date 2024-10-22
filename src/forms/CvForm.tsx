@@ -439,6 +439,32 @@ const formSchema = z.object({
         }
       )
   ),
+
+  // 4) Skills verifications;
+  skillsVerificationsValidations: z.record(
+    z
+      .object(
+        {
+          isSelfAttested: z.boolean().optional(),
+          mailStatus: z.string().optional(),
+          proof: z.array(z.string()).optional(),
+        },
+        {
+          message:
+            "At least one of selfAssested, mail to Issuer, or proofs is required",
+        }
+      )
+      .refine(
+        (data) =>
+          data.isSelfAttested !== undefined ||
+          data.mailStatus !== undefined ||
+          (data.proof && data.proof.length > 0),
+        {
+          message:
+            "At least one of selfAssested, mail to Issuer, or proofs is required",
+        }
+      )
+  ),
 });
 // .refine((data) => data.imageFile || data.imageUrl, {
 //   message: "Either imageFile or imageUrl is required",
@@ -628,10 +654,17 @@ const CvForm = () => {
       fieldsToValidate.push("Years_of_experience");
     } else if (step === 4) {
       // console.log(selectedSkills);
-      // const currentFormData = form.getValues();
+      const currentFormData = form.getValues();
       // currentFormData.Skills = selectedSkills.length > 0 ? selectedSkills : [];
       // console.log(currentFormData);
-      fieldsToValidate = ["Skills"];
+      // currentFormData.skillsVerificationsValidations[]
+      fieldsToValidate.push("Skills");
+      currentFormData.Skills.forEach((skill) => {
+        fieldsToValidate.push(
+          `skillsVerificationsValidations[${skill}]` as any
+        );
+        // fieldsToValidate = ["Skills"];
+      });
     } else if (step === 5) {
       const currentFormData = form.getValues();
       console.log("Step 5 validation calls");

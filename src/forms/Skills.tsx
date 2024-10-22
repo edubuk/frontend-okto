@@ -296,13 +296,23 @@ const Skills = () => {
       {/* Animated skills section */}
       <div className="flex flex-col gap-4 sm:px-2">
         {selectedSkills.map((skill, i) => (
-          <AnimatedVerification
-            key={i}
-            firstButtonText={skill}
-            field={skill}
-            verificationObject={skillsVerification}
-            setterVerificationObject={setSkillsVerification}
-            verificationStep="skillsVerifications"
+          <FormField
+            name={`skillsVerificationsValidations[${skill}]`}
+            control={control}
+            render={() => (
+              <FormItem className="">
+                <AnimatedVerification
+                  key={i}
+                  firstButtonText={skill}
+                  field={skill}
+                  verificationObject={skillsVerification}
+                  validationStep="skillsVerificationsValidations"
+                  setterVerificationObject={setSkillsVerification}
+                  verificationStep="skillsVerifications"
+                />
+                <FormMessage />
+              </FormItem>
+            )}
           />
         ))}
       </div>
