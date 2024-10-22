@@ -26,6 +26,10 @@ const ProfileSummary = () => {
       },
     });
     setValue(`profileSummaryVerification.profile_summary.isSelfAttested`, true);
+    setValue(
+      `profileSummarVerificationValidations.profile_summary.isSelfAttested`,
+      true
+    );
   };
 
   console.log("form object", getValues());
@@ -52,10 +56,22 @@ const ProfileSummary = () => {
           </FormItem>
         )}
       />
-      <SelfAttestButton
-        className="lg:ml-5"
-        onClick={handleSelfAttest}
-        isAttested={profileSummaryVerification.profile_summary.isSelfAttested}
+      {/* self attest button */}
+      <FormField
+        control={control}
+        name="profileSummarVerificationValidations.profile_summary.isSelfAttested"
+        render={() => (
+          <FormItem className="flex-1">
+            <SelfAttestButton
+              className="lg:ml-5"
+              onClick={handleSelfAttest}
+              isAttested={
+                profileSummaryVerification.profile_summary.isSelfAttested
+              }
+            />
+            <FormMessage />
+          </FormItem>
+        )}
       />
     </div>
   );

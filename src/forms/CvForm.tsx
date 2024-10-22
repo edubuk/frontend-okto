@@ -543,6 +543,21 @@ const formSchema = z.object({
         }
       )
   ),
+
+  // 8) profile summary verification validations;
+  profileSummarVerificationValidations: z.object({
+    profile_summary: z.object(
+      {
+        isSelfAttested: z.boolean({
+          message: "Profile summary needs to be self-attested",
+        }),
+        // .refine((val) => val === false, {
+        //   message: "Name needs to be self-attested",
+        // }),
+      },
+      { message: "Name need to self attested" }
+    ),
+  }),
 });
 // .refine((data) => data.imageFile || data.imageUrl, {
 //   message: "Either imageFile or imageUrl is required",
@@ -782,7 +797,10 @@ const CvForm = () => {
         );
       }
     } else if (step === 6) {
-      fieldsToValidate = ["profile_summary"];
+      fieldsToValidate = [
+        "profile_summary",
+        "profileSummarVerificationValidations.profile_summary" as any,
+      ];
     }
 
     // validate step;
