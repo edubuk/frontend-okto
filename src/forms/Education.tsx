@@ -107,12 +107,22 @@ const Education = ({
 
           {/* Animated skills section */}
           <div className="flex flex-col gap-4  sm:px-10">
-            <AnimatedVerification
-              firstButtonText={"Class 10"}
-              field="class10"
-              verificationStep={"educationVerifications"}
-              verificationObject={educationVerifications}
-              setterVerificationObject={setEducationVerifications}
+            <FormField
+              name="educationVerificationValidations.class10"
+              control={control}
+              render={() => (
+                <FormItem className="">
+                  <AnimatedVerification
+                    firstButtonText={"Class 10"}
+                    field="class10"
+                    verificationStep={"educationVerifications"}
+                    validationStep="educationVerificationValidations"
+                    verificationObject={educationVerifications}
+                    setterVerificationObject={setEducationVerifications}
+                  />
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
 
@@ -173,12 +183,22 @@ const Education = ({
               </div>
               {/* Animated skills section */}
               <div className="flex flex-col gap-4 sm:px-10">
-                <AnimatedVerification
-                  firstButtonText={"Class 12"}
-                  field="class12"
-                  verificationStep={"educationVerifications"}
-                  verificationObject={educationVerifications}
-                  setterVerificationObject={setEducationVerifications}
+                <FormField
+                  name="educationVerificationValidations.class12"
+                  control={control}
+                  render={() => (
+                    <FormItem className="">
+                      <AnimatedVerification
+                        firstButtonText={"Class 12"}
+                        field="class12"
+                        verificationStep={"educationVerifications"}
+                        validationStep="educationVerificationValidations"
+                        verificationObject={educationVerifications}
+                        setterVerificationObject={setEducationVerifications}
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
               </div>
             </>
@@ -237,23 +257,43 @@ const Education = ({
               <div className="flex flex-col gap-4 sm:px-10">
                 {/* for tablets and desktops */}
                 <div className="hidden sm:block">
-                  <AnimatedVerification
-                    firstButtonText={"Undergraduation"}
-                    field="undergraduation"
-                    verificationStep={"educationVerifications"}
-                    verificationObject={educationVerifications}
-                    setterVerificationObject={setEducationVerifications}
+                  <FormField
+                    name="educationVerificationValidations.undergraduation"
+                    control={control}
+                    render={() => (
+                      <FormItem className="">
+                        <AnimatedVerification
+                          firstButtonText={"Undergraduation"}
+                          field="undergraduation"
+                          verificationStep={"educationVerifications"}
+                          validationStep="educationVerificationValidations"
+                          verificationObject={educationVerifications}
+                          setterVerificationObject={setEducationVerifications}
+                        />
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
                 </div>
                 {/* for mobile  */}
                 <div className="sm:hidden">
-                  <AnimatedVerification
-                    buttonClass="py-1 px-4 font-semibold"
-                    firstButtonText={"UG"}
-                    verificationStep={"educationVerifications"}
-                    field="undergraduation"
-                    verificationObject={educationVerifications}
-                    setterVerificationObject={setEducationVerifications}
+                  <FormField
+                    name="educationVerificationValidations.undergraduation"
+                    control={control}
+                    render={() => (
+                      <FormItem className="">
+                        <AnimatedVerification
+                          buttonClass="py-1 px-4 font-semibold"
+                          firstButtonText={"UG"}
+                          verificationStep={"educationVerifications"}
+                          validationStep="educationVerificationValidations"
+                          field="undergraduation"
+                          verificationObject={educationVerifications}
+                          setterVerificationObject={setEducationVerifications}
+                        />
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
                 </div>
               </div>
@@ -312,23 +352,43 @@ const Education = ({
               <div className="flex flex-col gap-4 sm:px-10">
                 {/* for tablets and desktops */}
                 <div className="hidden sm:block">
-                  <AnimatedVerification
-                    firstButtonText={"Postgraduation"}
-                    field="postgraduation"
-                    verificationStep={"educationVerifications"}
-                    verificationObject={educationVerifications}
-                    setterVerificationObject={setEducationVerifications}
+                  <FormField
+                    name="educationVerificationValidations.postgraduation"
+                    control={control}
+                    render={() => (
+                      <FormItem className="">
+                        <AnimatedVerification
+                          firstButtonText={"Postgraduation"}
+                          field="postgraduation"
+                          verificationStep={"educationVerifications"}
+                          validationStep="educationVerificationValidations"
+                          verificationObject={educationVerifications}
+                          setterVerificationObject={setEducationVerifications}
+                        />
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
                 </div>
                 {/* for mobile  */}
                 <div className="sm:hidden">
-                  <AnimatedVerification
-                    buttonClass="py-1 px-4 font-semibold"
-                    firstButtonText={"PG"}
-                    field="postgraduation"
-                    verificationStep={"educationVerifications"}
-                    verificationObject={educationVerifications}
-                    setterVerificationObject={setEducationVerifications}
+                  <FormField
+                    name="educationVerificationValidations.postgraduation"
+                    control={control}
+                    render={() => (
+                      <FormItem className="">
+                        <AnimatedVerification
+                          buttonClass="py-1 px-4 font-semibold"
+                          firstButtonText={"PG"}
+                          field="postgraduation"
+                          verificationStep={"educationVerifications"}
+                          validationStep="educationVerificationValidations"
+                          verificationObject={educationVerifications}
+                          setterVerificationObject={setEducationVerifications}
+                        />
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
                 </div>
               </div>

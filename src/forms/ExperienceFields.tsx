@@ -198,12 +198,22 @@ const ExperienceFields = ({ index, removeExperienceFields, fields }: Props) => {
       {/* Animated Verification section */}
       <div className="flex flex-col gap-4 sm:px-2">
         {Experience.length > 0 && Experience[index].company_name && (
-          <AnimatedVerification
-            firstButtonText={Experience[index].company_name || "Company"}
-            field={`${Experience[index].company_name}`}
-            verificationStep="experienceVerifications"
-            verificationObject={experienceVerifications}
-            setterVerificationObject={setExperienceVerifications}
+          <FormField
+            name={`experienceVerificationsValidations[${Experience[index].company_name}]`}
+            control={control}
+            render={() => (
+              <FormItem className="">
+                <AnimatedVerification
+                  firstButtonText={Experience[index].company_name || "Company"}
+                  field={`${Experience[index].company_name}`}
+                  verificationStep="experienceVerifications"
+                  validationStep="experienceVerificationsValidations"
+                  verificationObject={experienceVerifications}
+                  setterVerificationObject={setExperienceVerifications}
+                />
+                <FormMessage />
+              </FormItem>
+            )}
           />
         )}
       </div>

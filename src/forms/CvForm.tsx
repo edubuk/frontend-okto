@@ -323,28 +323,122 @@ const formSchema = z.object({
     ),
   }),
   // 2) Education verifications
-  educationVerifications: z.object({
-    class10: z.object({
-      isSelfAttested: z.boolean(),
-      proof: z.string(),
-      mailStatus: z.string(),
-    }),
-    class12: z.object({
-      isSelfAttested: z.boolean(),
-      proof: z.string(),
-      mailStatus: z.string(),
-    }),
-    undergraduation: z.object({
-      isSelfAttested: z.boolean(),
-      proof: z.string(),
-      mailStatus: z.string(),
-    }),
-    postgraduation: z.object({
-      isSelfAttested: z.boolean(),
-      proof: z.string(),
-      mailStatus: z.string(),
-    }),
+  educationVerificationValidations: z.object({
+    class10: z
+      .object(
+        {
+          isSelfAttested: z.boolean().optional(),
+          mailStatus: z.string().optional(),
+          proof: z.array(z.string()).optional(),
+        },
+        {
+          message:
+            "At least one of selfAssested, mail to Issuer, or proofs is required for class10",
+        }
+      )
+      .refine(
+        (data) =>
+          data.isSelfAttested !== undefined ||
+          data.mailStatus !== undefined ||
+          (data.proof && data.proof.length > 0),
+        {
+          message:
+            "At least one of isSelfAttested, mailStatus, or proofs is required for class10",
+        }
+      ),
+    class12: z
+      .object(
+        {
+          isSelfAttested: z.boolean().optional(),
+          mailStatus: z.string().optional(),
+          proof: z.array(z.string()).optional(),
+        },
+        {
+          message:
+            "At least one of selfAssested, mail to Issuer, or proofs is required for class12",
+        }
+      )
+      .refine(
+        (data) =>
+          data.isSelfAttested !== undefined ||
+          data.mailStatus !== undefined ||
+          (data.proof && data.proof.length > 0),
+        {
+          message:
+            "At least one of isSelfAttested, mailStatus, or proofs is required for class10",
+        }
+      ),
+    undergraduation: z
+      .object(
+        {
+          isSelfAttested: z.boolean().optional(),
+          mailStatus: z.string().optional(),
+          proof: z.array(z.string()).optional(),
+        },
+        {
+          message:
+            "At least one of selfAssested, mail to Issuer, or proofs is required for undergraduation",
+        }
+      )
+      .refine(
+        (data) =>
+          data.isSelfAttested !== undefined ||
+          data.mailStatus !== undefined ||
+          (data.proof && data.proof.length > 0),
+        {
+          message:
+            "At least one of isSelfAttested, mailStatus, or proofs is required for class10",
+        }
+      ),
+    postgraduation: z
+      .object(
+        {
+          isSelfAttested: z.boolean().optional(),
+          mailStatus: z.string().optional(),
+          proof: z.array(z.string()).optional(),
+        },
+        {
+          message:
+            "At least one of selfAssested, mail to Issuer, or proofs is required for postgraduation",
+        }
+      )
+      .refine(
+        (data) =>
+          data.isSelfAttested !== undefined ||
+          data.mailStatus !== undefined ||
+          (data.proof && data.proof.length > 0),
+        {
+          message:
+            "At least one of isSelfAttested, mailStatus, or proofs is required for class10",
+        }
+      ),
   }),
+
+  // 3) Experience verifications
+  experienceVerificationsValidations: z.record(
+    z
+      .object(
+        {
+          isSelfAttested: z.boolean().optional(),
+          mailStatus: z.string().optional(),
+          proof: z.array(z.string()).optional(),
+        },
+        {
+          message:
+            "At least one of selfAssested, mail to Issuer, or proofs is required",
+        }
+      )
+      .refine(
+        (data) =>
+          data.isSelfAttested !== undefined ||
+          data.mailStatus !== undefined ||
+          (data.proof && data.proof.length > 0),
+        {
+          message:
+            "At least one of selfAssested, mail to Issuer, or proofs is required",
+        }
+      )
+  ),
 });
 // .refine((data) => data.imageFile || data.imageUrl, {
 //   message: "Either imageFile or imageUrl is required",
@@ -464,6 +558,8 @@ const CvForm = () => {
         "class10SchoolName",
         "class10Board",
         "class10Grade",
+        // verifications validations
+        "educationVerificationValidations.class10" as any,
         // "class12CollegeName",
         // "class12Board",
         // "class12Grade",
@@ -484,7 +580,8 @@ const CvForm = () => {
         fieldsToValidate.push(
           "class12CollegeName",
           "class12Board",
-          "class12Grade"
+          "class12Grade",
+          "educationVerificationValidations.class12" as any
         );
       }
       // dynamically set undergraduate validations based on selectedQualification of client;
@@ -495,7 +592,8 @@ const CvForm = () => {
         fieldsToValidate.push(
           "underGraduateCollegeName",
           "underGraduateDegreeName",
-          "underGraduateGPA"
+          "underGraduateGPA",
+          "educationVerificationValidations.undergraduation" as any
         );
       }
 
@@ -504,7 +602,8 @@ const CvForm = () => {
         fieldsToValidate.push(
           "postGraduateCollegeName",
           "postGraduateDegreeName",
-          "postGraduateGPA"
+          "postGraduateGPA",
+          "educationVerificationValidations.postgraduation" as any
         );
       }
     } else if (step === 3) {
@@ -513,14 +612,15 @@ const CvForm = () => {
       // console.log("after save and next data", currentFormData);
 
       if (currentFormData.Experience && currentFormData.Experience.length > 0) {
-        currentFormData.Experience.forEach((_, index) => {
+        currentFormData.Experience.forEach((exp, index) => {
           fieldsToValidate.push(
             `Experience[${index}].company_name` as keyof CvFormDataType,
             `Experience[${index}].job_role` as keyof CvFormDataType,
             `Experience[${index}].duration` as keyof CvFormDataType,
             // `Experience[${index}].duration.from` as keyof CvFormDataType,
             // `Experience[${index}].duration.to` as keyof CvFormDataType,
-            `Experience[${index}].description` as keyof CvFormDataType
+            `Experience[${index}].description` as keyof CvFormDataType,
+            `experienceVerificationsValidations[${exp.company_name}]` as any
           );
         });
       }

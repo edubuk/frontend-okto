@@ -48,6 +48,7 @@ export function AnimatedVerification({
   buttonClass,
   field,
   verificationStep,
+  validationStep,
   verificationObject,
   setterVerificationObject,
 }: {
@@ -56,6 +57,7 @@ export function AnimatedVerification({
   buttonClass?: string;
   field: string;
   verificationStep: string;
+  validationStep?: string;
   verificationObject: {
     [key: string]: {
       isSelfAttested?: boolean;
@@ -98,6 +100,8 @@ export function AnimatedVerification({
       },
     }));
     setValue(`${verificationStep}[${field}].isSelfAttested`, true); //setting updated value in form;
+    // for validations needed to stop the user from directly skip verifications;
+    setValue(`${validationStep}[${field}].isSelfAttested`, true);
   };
 
   const uploadImageToDB = async () => {
@@ -156,6 +160,11 @@ export function AnimatedVerification({
         shouldValidate: true, // Optionally trigger validation
         shouldDirty: true, // Optionally mark the field as dirty
       });
+      // setting value for the verification validations
+      setValue(`${validationStep}[${field}].proof`, proofArray, {
+        shouldValidate: true, // Optionally trigger validation
+        shouldDirty: true, // Optionally mark the field as dirty
+      });
 
       console.log("Form after setting value:", getValues()); // Debug to see the updated form values
     } catch (error) {
@@ -178,6 +187,11 @@ export function AnimatedVerification({
     setFiles((prev) => [...prev, ...files]);
   };
 
+  // handle mail to issuer;
+  const handleMailToIssuer = () => {
+    // TODO: handling mail to issuer;
+    console.log("Mail to issuer button clicked");
+  };
   return (
     <div
       className={cn(
@@ -245,6 +259,7 @@ export function AnimatedVerification({
           <div ref={div4Ref} className="z-50">
             <IssuerButton
               text="Mail to issuer"
+              onClick={handleMailToIssuer}
               className="-ml-2  text-xs sm:text-base sm:ml-0"
             />
           </div>
