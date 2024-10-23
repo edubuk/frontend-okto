@@ -67,7 +67,7 @@ export function ShowAnimatedVerifications({
     >
       <div className="flex size-full flex-row  justify-between gap-8 sm:gap-10 ">
         <div className="flex flex-col justify-center">
-          <div className="w-48 sm:w-48 z-50 border border-red-500">
+          <div className="w-48 sm:w-48 z-50">
             {/* first button */}
             {/* <div
               ref={div7Ref}
@@ -101,7 +101,7 @@ export function ShowAnimatedVerifications({
             <Icons.googleDrive />
           </Circle> */}
           {/* self attest button */}
-          <div ref={div2Ref} className="z-50 bg-white border w-96">
+          <div ref={div2Ref} className="z-50 bg-white  w-96">
             <ShowVerifications isAttested={isSelfAttested} />
           </div>
         </div>

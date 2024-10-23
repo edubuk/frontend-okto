@@ -28,7 +28,7 @@ const CvOutputPage = () => {
   }
   console.log(cvData.experienceVerifications);
   return (
-    <div className="px-1 mt-5 md:mt-0 md:px-10 mb-10 border border-red-500 overflow-hidden">
+    <div className="px-1 mt-5 md:mt-0 md:px-10 mb-10 overflow-hidden">
       {/* <div className="border flex">
         <div className="mx-auto">
           <HyperText
@@ -51,7 +51,7 @@ const CvOutputPage = () => {
           />
         </div>
       </div>
-      <div className="mt-2 max-w-6xl mx-auto w-full border  border-l-0 shadow-lg   rounded-md overflow-x-scroll">
+      <div className="mt-2 max-w-6xl mx-auto w-full border  border-l-0 shadow-lg   rounded-md overflow-x-scroll xl:overflow-x-clip">
         {/* main */}
         <div className="flex gap-3 md:gap-7">
           {/* left sidebar */}
@@ -219,14 +219,12 @@ const CvOutputPage = () => {
           {/* right bar */}
           <div className="flex-1">
             <div className="mt-5 px-2 flex flex-col gap-3">
-              <div className="flex items-center">
+              <div className="flex items-center gap-5">
                 <h1
                   className="text-4xl text-[#333B4D] tracking-wide capitalize 
-                w-[500px] lg:w-[600px] border line-clamp-1 "
+                max-w-[500px] lg:max-w-[600px]  line-clamp-1 "
                 >
-                  {cvData.personalDetails.name} Lorem ipsum dolor sit amet
-                  consectetur adipisicing elit. Aspernatur aperiam eum sequi, ut
-                  labore nostrum deleniti suscipit magni veritatis fugiat?
+                  {cvData.personalDetails.name}
                 </h1>
 
                 <ShowVerifications
@@ -271,8 +269,7 @@ const CvOutputPage = () => {
                         />
                       </div>
                       <h1 className="text-sm md:text-base tracking-wider font-normal">
-                        {cvData.personalDetails.location} Lorem ipsum, dolor sit
-                        amet consectetur adipisicing elit. Qui, deleniti.
+                        {cvData.personalDetails.location}
                       </h1>
                       <ShowVerifications
                         isAttested={
@@ -344,13 +341,9 @@ const CvOutputPage = () => {
                 </div>
               </div>
               {/* profile summary */}
-              <div className="border flex gap-5 overflow-hidden">
-                <p className="text-sm md:text-base font-semibold border max-w-md lg:max-w-2xl w-full">
-                  {cvData.profile_summary} Lorem ipsum dolor sit amet
-                  consectetur adipisicing elit. Pariatur, facere! Repellat,
-                  nisi, excepturi eaque reprehenderit temporibus nemo
-                  accusantium tempore dolor ipsa aperiam ad veniam error odio
-                  necessitatibus voluptates quasi libero.
+              <div className="flex gap-5 items-center  overflow-hidden">
+                <p className="text-sm md:text-base font-semibold  max-w-md lg:max-w-2xl">
+                  {cvData.profile_summary}
                 </p>
                 <ShowVerifications
                   isAttested={
@@ -365,7 +358,7 @@ const CvOutputPage = () => {
 
               {/* skill section */}
               {/* skills */}
-              <div className="">
+              <div className="mt-2">
                 <div className="flex items-center gap-4">
                   <div className="h-10 w-10 bg-[#FB980E] rounded-full text-white flex items-center justify-center">
                     <SiHyperskill size={20} />
@@ -376,8 +369,8 @@ const CvOutputPage = () => {
                 </div>
 
                 {/* showcasing skills */}
-                <div className="border">
-                  <div className="flex flex-col  mt-2 gap-5 md:gap-3 border border-red-500">
+                <div className="">
+                  <div className="flex flex-col  mt-2 gap-5 md:gap-3 ">
                     {cvData.skills.length > 0 &&
                       cvData.skills.map((skill) => {
                         const isSelfAttested =
@@ -461,14 +454,7 @@ const CvOutputPage = () => {
                         </div>
                         {/* description of work */}
                         <div className="mt-3">
-                          <p>
-                            {exp.description} Lorem ipsum dolor sit amet
-                            consectetur adipisicing elit. Labore architecto
-                            saepe quae, eligendi autem dignissimos ipsa.
-                            Aspernatur inventore ratione in, iste veniam
-                            veritatis aliquid eveniet illum, a vero, cumque
-                            placeat.
-                          </p>
+                          <p>{exp.description}</p>
                         </div>
                       </div>
                     );
@@ -517,19 +503,11 @@ const CvOutputPage = () => {
                                       className={`absolute bg-[#FB980E] h-3 w-3 rounded-full top-2 left-[-17px]`}
                                     ></div>
                                     <h1 className="text-md md:text-xl font-semibold tracking-tight line-clamp-1">
-                                      {award.award_name} Lorem ipsum dolor sit
-                                      amet, consectetur adipisicing elit.
-                                      Adipisci, odio. Lorem, ipsum dolor sit
-                                      amet consectetur adipisicing elit. Ipsa,
-                                      inventore.
+                                      {award.award_name}
                                     </h1>
-                                    <div className="flex flex-col border border-red-500">
+                                    <div className="flex flex-col">
                                       <p className="text-sm md:text-lg capitalize line-clamp-1 mb-1">
-                                        {award.awarding_organization} Lorem
-                                        ipsum dolor sit amet consectetur
-                                        adipisicing elit. Quia earum commodi
-                                        nostrum ab magni quo veritatis at
-                                        molestias architecto voluptates!
+                                        {award.awarding_organization}
                                       </p>
                                       <ShowVerifications
                                         isAttested={isSelfAttetsted}
@@ -550,11 +528,7 @@ const CvOutputPage = () => {
                                 {/* description of work */}
                                 <div className="mt-1">
                                   <p className="text-base">
-                                    {award.description} Lorem ipsum dolor sit
-                                    amet, consectetur adipisicing elit.
-                                    Aspernatur illo sapiente dolor aliquid eius,
-                                    numquam vitae aut omnis excepturi
-                                    perspiciatis.
+                                    {award.description}
                                   </p>
                                 </div>
                               </div>
@@ -592,12 +566,7 @@ const CvOutputPage = () => {
                                       ></div>
                                       <div className="flex flex-col">
                                         <h1 className="text-md md:text-xl font-semibold tracking-tight line-clamp-2">
-                                          {project.project_name} Lorem ipsum
-                                          dolor sit amet consectetur,
-                                          adipisicing elit. A, modi? Lorem ipsum
-                                          dolor sit amet. Lorem ipsum dolor sit
-                                          amet consectetur adipisicing elit.
-                                          Fugiat, autem.
+                                          {project.project_name}
                                         </h1>
                                         <ShowVerifications
                                           isAttested={isSelfAttested}
@@ -636,11 +605,7 @@ const CvOutputPage = () => {
                                   {/* description of work */}
                                   <div className="mt-1">
                                     <p className="text-base">
-                                      {project.description} Lorem ipsum dolor
-                                      sit amet consectetur adipisicing elit.
-                                      Tempora esse nesciunt rerum ullam ratione
-                                      porro a perspiciatis sed reprehenderit
-                                      modi?
+                                      {project.description}
                                     </p>
                                   </div>
                                 </div>
@@ -677,19 +642,11 @@ const CvOutputPage = () => {
                                       className={`absolute bg-[#FB980E] h-3 w-3 rounded-full top-2 -left-[19px]`}
                                     ></div>
                                     <h1 className="text-md md:text-xl font-semibold tracking-tight line-clamp-1">
-                                      {course.course_name} Lorem ipsum, dolor
-                                      sit amet consectetur adipisicing elit.
-                                      Eos, harum accusamus! Officiis incidunt
-                                      rerum vel, animi necessitatibus soluta
-                                      reiciendis dolor.
+                                      {course.course_name}
                                     </h1>
                                     <div className="flex flex-col mb-1">
                                       <p className="text-sm md:text-lg capitalize line-clamp-1">
-                                        {course.organization} Lorem ipsum dolor,
-                                        sit amet consectetur adipisicing elit.
-                                        Alias minus ducimus ipsam distinctio
-                                        architecto molestiae eveniet quasi qui
-                                        assumenda aliquam.
+                                        {course.organization}
                                       </p>
                                       <ShowVerifications
                                         isAttested={isSelfAttested}
@@ -719,18 +676,7 @@ const CvOutputPage = () => {
                                 {/* description of work */}
                                 <div className="mt-1">
                                   <p className="text-base">
-                                    {course.description} Lorem ipsum dolor sit
-                                    amet consectetur adipisicing elit. A est sit
-                                    sed quos reiciendis ratione obcaecati nisi
-                                    qui provident officia. Lorem ipsum dolor
-                                    sit, amet consectetur adipisicing elit. Nam
-                                    necessitatibus, blanditiis accusantium,
-                                    pariatur enim rerum autem totam debitis
-                                    numquam consequatur assumenda, eum ea
-                                    aliquam aliquid? Tempore harum tenetur
-                                    nesciunt quisquam repellat dolores, fugit
-                                    voluptatibus, optio commodi sapiente neque
-                                    consequuntur recusandae.
+                                    {course.description}
                                   </p>
                                 </div>
                               </div>
