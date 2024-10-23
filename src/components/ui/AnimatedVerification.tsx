@@ -173,15 +173,21 @@ export function AnimatedVerification({
     }
   };
 
-  // uploadProof button onClick handler;
+  // TODO: uploadProof button onClick handler;
   const uploadProofOnclickHandler = () => {
     console.log("onclick called for upload button");
+    // you can have files in files[] before upload it to the database;
+    // <<---------------------------------------->>
+
+    // write your code here; try console.log(files);
+
+    // <<------------------------------------------>>
     uploadImageToDB().then(() => {
       setFiles([]);
     });
   };
 
-  // handle files and setting files;
+  // TODO: handle files and setting files;
   const handleUploadProof = (files: File[]) => {
     console.log(files);
     setFiles((prev) => [...prev, ...files]);
