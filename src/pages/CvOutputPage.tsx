@@ -124,9 +124,7 @@ const CvOutputPage = () => {
                   cvData.education.underGraduateGPA && (
                     <div className="flex flex-col">
                       <h1 className="font-semibold text-sm md:text-base">
-                        {cvData.education.underGraduateCollege} Lorem ipsum
-                        dolor sit amet consectetur adipisicing elit. Omnis,
-                        veritatis?
+                        {cvData.education.underGraduateCollege}
                       </h1>
                       <ShowVerifications
                         isAttested={
