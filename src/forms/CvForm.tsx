@@ -631,29 +631,57 @@ const CvForm = () => {
       const currentFormData = form.getValues();
       // form.setValue("phoneNumber", Number(currentFormData.phoneNumber));
       console.log(currentFormData);
+      const currentStep = JSON.parse(
+        localStorage.getItem("currentStep") || "1"
+      );
+      console.log("current step is", currentStep);
+      if (currentStep === 2) {
+        fieldsToValidate = [
+          "name",
+          "email",
+          "profession",
+          "location",
+          // "imageFile",
+          "phoneNumber",
+          // "personalDetailsVerifications",
+          "personalVerifications.name.isSelfAttested" as any,
+          "personalVerifications.email.isSelfAttested" as any,
+          "personalVerifications.profession.isSelfAttested" as any,
+          "personalVerifications.location.isSelfAttested" as any,
+          "personalVerifications.imageUrl.isSelfAttested" as any,
+          "personalVerifications.phoneNumber.isSelfAttested" as any,
+          // "personalDetailsVerifications.email.isSelfAttested",
+          // "personalDetailsVerifications.location.isSelfAttested",
+          // "personalDetailsVerifications.profession.isSelfAttested",
+          // "personalDetailsVerifications.phoneNumber.isSelfAttested",
+          // "personalDetailsVerifications.imageUrl.isSelfAttested",
 
-      fieldsToValidate = [
-        "name",
-        "email",
-        "profession",
-        "location",
-        "imageFile",
-        "phoneNumber",
-        // "personalDetailsVerifications",
-        "personalVerifications.name.isSelfAttested" as any,
-        "personalVerifications.email.isSelfAttested" as any,
-        "personalVerifications.profession.isSelfAttested" as any,
-        "personalVerifications.location.isSelfAttested" as any,
-        "personalVerifications.imageUrl.isSelfAttested" as any,
-        "personalVerifications.phoneNumber.isSelfAttested" as any,
-        // "personalDetailsVerifications.email.isSelfAttested",
-        // "personalDetailsVerifications.location.isSelfAttested",
-        // "personalDetailsVerifications.profession.isSelfAttested",
-        // "personalDetailsVerifications.phoneNumber.isSelfAttested",
-        // "personalDetailsVerifications.imageUrl.isSelfAttested",
+          // "personalDetailsVerifications.email.isSelfAttested",
+        ];
+      } else {
+        fieldsToValidate = [
+          "name",
+          "email",
+          "profession",
+          "location",
+          "imageFile",
+          "phoneNumber",
+          // "personalDetailsVerifications",
+          "personalVerifications.name.isSelfAttested" as any,
+          "personalVerifications.email.isSelfAttested" as any,
+          "personalVerifications.profession.isSelfAttested" as any,
+          "personalVerifications.location.isSelfAttested" as any,
+          "personalVerifications.imageUrl.isSelfAttested" as any,
+          "personalVerifications.phoneNumber.isSelfAttested" as any,
+          // "personalDetailsVerifications.email.isSelfAttested",
+          // "personalDetailsVerifications.location.isSelfAttested",
+          // "personalDetailsVerifications.profession.isSelfAttested",
+          // "personalDetailsVerifications.phoneNumber.isSelfAttested",
+          // "personalDetailsVerifications.imageUrl.isSelfAttested",
 
-        // "personalDetailsVerifications.email.isSelfAttested",
-      ];
+          // "personalDetailsVerifications.email.isSelfAttested",
+        ];
+      }
     } else if (step === 2) {
       const currentFormData = form.getValues();
 
