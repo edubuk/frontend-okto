@@ -598,17 +598,57 @@ const CvForm = () => {
   const [profession, setProfession] = useState<string | null>(null);
   const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>(new FormData());
-  const [selectedQualification, setSelectedQualification] =
-    useState<string>("");
-
+  const [selectedQualification, setSelectedQualification] = useState<string>(
+    () => {
+      const storedQualification = localStorage.getItem(
+        "educationSelectedQualifications"
+      );
+      return storedQualification ? storedQualification : "class10";
+    }
+  );
+  console.log(selectedQualification);
   const { createCVInBackend, isLoading } = useCV();
 
   useEffect(() => {
     const savedData = localStorage.getItem(`step${step}CvData`);
 
     if (savedData) {
-      const parsedData = JSON.parse(savedData);
+      let parsedData = JSON.parse(savedData);
       setProfession(parsedData.profession || null);
+      if (parsedData?.Experience?.length > 0) {
+        parsedData.Experience = parsedData.Experience.map((exp: any) => {
+          exp.duration = {
+            from: new Date(exp.duration.from),
+            to: new Date(exp.duration.to),
+          };
+          return exp;
+        });
+      }
+      if (parsedData?.Awards?.length > 0) {
+        parsedData.Awards = parsedData.Awards.map((exp: any) => {
+          exp.date_of_achievement = new Date(exp.date_of_achievement);
+          return exp;
+        });
+      }
+      if (parsedData?.Courses?.length > 0) {
+        parsedData.Courses = parsedData.Courses.map((exp: any) => {
+          exp.duration = {
+            from: new Date(exp.duration.from),
+            to: new Date(exp.duration.to),
+          };
+          return exp;
+        });
+      }
+      if (parsedData?.Projects?.length > 0) {
+        parsedData.Projects = parsedData.Projects.map((exp: any) => {
+          exp.duration = {
+            from: new Date(exp.duration.from),
+            to: new Date(exp.duration.to),
+          };
+          return exp;
+        });
+      }
+      console.log("it is parsed data", parsedData);
       form.reset(parsedData);
     }
   }, [step]);
@@ -635,13 +675,13 @@ const CvForm = () => {
         localStorage.getItem("currentStep") || "1"
       );
       console.log("current step is", currentStep);
-      if (currentStep === 2) {
+      if (currentStep === 1) {
         fieldsToValidate = [
           "name",
           "email",
           "profession",
           "location",
-          // "imageFile",
+          "imageFile",
           "phoneNumber",
           // "personalDetailsVerifications",
           "personalVerifications.name.isSelfAttested" as any,
@@ -664,7 +704,7 @@ const CvForm = () => {
           "email",
           "profession",
           "location",
-          "imageFile",
+          // "imageFile",
           "phoneNumber",
           // "personalDetailsVerifications",
           "personalVerifications.name.isSelfAttested" as any,
@@ -859,6 +899,7 @@ const CvForm = () => {
       // adding verifications;
     } else if (step === 6) {
       console.log("Form is getting submitted now");
+      console.log(currentFormData);
       createCVInBackend(currentFormData);
     }
 

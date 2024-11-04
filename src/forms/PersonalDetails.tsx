@@ -69,7 +69,7 @@ const PersonalDetails = ({
   const [imageError, setImageError] = useState<string>("");
   const { personalDetailsVerifications, setPersonalDetailsVerifications } =
     useCvFromContext();
-
+  console.log(personalDetailsVerifications);
   // verification states;
   //   name
   // email
@@ -79,7 +79,7 @@ const PersonalDetails = ({
   // phoneNumber
 
   // const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
-  console.log(getValues());
+  const { personalDetailsVerification: storedVerification } = getValues();
   const uploadImageToDB = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     setImageError("");
@@ -152,7 +152,10 @@ const PersonalDetails = ({
                   onClick={() => {
                     handleSelfAttest("name");
                   }}
-                  isAttested={personalDetailsVerifications.name.isSelfAttested}
+                  isAttested={
+                    storedVerification &&
+                    storedVerification?.name?.isSelfAttested
+                  }
                 />
                 <FormMessage />
                 {/* {fieldState && <p>fieldState.error</p>} */}
@@ -189,7 +192,10 @@ const PersonalDetails = ({
                   onClick={() => {
                     handleSelfAttest("email");
                   }}
-                  isAttested={personalDetailsVerifications.email.isSelfAttested}
+                  isAttested={
+                    storedVerification &&
+                    storedVerification?.email?.isSelfAttested
+                  }
                 />
                 <FormMessage />
               </FormItem>
@@ -224,7 +230,8 @@ const PersonalDetails = ({
                     handleSelfAttest("location");
                   }}
                   isAttested={
-                    personalDetailsVerifications.location.isSelfAttested
+                    storedVerification &&
+                    storedVerification?.location?.isSelfAttested
                   }
                 />
                 <FormMessage />
@@ -261,7 +268,8 @@ const PersonalDetails = ({
                     handleSelfAttest("phoneNumber");
                   }}
                   isAttested={
-                    personalDetailsVerifications.phoneNumber.isSelfAttested
+                    storedVerification &&
+                    storedVerification?.phoneNumber?.isSelfAttested
                   }
                 />
                 <FormMessage />
@@ -351,7 +359,8 @@ const PersonalDetails = ({
                     handleSelfAttest("profession");
                   }}
                   isAttested={
-                    personalDetailsVerifications.profession.isSelfAttested
+                    storedVerification &&
+                    storedVerification?.profession?.isSelfAttested
                   }
                 />
                 <FormMessage />
@@ -409,7 +418,8 @@ const PersonalDetails = ({
                             handleSelfAttest("imageUrl");
                           }}
                           isAttested={
-                            personalDetailsVerifications.imageUrl.isSelfAttested
+                            storedVerification &&
+                            storedVerification?.imageUrl?.isSelfAttested
                           }
                         />
                         <FormMessage />

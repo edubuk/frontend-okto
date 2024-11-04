@@ -32,7 +32,6 @@ type Props = {
 
 const ExperienceFields = ({ index, removeExperienceFields, fields }: Props) => {
   const { control, setValue, getValues, watch } = useFormContext();
-  const [date, setDate] = useState<DateRange | undefined>();
   const [experienceVerifications, setExperienceVerifications] = useState({});
   // {
   //   from: new Date(2023, 0, 20),
@@ -41,7 +40,11 @@ const ExperienceFields = ({ index, removeExperienceFields, fields }: Props) => {
 
   const watchExperienceArray = watch(`Experience[${index}].company_name`);
 
-  const { Experience } = getValues();
+  const { Experience, experienceVerificationsValidations: storedVerification } =
+    getValues();
+  const [date, setDate] = useState<DateRange | undefined>(
+    Experience[index].duration || undefined
+  );
   console.log(Experience);
 
   // if (Experience.length > 0 && experienceVerifications.length > 0) {
@@ -207,6 +210,7 @@ const ExperienceFields = ({ index, removeExperienceFields, fields }: Props) => {
                   firstButtonText={Experience[index].company_name || "Company"}
                   field={`${Experience[index].company_name}`}
                   verificationStep="experienceVerifications"
+                  storedVerifications={storedVerification}
                   validationStep="experienceVerificationsValidations"
                   verificationObject={experienceVerifications}
                   setterVerificationObject={setExperienceVerifications}

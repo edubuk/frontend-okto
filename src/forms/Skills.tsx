@@ -58,6 +58,7 @@ const Skills = () => {
   // console.log(skillError);
   console.log("skills verification", skillsVerification);
   console.log("form object", getValues());
+  const { skillsVerificationsValidations: storedVerification } = getValues();
 
   const selectSkillsHandler = (skill: string) => {
     if (!selectedSkills.includes(skill)) {
@@ -178,7 +179,7 @@ const Skills = () => {
     setValue("skillsVerifications", updatedSkillsVerifications);
     setTyperSkill("");
   };
-
+  console.log("stored skills verifications", storedVerification);
   return (
     <div className="space-y-7">
       <div className="flex px-5 sm:px-10 mt-4">
@@ -305,6 +306,7 @@ const Skills = () => {
                   key={i}
                   firstButtonText={skill}
                   field={skill}
+                  storedVerifications={storedVerification}
                   verificationObject={skillsVerification}
                   validationStep="skillsVerificationsValidations"
                   setterVerificationObject={setSkillsVerification}

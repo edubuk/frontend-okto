@@ -33,10 +33,13 @@ type Props = {
 const AwardFields = ({ index, removeAwardFields, fields }: Props) => {
   const { control, setValue, getValues, watch } = useFormContext();
 
-  const [dateOfAchievement, setDateOfAchievement] = useState<Date>();
   const { AwardVerification, setAwardVerification } = useCvFromContext();
 
-  const { Awards } = getValues();
+  const { Awards, awardVerificationsValidations: storedVerifications } =
+    getValues();
+  const [dateOfAchievement, setDateOfAchievement] = useState<Date | undefined>(
+    Awards[index].date_of_achievement || undefined
+  );
   // console.log(Awards);
   const { remove } = useFieldArray({ control, name: "Experience" });
 
@@ -189,6 +192,7 @@ const AwardFields = ({ index, removeAwardFields, fields }: Props) => {
                   firstButtonText={Awards[index].award_name || "Award"}
                   field={Awards[index].award_name}
                   verificationObject={AwardVerification}
+                  storedVerifications={storedVerifications}
                   validationStep="awardVerificationsValidations"
                   setterVerificationObject={setAwardVerification}
                   verificationStep="awardVerifications"

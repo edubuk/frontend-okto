@@ -105,9 +105,14 @@ export const CvFomContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [step, setStep] = useState<number>(1);
-  const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+  const [selectedSkills, setSelectedSkills] = useState<string[]>(() => {
+    const demo = localStorage.getItem("step4CvData");
+    const parsedDemo = JSON.parse(demo!);
+    return parsedDemo?.Skills?.length > 0 ? parsedDemo?.Skills : [];
+  });
   const [skillError, setSkillError] = useState("");
   const [showSkillError, setSkillShowError] = useState(false);
+
   const [personalDetailsVerifications, setPersonalDetailsVerifications] =
     useState<PersonalVerificationsType>({
       name: {

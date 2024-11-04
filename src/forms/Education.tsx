@@ -28,10 +28,14 @@ const Education = ({
   selectedQualification,
   setSelectedQualification,
 }: Props) => {
-  const { control } = useFormContext();
-  const [isAnswered, setIsAnswered] = useState<boolean>(false);
+  const { control, getValues } = useFormContext();
+  const [isAnswered, setIsAnswered] = useState<boolean>(() =>
+    JSON.parse(localStorage.getItem("qualificationAnswered") || "false")
+  );
   const { educationVerifications, setEducationVerifications } =
     useCvFromContext();
+  const { educationVerificationValidations: storedVerifications } = getValues();
+  console.log(getValues());
 
   return (
     <>
@@ -48,6 +52,11 @@ const Education = ({
                 className={`px-5 py-1 flex-1 md:flex-none shadow-md bg-white text-black border border-[#FA9110] hover:bg-white hover:text-black text-md font-semibold`}
                 onClick={() => {
                   setIsAnswered(true);
+                  localStorage.setItem("qualificationAnswered", "true");
+                  localStorage.setItem(
+                    "educationSelectedQualifications",
+                    qualification
+                  );
                   setSelectedQualification(qualification);
                 }}
               >
@@ -115,6 +124,12 @@ const Education = ({
                   <AnimatedVerification
                     firstButtonText={"Class 10"}
                     field="class10"
+                    isSelfAttested={
+                      storedVerifications
+                        ? storedVerifications?.class10?.isSelfAttested
+                        : false
+                    }
+                    storedVerifications={storedVerifications}
                     verificationStep={"educationVerifications"}
                     validationStep="educationVerificationValidations"
                     verificationObject={educationVerifications}
@@ -191,6 +206,12 @@ const Education = ({
                       <AnimatedVerification
                         firstButtonText={"Class 12"}
                         field="class12"
+                        isSelfAttested={
+                          storedVerifications
+                            ? storedVerifications?.class12?.isSelfAttested
+                            : false
+                        }
+                        storedVerifications={storedVerifications}
                         verificationStep={"educationVerifications"}
                         validationStep="educationVerificationValidations"
                         verificationObject={educationVerifications}
@@ -265,6 +286,13 @@ const Education = ({
                         <AnimatedVerification
                           firstButtonText={"Undergraduation"}
                           field="undergraduation"
+                          isSelfAttested={
+                            storedVerifications
+                              ? storedVerifications?.undergraduation
+                                  ?.isSelfAttested
+                              : false
+                          }
+                          storedVerifications={storedVerifications}
                           verificationStep={"educationVerifications"}
                           validationStep="educationVerificationValidations"
                           verificationObject={educationVerifications}
@@ -285,6 +313,13 @@ const Education = ({
                         <AnimatedVerification
                           buttonClass="py-1 px-4 font-semibold"
                           firstButtonText={"UG"}
+                          isSelfAttested={
+                            storedVerifications
+                              ? storedVerifications?.undergraduation
+                                  ?.isSelfAttested
+                              : false
+                          }
+                          storedVerifications={storedVerifications}
                           verificationStep={"educationVerifications"}
                           validationStep="educationVerificationValidations"
                           field="undergraduation"
@@ -360,6 +395,13 @@ const Education = ({
                         <AnimatedVerification
                           firstButtonText={"Postgraduation"}
                           field="postgraduation"
+                          isSelfAttested={
+                            storedVerifications
+                              ? storedVerifications?.postgraduation
+                                  ?.isSelfAttested
+                              : false
+                          }
+                          storedVerifications={storedVerifications}
                           verificationStep={"educationVerifications"}
                           validationStep="educationVerificationValidations"
                           verificationObject={educationVerifications}
@@ -381,6 +423,13 @@ const Education = ({
                           buttonClass="py-1 px-4 font-semibold"
                           firstButtonText={"PG"}
                           field="postgraduation"
+                          isSelfAttested={
+                            storedVerifications
+                              ? storedVerifications?.postgraduation
+                                  ?.isSelfAttested
+                              : false
+                          }
+                          storedVerifications={storedVerifications}
                           verificationStep={"educationVerifications"}
                           validationStep="educationVerificationValidations"
                           verificationObject={educationVerifications}

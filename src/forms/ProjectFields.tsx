@@ -33,10 +33,13 @@ type Props = {
 
 const ProjectFields = ({ index, removeProjectFields, fields }: Props) => {
   const { control, setValue, getValues, watch } = useFormContext();
-  const [date, setDate] = useState<DateRange | undefined>();
   const { projectVerification, setProjectVerification } = useCvFromContext();
-  const { Projects } = getValues();
+  const { Projects, projectVerificationsValidations: storedVerification } =
+    getValues();
 
+  const [date, setDate] = useState<DateRange | undefined>(
+    Projects[index].duration || undefined
+  );
   const watchProjectArray = watch(`Projects[${index}].project_name`);
   // console.log(Projects);
   const { remove } = useFieldArray({ control, name: "Experience" });
@@ -198,6 +201,7 @@ const ProjectFields = ({ index, removeProjectFields, fields }: Props) => {
                 <AnimatedVerification
                   firstButtonText={Projects[index].project_name || "Project"}
                   field={Projects[index].project_name}
+                  storedVerifications={storedVerification}
                   verificationObject={projectVerification}
                   validationStep="projectVerificationsValidations"
                   setterVerificationObject={setProjectVerification}

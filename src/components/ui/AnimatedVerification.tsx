@@ -47,17 +47,21 @@ export function AnimatedVerification({
   firstButtonText,
   buttonClass,
   field,
+  // isSelfAttested,
   verificationStep,
+  storedVerifications,
   validationStep,
-  verificationObject,
+  // verificationObject,
   setterVerificationObject,
 }: {
   className?: string;
   firstButtonText: string;
   buttonClass?: string;
   field: string;
+  isSelfAttested?: boolean;
   verificationStep: string;
   validationStep?: string;
+  storedVerifications?: any;
   verificationObject: {
     [key: string]: {
       isSelfAttested?: boolean;
@@ -83,7 +87,9 @@ export function AnimatedVerification({
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   // Safely check if the verificationObject contains the field
-  const verificationData = verificationObject[field] || {};
+  // const verificationData = verificationObject[field] || {};
+  console.log(storedVerifications[field], "checking the verification status");
+  const verificationData = storedVerifications[field] || {};
   console.log(files);
   // console.log("form object", getValues());
   const formObject = getValues();
@@ -240,7 +246,8 @@ export function AnimatedVerification({
               className="text-xs sm:text-base"
               onClick={() => handleSelfAttest(field)}
               // isAttested={verificationObject[field].isSelfAttested}
-              isAttested={verificationData.isSelfAttested} // Safely access isSelfAttested
+              // isAttested={verificationData.isSelfAttested}
+              isAttested={verificationData?.isSelfAttested}
             />
           </div>
           <div ref={div3Ref} className="z-50 mt-2">

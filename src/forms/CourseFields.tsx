@@ -33,13 +33,16 @@ type Props = {
 
 const CourseFields = ({ index, removeCourseFields, fields }: Props) => {
   const { control, setValue, getValues, watch } = useFormContext();
-  const [date, setDate] = useState<DateRange | undefined>();
   const { courseVerification, setCourseVerification } = useCvFromContext();
 
   const watchCoursesArray = watch(`Courses[${index}].course_name`);
 
   const { remove } = useFieldArray({ control, name: "Experience" });
-  const { Courses } = getValues();
+  const { Courses, courseVerificationsValidations: storedVerification } =
+    getValues();
+  const [date, setDate] = useState<DateRange | undefined>(
+    Courses[index].duration || undefined
+  );
   // console.log(Courses);
 
   useEffect(() => {
@@ -203,6 +206,7 @@ const CourseFields = ({ index, removeCourseFields, fields }: Props) => {
                 <AnimatedVerification
                   firstButtonText={Courses[index].course_name || "Course"}
                   field={Courses[index].course_name}
+                  storedVerifications={storedVerification}
                   verificationObject={courseVerification}
                   validationStep="courseVerificationsValidations"
                   setterVerificationObject={setCourseVerification}
