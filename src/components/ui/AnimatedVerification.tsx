@@ -214,12 +214,12 @@ export function AnimatedVerification({
     >
       <div className="flex size-full max-w-2xl flex-row items-stretch justify-between gap-8 sm:gap-10">
         <div className="flex flex-col justify-center">
-          <div className="w-30 sm:w-48 z-50">
+          <div className="w-24 sm:w-48 z-50">
             {/* first button */}
             <div
               ref={div7Ref}
               className={twMerge(
-                "px-2 sm:px-4 py-4 text-white  rounded-lg  bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)] flex items-center text-xs sm:text-base font-semibold w-fit text-center sm:line-clamp-1",
+                "px-2 sm:px-4 py-4 text-white  rounded-lg  bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)] flex items-center text-xs sm:text-base font-semibold w-full  sm:w-fit text-center  sm:line-clamp-3",
                 buttonClass
               )}
             >
@@ -260,7 +260,7 @@ export function AnimatedVerification({
                   isUploaded={(verificationData.proof || []).length > 0}
                 />
               </DialogTrigger>
-              <DialogContent className="sm:max-w-2xl">
+              <DialogContent className="max-w-80 sm:max-w-2xl">
                 <FileUpload
                   onChange={handleUploadProof}
                   uploadButtonOnClick={uploadProofOnclickHandler}

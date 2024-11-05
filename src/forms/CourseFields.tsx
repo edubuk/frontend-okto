@@ -120,7 +120,7 @@ const CourseFields = ({ index, removeCourseFields, fields }: Props) => {
             <FormItem className="flex flex-1 gap-1 flex-col justify-center">
               <FormLabel className="">Duration</FormLabel>
               <FormControl>
-                <Popover>
+                {/* <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
@@ -157,7 +157,7 @@ const CourseFields = ({ index, removeCourseFields, fields }: Props) => {
                       numberOfMonths={2}
                     />
                   </PopoverContent>
-                </Popover>
+                </Popover> */}
               </FormControl>
               <FormMessage />
             </FormItem>

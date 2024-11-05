@@ -182,8 +182,11 @@ const Skills = () => {
   console.log("stored skills verifications", storedVerification);
   return (
     <div className="space-y-7">
-      <div className="flex px-5 sm:px-10 mt-4">
+      <div className="flex flex-col gap-2 px-5 sm:px-10 mt-4">
         <h1 className="text-2xl font-semibold">Skills</h1>
+        <h1 className="text-xl font-normal">
+          ( Select or add your top 5 skills )
+        </h1>
       </div>
 
       <div className="flex flex-wrap  mt-4 px-2 sm:px-10 gap-5">

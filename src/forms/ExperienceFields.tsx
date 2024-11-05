@@ -8,22 +8,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { useEffect, useState } from "react";
-import { DateRange } from "react-day-picker";
-import { CiCalendar } from "react-icons/ci";
+import { useEffect, useRef, useState } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
-import { Calendar } from "@/components/ui/calendar";
+import ReferenceDateUsingValue from "@/components/ui/calendar";
 import { Textarea } from "@/components/ui/textarea";
 import { MdDeleteOutline } from "react-icons/md";
 import { Separator } from "@/components/ui/separator";
 import { AnimatedVerification } from "@/components/ui/AnimatedVerification";
+import { convertDateToString } from "@/utils";
+import dayjs from "dayjs";
+
 type Props = {
   fields: Record<"id", string>[];
   index: number;
@@ -32,6 +26,7 @@ type Props = {
 
 const ExperienceFields = ({ index, removeExperienceFields, fields }: Props) => {
   const { control, setValue, getValues, watch } = useFormContext();
+
   const [experienceVerifications, setExperienceVerifications] = useState({});
   // {
   //   from: new Date(2023, 0, 20),
@@ -42,17 +37,46 @@ const ExperienceFields = ({ index, removeExperienceFields, fields }: Props) => {
 
   const { Experience, experienceVerificationsValidations: storedVerification } =
     getValues();
-  const [date, setDate] = useState<DateRange | undefined>(
-    Experience[index].duration || undefined
-  );
-  console.log(Experience);
+  // const [dateFrom, setDateFrom] = useState<any | null>(null);
+  // const [dateTo, setDateTo] = useState<any | null>(null);
 
-  // if (Experience.length > 0 && experienceVerifications.length > 0) {
-  //   console.log(experienceVerifications[index][Experience[index].company_name]);
-  // }
+  // Initialize date from localStorage only once
+  const initialDate = useRef(() => {
+    const storedFormData = localStorage.getItem("step3CvData");
+    if (storedFormData) {
+      const parsedFormData = JSON.parse(storedFormData);
+      return (
+        parsedFormData?.Experience?.[index]?.duration || {
+          from: null,
+          to: null,
+        }
+      );
+    }
+    return { from: null, to: null };
+  });
+
+  const [date, setDate] = useState(initialDate.current);
+  const [dateFrom, setDateFrom] = useState(dayjs(date.from));
+  const [dateTo, setDateTo] = useState(dayjs(date.to));
+  console.log("date check is ", date);
+  // Update the form field whenever date changes
+  useEffect(() => {
+    if (date.from && date.to) {
+      setValue(`Experience.${index}.duration`, date);
+    }
+  }, [date, setValue, index]);
+
+  // Update date when dateFrom or dateTo changes
+  useEffect(() => {
+    if (dateFrom && dateTo) {
+      setDate({
+        from: convertDateToString(dateFrom),
+        to: convertDateToString(dateTo),
+      });
+    }
+  }, [dateFrom, dateTo]);
 
   const { remove } = useFieldArray({ control, name: "Experience" });
-
   // testing useeffect for verifications;
   useEffect(() => {
     if (Experience.length > 0) {
@@ -68,15 +92,6 @@ const ExperienceFields = ({ index, removeExperienceFields, fields }: Props) => {
       setExperienceVerifications(verificationObject);
     }
   }, [watchExperienceArray, Experience]);
-
-  useEffect(() => {
-    if (date?.from && date?.to) {
-      setValue(`Experience.${index}.duration`, {
-        from: date.from,
-        to: date.to,
-      });
-    }
-  }, [date, setValue, index]);
 
   const deleteHandler = () => {
     remove(index);
@@ -115,52 +130,37 @@ const ExperienceFields = ({ index, removeExperienceFields, fields }: Props) => {
             </FormItem>
           )}
         />
+      </div>
+      <div className="flex flex-col xl:flex-row gap-2 xl:gap-5 xl:items-center">
         {/* duration */}
         <FormField
           name={`Experience.${index}.duration`}
           control={control}
           render={() => (
-            <FormItem className="flex flex-1 gap-1 flex-col justify-center">
+            <FormItem className="flex flex-1 gap-1 flex-col justify-center mt-2">
               <FormLabel className="">Duration</FormLabel>
               <FormControl>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        id="date"
-                        variant={"outline"}
-                        className={cn(
-                          "w-[300px] justify-start text-left font-normal",
-                          !date && "text-muted-foreground"
-                        )}
-                      >
-                        <CiCalendar className="mr-2 h-4 w-4" />
-                        {date?.from ? (
-                          date.to ? (
-                            <>
-                              {format(date.from, "LLL dd, y")} -{" "}
-                              {format(date.to, "LLL dd, y")}
-                            </>
-                          ) : (
-                            format(date.from, "LLL dd, y")
-                          )
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      initialFocus
-                      mode="range"
-                      defaultMonth={date?.from}
-                      selected={date}
-                      onSelect={setDate}
-                      numberOfMonths={2}
+                <div className="flex gap-10">
+                  <div className="">
+                    <p className="text-base">From</p>
+                    <ReferenceDateUsingValue
+                      value={dateFrom}
+                      setValue={setDateFrom}
+                      defaultDate={date}
+                      index={index}
+                      isDateFrom
                     />
-                  </PopoverContent>
-                </Popover>
+                  </div>
+                  <div>
+                    <p className="text-base">To</p>
+                    <ReferenceDateUsingValue
+                      value={dateTo}
+                      setValue={setDateTo}
+                      defaultDate={date}
+                      index={index}
+                    />
+                  </div>
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>

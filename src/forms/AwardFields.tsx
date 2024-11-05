@@ -117,7 +117,7 @@ const AwardFields = ({ index, removeAwardFields, fields }: Props) => {
             <FormItem className="flex flex-1 gap-1 flex-col justify-center">
               <FormLabel className="">Date of achievement</FormLabel>
               <FormControl>
-                <Popover>
+                {/* <Popover>
                   <PopoverTrigger asChild>
                     <Button
                       variant={"outline"}
@@ -142,7 +142,7 @@ const AwardFields = ({ index, removeAwardFields, fields }: Props) => {
                       initialFocus
                     />
                   </PopoverContent>
-                </Popover>
+                </Popover> */}
               </FormControl>
               <FormMessage />
             </FormItem>

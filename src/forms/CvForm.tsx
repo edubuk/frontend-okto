@@ -14,6 +14,8 @@ import Achievements from "./Achievements";
 import ProfileSummary from "./ProfileSummary";
 import { useCV } from "@/api/cv.apis";
 import LoadingButton from "@/components/LoadingButton";
+import dayjs from "dayjs";
+
 const formSchema = z.object({
   name: z
     .string({
@@ -130,19 +132,29 @@ const formSchema = z.object({
         .string({ required_error: "job role is required" })
         .min(1, "Job role is required"),
       duration: z
-        .union([
-          z.object({
-            from: z.date().optional(),
-            to: z.date().optional(),
-          }),
-          z
-            .literal("")
-            .refine((val) => val === "", { message: "Duration is required" }),
-        ])
+        .object({
+          from: z
+            .union([z.string(), z.date()])
+            .refine((val) => val && dayjs(val).isValid(), {
+              message: "Start date is required",
+            }),
+          to: z
+            .union([z.string(), z.date()])
+            .refine((val) => val && dayjs(val).isValid(), {
+              message: "End date is required",
+            }),
+        })
         .refine(
-          (data) => typeof data !== "string" && (data?.from || data?.to),
+          (data) => {
+            // Check if both from and to are valid and present
+            const isFromValid = data.from && dayjs(data.from).isValid();
+            const isToValid = data.to && dayjs(data.to).isValid();
+
+            // Both dates must be valid
+            return isFromValid && isToValid;
+          },
           {
-            message: "Duration is required",
+            message: "Both start date and end date are required.",
           }
         ),
       description: z

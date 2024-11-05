@@ -51,6 +51,9 @@ const CvOutputPage = () => {
           />
         </div>
       </div>
+      <h1 className="text-md md:text-2xl text-center font-semibold text-[#006666]">
+        Verified Curriculum Vitae (CV) on the Blockchain
+      </h1>
       <div className="mt-2 max-w-6xl mx-auto w-full border  border-l-0 shadow-lg   rounded-md overflow-x-scroll xl:overflow-x-clip">
         {/* main */}
         <div className="flex gap-3 md:gap-7">

@@ -54,7 +54,7 @@ const ShowVerifications = (
             )}
             {!onlySelfAttest && (
               <>
-                <span>verified by issuer </span>{" "}
+                <span> verified by issuer </span>{" "}
                 <span
                   className={twMerge(
                     "text-blue-600 text-md cursor-pointer inline-flex items-center gap-1 ml-1 hover:underline",
