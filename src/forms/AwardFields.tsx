@@ -8,22 +8,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { useEffect, useState } from "react";
-import { Calendar as CalendarIcon } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
-import { Calendar } from "@/components/ui/calendar";
 import { Textarea } from "@/components/ui/textarea";
 import { MdDeleteOutline } from "react-icons/md";
 import { Separator } from "@/components/ui/separator";
 import { AnimatedVerification } from "@/components/ui/AnimatedVerification";
 import { useCvFromContext } from "@/context/CvForm.context";
+import AwardCalendar from "@/components/calendars/AwardCalendar";
+import { convertDateToString } from "@/utils";
+import dayjs from "dayjs";
 type Props = {
   fields: Record<"id", string>[];
   index: number;
@@ -37,8 +31,30 @@ const AwardFields = ({ index, removeAwardFields, fields }: Props) => {
 
   const { Awards, awardVerificationsValidations: storedVerifications } =
     getValues();
-  const [dateOfAchievement, setDateOfAchievement] = useState<Date | undefined>(
-    Awards[index].date_of_achievement || undefined
+  // Initialize date from localStorage only once
+  // Initialize date from localStorage only once
+  // const initialDate = useRef(() => {
+  //   const storedFormData = localStorage.getItem("step5CvData");
+  //   if (storedFormData) {
+  //     const parsedFormData = JSON.parse(storedFormData);
+  //     return parsedFormData?.Awards?.[index]?.date_of_achievement || null;
+  //   }
+  //   return null;
+  // });
+
+  const initialDate = useRef(
+    (() => {
+      const storedFormData = localStorage.getItem("step5CvData");
+      if (storedFormData) {
+        const parsedFormData = JSON.parse(storedFormData);
+        return parsedFormData?.Awards?.[index]?.date_of_achievement || null;
+      }
+      return null;
+    })()
+  );
+
+  const [dateOfAchievement, setDateOfAchievement] = useState(
+    initialDate.current ? dayjs(initialDate.current) : null
   );
   // console.log(Awards);
   const { remove } = useFieldArray({ control, name: "Experience" });
@@ -47,7 +63,10 @@ const AwardFields = ({ index, removeAwardFields, fields }: Props) => {
 
   useEffect(() => {
     if (dateOfAchievement) {
-      setValue(`Awards.${index}.date_of_achievement`, dateOfAchievement);
+      setValue(
+        `Awards.${index}.date_of_achievement`,
+        convertDateToString(dateOfAchievement)
+      );
     }
   }, [dateOfAchievement, setValue, index]);
 
@@ -143,6 +162,11 @@ const AwardFields = ({ index, removeAwardFields, fields }: Props) => {
                     />
                   </PopoverContent>
                 </Popover> */}
+                <AwardCalendar
+                  value={dateOfAchievement}
+                  setValue={setDateOfAchievement}
+                  index={index}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

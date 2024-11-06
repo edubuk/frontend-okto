@@ -8,23 +8,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { useEffect, useState } from "react";
-import { DateRange } from "react-day-picker";
-import { CiCalendar } from "react-icons/ci";
+import { useEffect, useRef, useState } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
-import { Calendar } from "@/components/ui/calendar";
 import { Textarea } from "@/components/ui/textarea";
 import { MdDeleteOutline } from "react-icons/md";
 import { Separator } from "@/components/ui/separator";
 import { AnimatedVerification } from "@/components/ui/AnimatedVerification";
 import { useCvFromContext } from "@/context/CvForm.context";
+import dayjs from "dayjs";
+import { convertDateToString } from "@/utils";
+import CourseCalendar from "@/components/calendars/CourseCalendar";
 type Props = {
   fields: Record<"id", string>[];
   index: number;
@@ -40,10 +33,45 @@ const CourseFields = ({ index, removeCourseFields, fields }: Props) => {
   const { remove } = useFieldArray({ control, name: "Experience" });
   const { Courses, courseVerificationsValidations: storedVerification } =
     getValues();
-  const [date, setDate] = useState<DateRange | undefined>(
-    Courses[index].duration || undefined
-  );
+  // Initialize date from localStorage only once
+  const initialDate = useRef(() => {
+    const storedFormData = localStorage.getItem("step5CvData");
+    if (storedFormData) {
+      const parsedFormData = JSON.parse(storedFormData);
+      return (
+        parsedFormData?.Courses?.[index]?.duration || {
+          from: null,
+          to: null,
+        }
+      );
+    }
+    return { from: null, to: null };
+  });
+
+  const [date, setDate] = useState(initialDate.current);
+  const [dateFrom, setDateFrom] = useState(dayjs(date.from));
+  const [dateTo, setDateTo] = useState(dayjs(date.to));
+
   // console.log(Courses);
+
+  useEffect(() => {
+    if (date?.from && date?.to) {
+      setValue(`Courses.${index}.duration`, {
+        from: date.from,
+        to: date.to,
+      });
+    }
+  }, [date, setValue, index]);
+
+  // Update date when dateFrom or dateTo changes
+  useEffect(() => {
+    if (dateFrom && dateTo) {
+      setDate({
+        from: convertDateToString(dateFrom),
+        to: convertDateToString(dateTo),
+      });
+    }
+  }, [dateFrom, dateTo]);
 
   useEffect(() => {
     if (Courses.length > 0) {
@@ -61,15 +89,6 @@ const CourseFields = ({ index, removeCourseFields, fields }: Props) => {
       setValue("courseVerifications", verificationObject);
     }
   }, [watchCoursesArray, Courses]);
-
-  useEffect(() => {
-    if (date?.from && date?.to) {
-      setValue(`Courses.${index}.duration`, {
-        from: date.from,
-        to: date.to,
-      });
-    }
-  }, [date, setValue, index]);
 
   const deleteHandler = () => {
     remove(index);
@@ -120,44 +139,25 @@ const CourseFields = ({ index, removeCourseFields, fields }: Props) => {
             <FormItem className="flex flex-1 gap-1 flex-col justify-center">
               <FormLabel className="">Duration</FormLabel>
               <FormControl>
-                {/* <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        id="date"
-                        variant={"outline"}
-                        className={cn(
-                          "w-[300px] justify-start text-left font-normal",
-                          !date && "text-muted-foreground"
-                        )}
-                      >
-                        <CiCalendar className="mr-2 h-4 w-4" />
-                        {date?.from ? (
-                          date.to ? (
-                            <>
-                              {format(date.from, "LLL dd, y")} -{" "}
-                              {format(date.to, "LLL dd, y")}
-                            </>
-                          ) : (
-                            format(date.from, "LLL dd, y")
-                          )
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      initialFocus
-                      mode="range"
-                      defaultMonth={date?.from}
-                      selected={date}
-                      onSelect={setDate}
-                      numberOfMonths={2}
+                <div className="flex gap-10">
+                  <div className="">
+                    <p className="text-base">From</p>
+                    <CourseCalendar
+                      value={dateFrom}
+                      setValue={setDateFrom}
+                      index={index}
+                      isDateFrom
                     />
-                  </PopoverContent>
-                </Popover> */}
+                  </div>
+                  <div>
+                    <p className="text-base">To</p>
+                    <CourseCalendar
+                      value={dateTo}
+                      setValue={setDateTo}
+                      index={index}
+                    />
+                  </div>
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>

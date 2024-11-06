@@ -178,15 +178,20 @@ const formSchema = z.object({
       awarding_organization: z
         .string({ required_error: "Awarding organization is required" })
         .min(1, "Awarding organization is required"),
+      // date_of_achievement: z
+      //   .union([
+      //     z.date().optional(),
+      //     z.literal("").refine((val) => val === "", {
+      //       message: "Date of achievement is required",
+      //     }),
+      //   ])
+      //   .refine((data) => typeof data !== "string", {
+      //     message: "Date of achievement is required",
+      //   }),
       date_of_achievement: z
-        .union([
-          z.date().optional(),
-          z.literal("").refine((val) => val === "", {
-            message: "Date of achievement is required",
-          }),
-        ])
-        .refine((data) => typeof data !== "string", {
-          message: "Date of achievement is required",
+        .union([z.string(), z.date()])
+        .refine((val) => val && dayjs(val).isValid(), {
+          message: "Date of achievement is required and must be a valid date",
         }),
       description: z
         .string({ required_error: "A brief description is required" })
@@ -202,19 +207,29 @@ const formSchema = z.object({
         .string({ required_error: "Institution/organization is required" })
         .min(1, "Institution/organization is required"),
       duration: z
-        .union([
-          z.object({
-            from: z.date().optional(),
-            to: z.date().optional(),
-          }),
-          z
-            .literal("")
-            .refine((val) => val === "", { message: "Duration is required" }),
-        ])
+        .object({
+          from: z
+            .union([z.string(), z.date()])
+            .refine((val) => val && dayjs(val).isValid(), {
+              message: "Start date is required",
+            }),
+          to: z
+            .union([z.string(), z.date()])
+            .refine((val) => val && dayjs(val).isValid(), {
+              message: "End date is required",
+            }),
+        })
         .refine(
-          (data) => typeof data !== "string" && (data?.from || data?.to),
+          (data) => {
+            // Check if both from and to are valid and present
+            const isFromValid = data.from && dayjs(data.from).isValid();
+            const isToValid = data.to && dayjs(data.to).isValid();
+
+            // Both dates must be valid
+            return isFromValid && isToValid;
+          },
           {
-            message: "Duration is required",
+            message: "Both start date and end date are required.",
           }
         ),
       description: z
@@ -229,19 +244,29 @@ const formSchema = z.object({
         .min(1, { message: "Project name is required" }),
       project_url: z.string().optional(),
       duration: z
-        .union([
-          z.object({
-            from: z.date().optional(),
-            to: z.date().optional(),
-          }),
-          z
-            .literal("")
-            .refine((val) => val === "", { message: "Duration is required" }),
-        ])
+        .object({
+          from: z
+            .union([z.string(), z.date()])
+            .refine((val) => val && dayjs(val).isValid(), {
+              message: "Start date is required",
+            }),
+          to: z
+            .union([z.string(), z.date()])
+            .refine((val) => val && dayjs(val).isValid(), {
+              message: "End date is required",
+            }),
+        })
         .refine(
-          (data) => typeof data !== "string" && (data?.from || data?.to),
+          (data) => {
+            // Check if both from and to are valid and present
+            const isFromValid = data.from && dayjs(data.from).isValid();
+            const isToValid = data.to && dayjs(data.to).isValid();
+
+            // Both dates must be valid
+            return isFromValid && isToValid;
+          },
           {
-            message: "Duration is required",
+            message: "Both start date and end date are required.",
           }
         ),
       description: z

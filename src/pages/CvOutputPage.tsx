@@ -6,7 +6,6 @@ import { GiAchievement } from "react-icons/gi";
 import { BiSolidBriefcase } from "react-icons/bi";
 import { GraduationCap, Mail, MapPinned, Phone } from "lucide-react";
 import { MdSchool } from "react-icons/md";
-import { format } from "date-fns";
 import HyperText from "@/components/ui/AnimateHypertext";
 import ShowVerifications from "@/components/ShowVerifications";
 import { ShowAnimatedVerifications } from "@/components/ShowAnimatedVerifications";
@@ -447,8 +446,7 @@ const CvOutputPage = () => {
                           <div className="">
                             <p className="text-[#FB980E] italic text-xs md:text-base text-nowrap">
                               <>
-                                {format(exp.duration.from, "LLL dd, y")} -{" "}
-                                {format(exp.duration.to, "LLL dd, y")}
+                                {exp.duration.from} - {exp.duration.to}
                               </>
                             </p>
                           </div>
@@ -519,10 +517,7 @@ const CvOutputPage = () => {
                                   {/* duration */}
                                   <div className="">
                                     <p className="text-[#FB980E] italic text-xs md:text-base">
-                                      {format(
-                                        award.date_of_achievement,
-                                        "LLL dd, y"
-                                      )}
+                                      {award.date_of_achievement}
                                     </p>
                                   </div>
                                 </div>
@@ -589,15 +584,8 @@ const CvOutputPage = () => {
                                       <p className="text-[#FB980E] italic text-xs md:text-base text-nowrap">
                                         {
                                           <>
-                                            {format(
-                                              project.duration.from,
-                                              "LLL dd, y"
-                                            )}{" "}
-                                            -{" "}
-                                            {format(
-                                              project.duration.to,
-                                              "LLL dd, y"
-                                            )}
+                                            {project.duration.from} -{" "}
+                                            {project.duration.to}
                                           </>
                                         }
                                       </p>
@@ -660,15 +648,8 @@ const CvOutputPage = () => {
                                     <p className="text-[#FB980E] italic text-xs md:text-base text-nowrap">
                                       {
                                         <>
-                                          {format(
-                                            course.duration.from,
-                                            "LLL dd, y"
-                                          )}{" "}
-                                          -{" "}
-                                          {format(
-                                            course.duration.to,
-                                            "LLL dd, y"
-                                          )}
+                                          {course.duration.from} -{" "}
+                                          {course.duration.to}
                                         </>
                                       }
                                     </p>
