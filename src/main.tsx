@@ -4,6 +4,7 @@ import App from "./App.tsx";
 import "./index.css";
 import { CvFomContextProvider } from "./context/CvForm.context.tsx";
 import { QueryClient, QueryClientProvider } from "react-query";
+import {Toaster} from 'react-hot-toast';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -15,6 +16,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <CvFomContextProvider>
+      <Toaster position="top-right" />
         <App />
       </CvFomContextProvider>
     </QueryClientProvider>

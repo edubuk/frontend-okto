@@ -7,9 +7,10 @@ const UploadProofButton = (
   props: ComponentPropsWithoutRef<"button"> & {
     col?: boolean;
     isUploaded?: boolean;
+    ipfsHash?:string
   }
 ) => {
-  const { className, col, isUploaded = false } = props;
+  const { className, col, isUploaded = false,ipfsHash } = props;
   return (
     <div className={twMerge("flex items-center gap-1", col && "flex-col")}>
       <Button
@@ -22,7 +23,7 @@ const UploadProofButton = (
         )}
       >
         <Paperclip size={26} className="size-5 mr-3" />{" "}
-        {isUploaded ? "Proof Uploaded" : "Upload proof"}
+        {isUploaded ? <a href={`https://${import.meta.env.VITE_PINATAGATWAY}/ipfs/${ipfsHash}`} target="_blank" >View Proof</a> : "Upload proof"}
       </Button>
       <span className={"text-[#006666] font-semibold text-xs text-nowrap"}>
         (png/jpeg/pdf) accepted

@@ -39,12 +39,16 @@ export function ShowAnimatedVerifications({
   className,
   firstButtonText,
   isSelfAttested,
+  mailStatus,
+  hash
 }: // buttonClass,
 {
   className?: string;
   firstButtonText: string;
   buttonClass?: string;
   isSelfAttested: boolean;
+  mailStatus:string;
+  hash:[];
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   // const div1Ref = useRef<HTMLDivElement>(null);
@@ -102,7 +106,7 @@ export function ShowAnimatedVerifications({
           </Circle> */}
           {/* self attest button */}
           <div ref={div2Ref} className="z-50 bg-white  w-96">
-            <ShowVerifications isAttested={isSelfAttested} />
+            <ShowVerifications isAttested={isSelfAttested} mailStatus={mailStatus} hash={hash}/>
           </div>
         </div>
       </div>

@@ -9,13 +9,12 @@ import { twMerge } from "tailwind-merge";
 import { useFormContext } from "react-hook-form";
 import { Dialog, DialogContent, DialogTrigger } from "./dialog";
 import { FileUpload } from "./file-upload";
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytesResumable,
-} from "firebase/storage";
-import { app } from "@/firebase";
+import {uploadToIpfs} from "./PinFileOnPinata";
+import {sendEmail} from './MailToVerify';
+import toast from "react-hot-toast";
+import { Input } from "./input";
+import { Button } from "./button";
+
 
 const Circle = forwardRef<
   HTMLDivElement,
@@ -82,10 +81,12 @@ export function AnimatedVerification({
 
   // states;
   const [files, setFiles] = useState<File[]>([]);
-
+  const [ipfsHash,setIpfsHash] = useState<string>("");
   const { setValue, getValues } = useFormContext();
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [mailId,setMailId] = useState<string>("");
+  const [openMailDialog, setOpenMailDialog] = useState<boolean>(false);
   // Safely check if the verificationObject contains the field
   // const verificationData = verificationObject[field] || {};
   console.log(storedVerifications[field], "checking the verification status");
@@ -114,42 +115,54 @@ export function AnimatedVerification({
     if (files.length === 0) return;
 
     const proofArray: string[] = [];
-    const storage = getStorage(app);
+    //const storage = getStorage(app);
+    let hash:any;
+    //setIsUploading(true);
+    hash = await uploadToIpfs(files[0],setIsUploading);
+    // const uploadPromises = files.map((file) => {
 
-    const uploadPromises = files.map((file) => {
-      setIsUploading(true);
-      const fileName = new Date().getTime() + file.name;
-      const storageRef = ref(storage, fileName);
+      
+    //   // const fileName = new Date().getTime() + file.name;
+    //   // const storageRef = ref(storage, fileName);
 
-      return new Promise<void>((resolve, reject) => {
-        const uploadTask = uploadBytesResumable(storageRef, file);
+    //   // return new Promise<void>((resolve, reject) => {
+    //   //   const uploadTask = uploadBytesResumable(storageRef, file);
 
-        uploadTask.on(
-          "state_changed",
-          (snapshot) => {
-            const progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log(`Upload is ${progress}% done`);
-          },
-          (error) => {
-            console.log(`Error while uploading to Firebase: ${error}`);
-            reject(error);
-          },
-          () => {
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
-              proofArray.push(downloadUrl); // Add download URL to the array
-              resolve();
-            });
-          }
-        );
-      });
-    });
+    //   //   uploadTask.on(
+    //   //     "state_changed",
+    //   //     (snapshot) => {
+    //   //       const progress =
+    //   //         (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    //   //       console.log(`Upload is ${progress}% done`);
+    //   //     },
+    //   //     (error) => {
+    //   //       console.log(`Error while uploading to Firebase: ${error}`);
+    //   //       reject(error);
+    //   //     },
+    //   //     () => {
+    //   //       getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+    //   //         proofArray.push(downloadUrl); // Add download URL to the array
+    //   //         resolve();
+    //   //       });
+    //   //     }
+    //   //   );
+    //   // });
+    // });
+    if(hash)
+      {
+      setIpfsHash(hash);
+      proofArray.push(hash);
+      setDialogOpen(false);
+      console.log("Proof Array:", proofArray); // Ensure proofArray is correct
+      }
 
     try {
       // Wait for all uploads to complete
-      await Promise.all(uploadPromises);
-      console.log("Proof Array:", proofArray); // Ensure proofArray is correct
 
+      
+      // await Promise.all(uploadPromises);
+      // console.log("Proof Array:", proofArray); // Ensure proofArray is correct
+    
       // for updating ui to proof uploaded updating verifications object using its setter;
       setterVerificationObject((prev: any) => ({
         ...prev,
@@ -198,11 +211,16 @@ export function AnimatedVerification({
     console.log(files);
     setFiles((prev) => [...prev, ...files]);
   };
-
+  setValue(`${verificationStep}[${field}].mailStatus`, "pending");
   // handle mail to issuer;
   const handleMailToIssuer = () => {
     // TODO: handling mail to issuer;
-    console.log("Mail to issuer button clicked");
+    //e.preventDefault();
+    if(!ipfsHash)
+    {
+      return toast.error("proof document is not uploaded");
+    }
+    sendEmail(ipfsHash,verificationStep,field,mailId);
   };
   return (
     <div
@@ -254,12 +272,23 @@ export function AnimatedVerification({
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
               <DialogTrigger>
                 {/* triggering dialogue */}
+              {!ipfsHash&&
                 <UploadProofButton
                   col
                   className="-ml-7 text-xs sm:text-base sm:ml-0"
                   isUploaded={(verificationData.proof || []).length > 0}
+                  ipfsHash={ipfsHash}
                 />
+              }
               </DialogTrigger>
+              {ipfsHash&&
+              <UploadProofButton
+                  col
+                  className="-ml-7 text-xs sm:text-base sm:ml-0 -mt-3"
+                  isUploaded={(verificationData.proof || []).length > 0}
+                  ipfsHash={ipfsHash}
+                />
+              }
               <DialogContent className="max-w-80 sm:max-w-2xl">
                 <FileUpload
                   onChange={handleUploadProof}
@@ -270,11 +299,26 @@ export function AnimatedVerification({
             </Dialog>
           </div>
           <div ref={div4Ref} className="z-50">
-            <IssuerButton
+            {!openMailDialog&&<IssuerButton
               text="Mail to issuer"
-              onClick={handleMailToIssuer}
+              onClick={()=>setOpenMailDialog(true)}
               className="-ml-2  text-xs sm:text-base sm:ml-0"
-            />
+            />}
+            {
+              openMailDialog&&
+            <div className="flex flex-col items-center justify-center gap-1 w-40">
+                  <Input
+                    type="string"
+                    placeholder="Enter Institute MailId"
+                    value={mailId}
+                    onChange={(e)=>setMailId(e.target.value)}
+                  />
+                  <div className="flex items-center justify-center gap-2">
+                  <Button type="button" onClick={handleMailToIssuer}>send</Button>
+                  <Button type="button" onClick={()=>setOpenMailDialog(false)}>close</Button>
+                  </div>
+                  </div>
+}
           </div>
         </div>
       </div>

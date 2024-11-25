@@ -103,6 +103,8 @@ const CvOutputPage = () => {
                           cvData.educationVerifications.postgraduation
                             .isSelfAttested || false
                         }
+                        mailStatus={cvData.educationVerifications.postgraduation.mailStatus}
+                        hash={cvData.educationVerifications.postgraduation.proof}
                         className="my-2"
                         textClass="text-white"
                         fillCheck
@@ -133,6 +135,8 @@ const CvOutputPage = () => {
                           cvData.educationVerifications.undergraduation
                             .isSelfAttested || false
                         }
+                        mailStatus={cvData.educationVerifications.undergraduation.mailStatus}
+                        hash={cvData.educationVerifications.undergraduation.proof}
                         className="my-2"
                         textClass="text-white"
                         fillCheck
@@ -163,6 +167,8 @@ const CvOutputPage = () => {
                           cvData.educationVerifications.class12
                             .isSelfAttested || false
                         }
+                        mailStatus={cvData.educationVerifications.class12.mailStatus}
+                        hash={cvData.educationVerifications.class12.proof}
                         className="my-2"
                         textClass="text-white"
                         fillCheck
@@ -193,6 +199,8 @@ const CvOutputPage = () => {
                           cvData.educationVerifications.class10
                             .isSelfAttested || false
                         }
+                        mailStatus={cvData.educationVerifications.class10.mailStatus}
+                        hash={cvData.educationVerifications.class10.proof}
                         className="my-2"
                         textClass="text-white"
                         fillCheck
@@ -376,6 +384,8 @@ const CvOutputPage = () => {
                         const isSelfAttested =
                           cvData.skillsVerifications[skill].isSelfAttested ||
                           false;
+                        const mailStatus=cvData.skillsVerifications[skill].mailStatus;
+                        const hash= cvData.skillsVerifications[skill].proof;
                         return (
                           <div>
                             {/* <div
@@ -388,6 +398,8 @@ const CvOutputPage = () => {
                               firstButtonText={skill}
                               // buttonClass="text-sm lg:text-base"
                               isSelfAttested={isSelfAttested}
+                              mailStatus={mailStatus}
+                              hash={hash}
                             />
                           </div>
                         );
@@ -417,6 +429,8 @@ const CvOutputPage = () => {
                     const isSeflAtetsted =
                       cvData.experienceVerifications[verificationKey]
                         .isSelfAttested || false;
+                    const mailStatus= cvData.experienceVerifications[verificationKey].mailStatus
+                    const hash= cvData.experienceVerifications[verificationKey].proof
                     return (
                       <div
                         key={index}
@@ -438,13 +452,15 @@ const CvOutputPage = () => {
                               </p>{" "}
                               <ShowVerifications
                                 isAttested={isSeflAtetsted}
+                                mailStatus={mailStatus}
+                                hash={hash}
                                 className="ml-5 mt-1"
                               />
                             </div>
                           </div>
                           {/* duration */}
                           <div className="">
-                            <p className="text-[#FB980E] italic text-xs md:text-base text-nowrap">
+                            <p className="text-[#006666] italic text-xs md:text-base text-nowrap">
                               <>
                                 {exp.duration.from} - {exp.duration.to}
                               </>
@@ -492,6 +508,8 @@ const CvOutputPage = () => {
                             const isSelfAttetsted =
                               cvData.awardVerifications[verificationKey]
                                 .isSelfAttested || false;
+                            const hash=cvData.awardVerifications[verificationKey].proof
+                            const mailStatus=cvData.awardVerifications[verificationKey].mailStatus
                             return (
                               <div key={index} className="flex flex-col ml-3">
                                 <div className="flex justify-between">
@@ -510,13 +528,15 @@ const CvOutputPage = () => {
                                       </p>
                                       <ShowVerifications
                                         isAttested={isSelfAttetsted}
+                                        mailStatus={mailStatus}
+                                        hash={hash}
                                         className="ml-5 mt-1"
                                       />
                                     </div>
                                   </div>
                                   {/* duration */}
                                   <div className="">
-                                    <p className="text-[#FB980E] italic text-xs md:text-base">
+                                    <p className="text-[#006666] italic text-xs md:text-base">
                                       {award.date_of_achievement}
                                     </p>
                                   </div>
@@ -581,7 +601,7 @@ const CvOutputPage = () => {
                                     </div>
                                     {/* duration */}
                                     <div className="">
-                                      <p className="text-[#FB980E] italic text-xs md:text-base text-nowrap">
+                                      <p className="text-[#006666] italic text-xs md:text-base text-nowrap">
                                         {
                                           <>
                                             {project.duration.from} -{" "}
@@ -621,6 +641,8 @@ const CvOutputPage = () => {
                             const isSelfAttested =
                               cvData.courseVerifications[verificationKey]
                                 .isSelfAttested || false;
+                            const mailStatus=cvData.courseVerifications[verificationKey].mailStatus
+                            const hash=cvData.courseVerifications[verificationKey].proof
                             return (
                               <div key={index} className="flex flex-col ml-3">
                                 <div className="flex justify-between">
@@ -639,13 +661,15 @@ const CvOutputPage = () => {
                                       </p>
                                       <ShowVerifications
                                         isAttested={isSelfAttested}
+                                        mailStatus={mailStatus}
+                                        hash={hash}
                                         className="ml-5 mt-1"
                                       />
                                     </div>
                                   </div>
                                   {/* duration */}
                                   <div className="">
-                                    <p className="text-[#FB980E] italic text-xs md:text-base text-nowrap">
+                                    <p className="text-[#006666] italic text-xs md:text-base text-nowrap">
                                       {
                                         <>
                                           {course.duration.from} -{" "}

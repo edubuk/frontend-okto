@@ -15,8 +15,9 @@ import ProfileSummary from "./ProfileSummary";
 import { useCV } from "@/api/cv.apis";
 import LoadingButton from "@/components/LoadingButton";
 import dayjs from "dayjs";
-
+import {nanoid} from 'nanoid'
 const formSchema = z.object({
+  nanoId: z.string().optional(),
   name: z
     .string({
       required_error: "Name is required",
@@ -635,6 +636,17 @@ const CvForm = () => {
   const [profession, setProfession] = useState<string | null>(null);
   const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>(new FormData());
+
+   // trying to set nanoId in localStorage;
+   useEffect(() => {
+    const nanoId = nanoid(16);
+    const storedNanoId = localStorage.getItem("nanoId");
+    if (!storedNanoId) {
+      localStorage.setItem("nanoId", nanoId);
+    }
+  }, []);
+
+
   const [selectedQualification, setSelectedQualification] = useState<string>(
     () => {
       const storedQualification = localStorage.getItem(
@@ -935,9 +947,13 @@ const CvForm = () => {
 
       // adding verifications;
     } else if (step === 6) {
+      const nanoId = localStorage.getItem("nanoId");
       console.log("Form is getting submitted now");
       console.log(currentFormData);
-      createCVInBackend(currentFormData);
+      const finalAllData = {
+        ...currentFormData,nanoId
+      }
+      createCVInBackend(finalAllData);
     }
 
     localStorage.setItem(`step${step}CvData`, JSON.stringify(currentFormData));
