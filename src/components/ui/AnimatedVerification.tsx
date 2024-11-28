@@ -14,7 +14,6 @@ import {sendEmail} from './MailToVerify';
 import toast from "react-hot-toast";
 import { Input } from "./input";
 import { Button } from "./button";
-import { hashQueryKey } from "react-query";
 
 
 const Circle = forwardRef<
