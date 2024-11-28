@@ -14,6 +14,7 @@ import {sendEmail} from './MailToVerify';
 import toast from "react-hot-toast";
 import { Input } from "./input";
 import { Button } from "./button";
+import { hashQueryKey } from "react-query";
 
 
 const Circle = forwardRef<
@@ -115,6 +116,7 @@ export function AnimatedVerification({
     if (files.length === 0) return;
 
     const proofArray: string[] = [];
+    const hashArray: string[] = [];
     //const storage = getStorage(app);
     let hash:any;
     //setIsUploading(true);
@@ -150,6 +152,30 @@ export function AnimatedVerification({
     // });
     if(hash)
       {
+        if (
+          verificationStep === "experienceVerifications" ||
+          verificationStep === "skillsVerifications" ||
+          verificationStep === "awardVerifications" ||
+          verificationStep === "courseVerifications"
+        ) {
+          hashArray.push(hash);
+        
+          // Retrieve existing hashArray from localStorage
+          let data = localStorage.getItem("hashArray");
+        
+          let updatedArray = [];
+          if (data) {
+            // Parse existing data if not null
+            updatedArray = JSON.parse(data);
+          }
+        
+          // Combine existing hashes with the new ones
+          updatedArray = [...updatedArray, ...hashArray];
+        
+          // Store the updated array back in localStorage
+          localStorage.setItem("hashArray", JSON.stringify(updatedArray));
+        }
+        
       setIpfsHash(hash);
       proofArray.push(hash);
       setDialogOpen(false);

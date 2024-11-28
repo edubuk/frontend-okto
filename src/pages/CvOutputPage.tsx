@@ -78,12 +78,12 @@ const CvOutputPage = () => {
             </div>
 
             {/* Education */}
-            <div className="">
+            <div >
               <div className="flex items-center gap-3 px-1">
                 <div className="h-10 w-10 bg-[#FB980E] rounded-full text-white flex items-center justify-center">
                   <GraduationCap size={20} />
                 </div>
-                <h1 className="text-sm md:text-xl lg:text-2xl font-semibold tracking-tight uppercase">
+                <h1 className="text-black-500 text-sm md:text-xl lg:text-2xl font-semibold tracking-tight uppercase">
                   Education
                 </h1>
               </div>

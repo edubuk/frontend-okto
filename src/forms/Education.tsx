@@ -1,3 +1,4 @@
+import UnderGraduateCal from "@/components/calendars/UnderGradualteCal";
 import { AnimatedVerification } from "@/components/ui/AnimatedVerification";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,7 +10,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useCvFromContext } from "@/context/CvForm.context";
-import { useState } from "react";
+import { convertDateToString } from "@/utils";
+import dayjs from "dayjs";
+import { useState,useEffect,useRef } from "react";
 import { useFormContext } from "react-hook-form";
 
 const highestQualification: string[] = [
@@ -36,6 +39,46 @@ const Education = ({
     useCvFromContext();
   const { educationVerificationValidations: storedVerifications } = getValues();
   console.log(getValues());
+
+
+   // Initialize date from localStorage only once
+   const initialDate = useRef(() => {
+    const storedFormData = localStorage.getItem("step2CvData");
+    if (storedFormData) {
+      const parsedFormData = JSON.parse(storedFormData);
+      return (
+        parsedFormData?.underGraduateDuration?.duration || {
+          from: null,
+          to: null,
+        }
+      );
+    }
+    return { from: null, to: null };
+  });
+
+  const {setValue} = useFormContext();
+
+
+  const [date, setDate] = useState(initialDate.current);
+  const [dateFrom, setDateFrom] = useState(dayjs(date.from));
+  const [dateTo, setDateTo] = useState(dayjs(date.to));
+  console.log("date check is ", date);
+  // Update the form field whenever date changes
+  useEffect(() => {
+    if (date.from && date.to) {
+      setValue(`underGraduateDuration.duration`, date);
+    }
+  }, [date, setValue]);
+
+  // Update date when dateFrom or dateTo changes
+  useEffect(() => {
+    if (dateFrom && dateTo) {
+      setDate({
+        from: convertDateToString(dateFrom),
+        to: convertDateToString(dateTo),
+      });
+    }
+  }, [dateFrom, dateTo]);
 
   return (
     <>
@@ -274,6 +317,39 @@ const Education = ({
                   )}
                 />
               </div>
+
+              <div className="flex justify-center gap-2 items-center py-2">
+        {/* duration */}
+        <FormField
+          name={`underGraduateDuration.duration`}
+          control={control}
+          render={() => (
+            <FormItem className="flex  gap-1 flex-col justify-center mt-2">
+              <FormLabel className="">Graduation Duration</FormLabel>
+              <FormControl>
+                <div className="flex gap-10">
+                  <div className="">
+                    <p className="text-base">From</p>
+                    <UnderGraduateCal
+                      value={dateFrom}
+                      setValue={setDateFrom}
+                      isDateFrom
+                    />
+                  </div>
+                  <div>
+                    <p className="text-base">To</p>
+                    <UnderGraduateCal
+                      value={dateTo}
+                      setValue={setDateTo}
+                    />
+                  </div>
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
               {/* Animated skills section */}
               <div className="flex flex-col gap-4 sm:px-10">
                 {/* for tablets and desktops */}
