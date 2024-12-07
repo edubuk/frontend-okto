@@ -1,4 +1,4 @@
-import { BrowserRouter as  Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import CvOutputPage from "./pages/CvOutputPage";
 import Home from "./pages/Home";
@@ -6,7 +6,6 @@ import DashBoard from "./pages/DashBoard";
 import Navbar from "./pages/Navbar";
 
 function App() {
-
   return (
     <div>
     <Navbar />
