@@ -24,10 +24,10 @@ const DashBoard = () => {
       {
         toast.error("No certificate available")
       }
-    }catch(e)
+    }catch(err)
     {
-      toast.error(e);
-      console.log(e);
+      toast.error("something went wrong");
+      console.log(err);
     }
      }
 
@@ -35,6 +35,7 @@ const DashBoard = () => {
       try
       {
         const acc = await connectWallet();
+        if(acc)
         setAccount(acc);
         console.log("logged acc",acc);
       }
