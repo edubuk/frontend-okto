@@ -117,7 +117,7 @@ export const CvFomContextProvider = ({
   });
   const [skillError, setSkillError] = useState("");
   const [showSkillError, setSkillShowError] = useState(false);
-  const [account,setAccount]=useState<string | null>("");
+  const [account,setAccount]=useState<string|null>("");
   const [personalDetailsVerifications, setPersonalDetailsVerifications] =
     useState<PersonalVerificationsType>({
       name: {

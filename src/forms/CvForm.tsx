@@ -957,13 +957,15 @@ const CvForm = () => {
 
       // adding verifications;
     } else if (step === 6) {
-      const nanoId = localStorage.getItem("nanoId");
-      const loginMailId= await getUserInfo();
+      const nanoId = (localStorage.getItem("nanoId"))??"12345678";
+      const loginMailId = (await getUserInfo())??"default@gmail.com"; // Use a fallback string
       console.log("Form is getting submitted now");
       console.log(currentFormData);
       const finalAllData = {
-        ...currentFormData,loginMailId,nanoId
-      }
+        ...currentFormData,
+        loginMailId,
+        nanoId,
+      };
       createCVInBackend(finalAllData);
     }
 
@@ -984,7 +986,10 @@ const CvForm = () => {
   try
   {
     const acc = await connectWallet();
-    setAccount(acc);
+    if(acc)
+    {
+      setAccount(acc);
+    }
     console.log("logged acc",acc);
   }
   catch(e){
@@ -1007,11 +1012,11 @@ const CvForm = () => {
     toast.dismiss(id);
     toast.success("certificate regiostered");
   }
-}catch(e)
+}catch(err)
 {
   toast.dismiss(id);
-  console.log("error",e.data.message);
-  toast.error(e?.data?.message);
+  console.log("error",err);
+  toast.error("something went wrong");
 }
  }
 
