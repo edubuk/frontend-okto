@@ -1,14 +1,21 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import CvOutputPage from "./pages/CvOutputPage";
+import Home from "./pages/Home";
+import DashBoard from "./pages/DashBoard";
+import Navbar from "./pages/Navbar";
+
 function App() {
   return (
-    <Router>
+    <div>
+    <Navbar />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/create-cv" element={<HomePage />} />
+        <Route path="/dashboard" element={<DashBoard />} />
         <Route path="cv/:id" element={<CvOutputPage />} />
       </Routes>
-    </Router>
+    </div>
   );
 }
 

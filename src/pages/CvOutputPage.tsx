@@ -38,7 +38,7 @@ const CvOutputPage = () => {
       </div> */}
       <div className="flex items-center justify-center  px-10 py-2">
         <img
-          src="/edubuklogo.jpg"
+          src="/edubuklogo.png"
           alt="logo"
           className="md:h-16 md:w-16 h-10 w-10 object-cover"
           draggable={false}

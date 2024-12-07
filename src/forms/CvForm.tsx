@@ -16,7 +16,16 @@ import { useCV } from "@/api/cv.apis";
 import LoadingButton from "@/components/LoadingButton";
 import dayjs from "dayjs";
 import {nanoid} from 'nanoid'
+import {connectWallet,getContract} from "@/api/contract.api";
+import toast from 'react-hot-toast';
+import { getUserInfo } from "@/Web3Auth/Web3AuthLogin";
+
 const formSchema = z.object({
+  loginMailId:z
+  .string({
+    required_error: "loginMaidId is required",
+  })
+  .max(50),
   nanoId: z.string().optional(),
   name: z
     .string({
@@ -632,11 +641,12 @@ const CvForm = () => {
     },
   });
 
-  const { step, setStep } = useCvFromContext();
+  const { step, setStep,account,setAccount} = useCvFromContext();
   const [profession, setProfession] = useState<string | null>(null);
   const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>(new FormData());
-
+  const [txHash, setTxHash] = useState<string | null>(null);
+  //const [account,setAccount] = useState<string | null>(null);
    // trying to set nanoId in localStorage;
    useEffect(() => {
     const nanoId = nanoid(16);
@@ -948,10 +958,11 @@ const CvForm = () => {
       // adding verifications;
     } else if (step === 6) {
       const nanoId = localStorage.getItem("nanoId");
+      const loginMailId= await getUserInfo();
       console.log("Form is getting submitted now");
       console.log(currentFormData);
       const finalAllData = {
-        ...currentFormData,nanoId
+        ...currentFormData,loginMailId,nanoId
       }
       createCVInBackend(finalAllData);
     }
@@ -969,6 +980,40 @@ const CvForm = () => {
   // const onSubmit = (formDataJson: CvFormDataType) => {
   //   console.log("Submitted form data", formDataJson);
   // };
+ const getAccount = async()=>{
+  try
+  {
+    const acc = await connectWallet();
+    setAccount(acc);
+    console.log("logged acc",acc);
+  }
+  catch(e){
+    console.log("error",e)
+  }
+ }
+
+ const registerCertificates = async()=>{
+  const id=  toast.loading("registration initiated. Please wait...");
+  try{
+  const hashArray: string[] = JSON.parse(localStorage.getItem("hashArray") || "[]");
+  console.log("hashArray",hashArray);
+  const contract = await getContract();
+  const tx = await contract?.addStudentData("Ajeet",hashArray);
+  tx.wait();
+  console.log("tx",tx);
+  if(tx?.hash)
+  {
+    setTxHash(tx.hash)
+    toast.dismiss(id);
+    toast.success("certificate regiostered");
+  }
+}catch(e)
+{
+  toast.dismiss(id);
+  console.log("error",e.data.message);
+  toast.error(e?.data?.message);
+}
+ }
 
   return (
     <div>
@@ -1031,6 +1076,23 @@ const CvForm = () => {
                 {step === 6 ? "Submit" : "Save and next"}
               </Button>
             )}
+           {
+  step === 6 && (!account ? (
+    <Button type="button" onClick={getAccount}>Connect Wallet</Button>
+  ) : !txHash ? (
+    <Button type="button" onClick={registerCertificates}>Register Certificates</Button>
+  ) : (
+    <a 
+    className="w-full border border-[#006666] text-center rounded hover:bg-[#ccc] hover:opacity-90"
+      href={`https://amoy.polygonscan.com/tx/${txHash}`} 
+      target="_blank" 
+      rel="noopener noreferrer"
+    >
+      View Transaction
+    </a>
+  ))
+}
+
           </div>
         </form>
       </Form>

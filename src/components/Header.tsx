@@ -1,5 +1,5 @@
 import HyperText from "./ui/AnimateHypertext";
-import logo from "/edubuklogo.jpg";
+import logo from "../assets/EdubukLogoClean.png";
 
 const Header = () => {
   return (

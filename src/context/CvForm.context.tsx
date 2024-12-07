@@ -1,6 +1,10 @@
 import React, { createContext, useContext, useState } from "react";
 
 interface AppState {
+  account:string|null,
+  isLogin:boolean,
+  setLogin:React.Dispatch<React.SetStateAction<boolean>>,
+  setAccount:React.Dispatch<React.SetStateAction<string | null>>,
   step: number;
   setStep: React.Dispatch<React.SetStateAction<number>>;
   selectedSkills: string[];
@@ -105,6 +109,7 @@ export const CvFomContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [step, setStep] = useState<number>(1);
+  const [isLogin,setLogin] = useState<boolean>(false);
   const [selectedSkills, setSelectedSkills] = useState<string[]>(() => {
     const demo = localStorage.getItem("step4CvData");
     const parsedDemo = JSON.parse(demo!);
@@ -112,7 +117,7 @@ export const CvFomContextProvider = ({
   });
   const [skillError, setSkillError] = useState("");
   const [showSkillError, setSkillShowError] = useState(false);
-
+  const [account,setAccount]=useState<string | null>("");
   const [personalDetailsVerifications, setPersonalDetailsVerifications] =
     useState<PersonalVerificationsType>({
       name: {
@@ -196,6 +201,10 @@ export const CvFomContextProvider = ({
         setProjectVerification,
         profileSummaryVerification,
         setProfileSummaryVerification,
+        setAccount,
+        account,
+        isLogin,
+        setLogin
       }}
     >
       {children}

@@ -5,6 +5,12 @@ import "./index.css";
 import { CvFomContextProvider } from "./context/CvForm.context.tsx";
 import { QueryClient, QueryClientProvider } from "react-query";
 import {Toaster} from 'react-hot-toast';
+import { BrowserRouter } from "react-router-dom";
+import { Buffer } from "buffer";
+import process from "process";
+window.Buffer = Buffer;
+window.process = process;
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -17,7 +23,9 @@ createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <CvFomContextProvider>
       <Toaster position="top-right" />
+      <BrowserRouter>
         <App />
+      </BrowserRouter>
       </CvFomContextProvider>
     </QueryClientProvider>
   </StrictMode>
