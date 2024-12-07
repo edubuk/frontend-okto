@@ -1,4 +1,3 @@
-import UnderGraduateCal from "@/components/calendars/UnderGradualteCal";
 import { AnimatedVerification } from "@/components/ui/AnimatedVerification";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,9 +9,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useCvFromContext } from "@/context/CvForm.context";
-import { convertDateToString } from "@/utils";
-import dayjs from "dayjs";
-import { useState,useEffect,useRef } from "react";
+//import { convertDateToString } from "@/utils";
+//import dayjs from "dayjs";
+import { useState} from "react";
 import { useFormContext } from "react-hook-form";
 
 const highestQualification: string[] = [
