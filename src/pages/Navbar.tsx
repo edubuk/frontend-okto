@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import { useState,useEffect } from "react";
 import {handleConnect,getUserInfo,logout}  from "@/Web3Auth/Web3AuthLogin";
 import { useCvFromContext } from "@/context/CvForm.context";
-import { Button } from "@mui/material";
 const Navbar = () => {
   const [isActive, setActive] = useState("Home");
   const {isLogin,setLogin} = useCvFromContext();
 
   const handlerLogin = async()=>{
     const isLogined = await handleConnect();
+    if(isLogined)
     setLogin(isLogined);
     }
   const handlerLogout = async()=>{

@@ -1,6 +1,6 @@
-import { CHAIN_NAMESPACES, IAdapter, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
+import { Web3Auth } from "@web3auth/modal";
 //import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
 
 //import RPC from "./ethersRPC";
@@ -43,6 +43,7 @@ const web3auth = new Web3Auth({
             const formattedPrivateKey = `0x${privateKey}`;
             console.log("Private key",formattedPrivateKey)
           }
+          return privateKey;
         }
       } catch (error) {
         console.error("Web3Auth initialization error:", error);
@@ -52,8 +53,12 @@ const web3auth = new Web3Auth({
   
     export const handleConnect = async () => {
       try {
-        await initWeb3Auth();
-        return true
+      const data=  await initWeb3Auth();
+      if(data)
+      {
+        return true;
+      }
+      return false;
       } catch (error) {
         console.error("Error in connecting to Web3Auth:", error);
       }
