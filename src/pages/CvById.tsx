@@ -16,7 +16,7 @@ const CvById: React.FC<CvByIdProps> = ({ cvData }) => {
             CV <strong>{i + 1}</strong>
           </h1>
           <a
-            href={`http://localhost:5173/cv/${doc}`}
+            href={`https://edubuk-cv-on-chain.vercel.app/cv/${doc}`}
             target="_blank"
             rel="noopener noreferrer"
             className="border border-slate-400 text-[#006666] py-2 px-4 rounded-md hover:text-yellow-700 text-center"

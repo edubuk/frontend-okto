@@ -49,6 +49,7 @@ const DashBoard = () => {
      }
 
      const fetchIds = async()=>{
+      const id=toast.loading("document fetching...")
       try{
         const loginMailId= sessionStorage.getItem("userMailId");
         const response = await fetch(`${API_BASE_URL}/cv/getCvIds/${loginMailId}`, {
@@ -63,10 +64,13 @@ const DashBoard = () => {
           return toast.error("No CV found")
         }
         setCvData(data?.Ids);
-        console.log("ids response",data?.Ids);
+        toast.dismiss(id);
+        //console.log("ids response",data?.Ids);
         //if(response)
       }
       catch(err){
+        toast.dismiss(id);
+        toast.error("something went wrong")
         console.log("error while fetching all doc ids",err)
       }
      }
