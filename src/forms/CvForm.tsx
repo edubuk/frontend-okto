@@ -957,7 +957,7 @@ const CvForm = () => {
       // adding verifications;
     } else if (step === 6) {
       const nanoId = (localStorage.getItem("nanoId"))??"12345678";
-      const loginMailId = sessionStorage.getItem("userMailId");
+      const loginMailId = sessionStorage.getItem("userMailId")??"ajeet@gmail.com";
       //const userName= sessionStorage.getItem("userName"); // Use a fallback string
       console.log("Form is getting submitted now");
       console.log(currentFormData);
