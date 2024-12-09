@@ -1,6 +1,7 @@
 import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3Auth } from "@web3auth/modal";
+import toast from "react-hot-toast";
 //import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
 
 //import RPC from "./ethersRPC";
@@ -17,7 +18,6 @@ const chainConfig = {
     tickerName: "Xinfin",
     logo: "https://images.toruswallet.io/eth.svg",
   };
-
   
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
@@ -32,6 +32,7 @@ const web3auth = new Web3Auth({
 
 
     const initWeb3Auth = async () => {
+      const id = toast.loading("Logging....");
       try {
         await web3auth.initModal();
         await web3auth.connect();
@@ -40,12 +41,22 @@ const web3auth = new Web3Auth({
             method: "eth_private_key",
           });
           if (privateKey) {
+            toast.dismiss(id);
+            const user = await web3auth.getUserInfo();
+            if(user)
+            {
+              console.log("user",user);
+                sessionStorage.setItem("userMailId",user.email as string);
+                sessionStorage.setItem("userName",user.name as string);
+                window.location.reload();
+            }          
             const formattedPrivateKey = `0x${privateKey}`;
             console.log("Private key",formattedPrivateKey)
           }
           return privateKey;
         }
       } catch (error) {
+        toast.dismiss(id);
         console.error("Web3Auth initialization error:", error);
       }
     };
@@ -64,13 +75,13 @@ const web3auth = new Web3Auth({
       }
     };
   
-    export const getUserInfo = async () => {
-      const user = await web3auth.getUserInfo();
-      return user.email;
-    };
+    // export const getUserInfo = async () => {
+    //   const user = await web3auth.getUserInfo();
+    //   return user.email;
+    // };
   
     export const logout = async () => {
-      await web3auth.logout();
-      return false;
-      
+      //await web3auth.logout();
+      sessionStorage.clear();
+      window.location.reload();
     };

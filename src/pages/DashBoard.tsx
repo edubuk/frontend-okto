@@ -5,7 +5,6 @@ import CvById from "./CvById";
 import { connectWallet, getContract } from "@/api/contract.api";
 import toast from "react-hot-toast";
 import { useCvFromContext } from "@/context/CvForm.context";
-import {getUserInfo}  from "@/Web3Auth/Web3AuthLogin";
 import { API_BASE_URL } from "@/main";
 
 
@@ -51,7 +50,7 @@ const DashBoard = () => {
 
      const fetchIds = async()=>{
       try{
-        const loginMailId= await getUserInfo();
+        const loginMailId= sessionStorage.getItem("userMailId");
         const response = await fetch(`${API_BASE_URL}/cv/getCvIds/${loginMailId}`, {
           method: "GET",
           headers: {
@@ -59,6 +58,10 @@ const DashBoard = () => {
           },
         });
         const data = await response.json();
+        if(data.Ids.length===0)
+        {
+          return toast.error("No CV found")
+        }
         setCvData(data?.Ids);
         console.log("ids response",data?.Ids);
         //if(response)

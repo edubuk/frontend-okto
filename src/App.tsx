@@ -4,6 +4,8 @@ import CvOutputPage from "./pages/CvOutputPage";
 import Home from "./pages/Home";
 import DashBoard from "./pages/DashBoard";
 import Navbar from "./pages/Navbar";
+import ProtectedRoute from "./protectRoute";
+import PrivateRoute from "./protectRoute";
 
 function App() {
   return (
@@ -11,9 +13,11 @@ function App() {
     <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/create-cv" element={<HomePage />} />
-        <Route path="/dashboard" element={<DashBoard />} />
-        <Route path="cv/:id" element={<CvOutputPage />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/create-cv" element={<HomePage />} />
+          <Route path="/dashboard" element={<DashBoard />} />
+          <Route path="cv/:id" element={<CvOutputPage />} />
+        </Route>
       </Routes>
     </div>
   );

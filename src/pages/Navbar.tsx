@@ -1,20 +1,17 @@
 import logo from "../assets/EdubukLogoClean.png";
 import { Link } from "react-router-dom";
-import { useState,useEffect } from "react";
-import {handleConnect,getUserInfo,logout}  from "@/Web3Auth/Web3AuthLogin";
-import { useCvFromContext } from "@/context/CvForm.context";
+import { useState} from "react";
+import {handleConnect,logout}  from "@/Web3Auth/Web3AuthLogin";
+
 const Navbar = () => {
   const [isActive, setActive] = useState("Home");
-  const {isLogin,setLogin} = useCvFromContext();
 
   const handlerLogin = async()=>{
-    const isLogined = await handleConnect();
-    if(isLogined)
-    setLogin(isLogined);
-    }
-  const handlerLogout = async()=>{
-    const isLogined = await logout();
-    setLogin(isLogined);
+    await handleConnect();
+  }
+    const handlerLogout = async()=>{
+    await logout();
+   
     }
   const handlerActive = (linkName: string): void => {
     setActive(linkName);
@@ -35,16 +32,6 @@ const Navbar = () => {
     },
   ];
 
-  useEffect(()=>{
-    const getUser = async()=>{
-      if(isLogin)
-      {
-        const data = await getUserInfo();
-        console.log(data);
-      }
-    }
-    getUser();
-  })
 
   return (
     <div className="flex justify-between items-center px-8 py-4 w-screen h-[20vh]">
@@ -61,7 +48,7 @@ const Navbar = () => {
               } hover:text-blue-500 transition duration-200 py-2`}
             >
               {link.name}
-            </Link>:isLogin&&<Link
+            </Link>:sessionStorage.getItem("userMailId")&&<Link
               key={i + 1}
               to={link.path}
               onClick={() => handlerActive(link.name)}
@@ -73,7 +60,7 @@ const Navbar = () => {
             </Link>
           )
         )}
-        {!isLogin?
+        {!sessionStorage.getItem("userMailId")?
         <button onClick={handlerLogin} className="bg-blue-500 py-2 px-4 rounded-full text-white">Login</button>
         :<button onClick={handlerLogout} className="bg-white-500 border border-slate-500 py-2 px-4 rounded-full text-[#006666]">Logout</button>
         }
