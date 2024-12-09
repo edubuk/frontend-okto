@@ -4,7 +4,6 @@ import CvOutputPage from "./pages/CvOutputPage";
 import Home from "./pages/Home";
 import DashBoard from "./pages/DashBoard";
 import Navbar from "./pages/Navbar";
-import ProtectedRoute from "./protectRoute";
 import PrivateRoute from "./protectRoute";
 
 function App() {
