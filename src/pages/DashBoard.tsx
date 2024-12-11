@@ -6,13 +6,16 @@ import { connectWallet, getContract } from "@/api/contract.api";
 import toast from "react-hot-toast";
 import { useCvFromContext } from "@/context/CvForm.context";
 import { API_BASE_URL } from "@/main";
-
+import { contractNFTAddress,abiNFT } from "@/contract/nft.contractData";
+import NFTGallery from "./NFTData";
 
 const DashBoard = () => {
     const [isActiveButton , setActiveButton] = useState<boolean>(true);
     const {account,setAccount} = useCvFromContext();
     const [docData, setDocData] = useState([]);
     const [cvData, setCvData] = useState([]);
+    const [isNFT, setNFT] = useState<boolean>(false);
+
     const getDoc = async()=>{
       try{
       const contract = await getContract();
@@ -86,8 +89,10 @@ const DashBoard = () => {
         <Button className={`text-center border border-slate-300 text-[#006666] hover:bg-slate-100 ${isActiveButton?"bg-slate-100":"bg-white border"}`} onClick={idFetchHandler}>Get Your CV</Button>
         {!account?
         <Button type="button" onClick={getAccount}>Connect Wallet</Button>:
-
+        <>
         <Button className={`text-center border border-slate-300 text-[#006666] hover:bg-slate-100 ${!isActiveButton?"bg-slate-100":"bg-white border"}`} onClick={fetchDataHandler}>Fetch your on-chain documents</Button>
+        <Button className={`text-center border border-slate-300 text-[#006666] hover:bg-slate-100 ${            isNFT?"bg-slate-100":"bg-white border"}`} onClick={()=>setNFT(true)}>Fetch your NFTs</Button>
+        </>
 }
         </div>
         <div className="flex justify-center items-center gap-2 h-screen">
@@ -96,6 +101,9 @@ const DashBoard = () => {
           }
           {
             isActiveButton&&<CvById cvData={cvData}/>
+          }
+          {
+            isNFT&&<NFTGallery contractAddress={contractNFTAddress} abi={abiNFT}/>
           }
         </div>
     </div>

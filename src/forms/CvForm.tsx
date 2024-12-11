@@ -16,7 +16,7 @@ import { useCV } from "@/api/cv.apis";
 import LoadingButton from "@/components/LoadingButton";
 import dayjs from "dayjs";
 import {nanoid} from 'nanoid'
-import {connectWallet,getContract} from "@/api/contract.api";
+import {connectWallet,getNFTContract} from "@/api/contract.api";
 import toast from 'react-hot-toast';
 
 const formSchema = z.object({
@@ -1002,15 +1002,16 @@ const CvForm = () => {
   try{
   const hashArray: string[] = JSON.parse(localStorage.getItem("hashArray") || "[]");
   console.log("hashArray",hashArray);
-  const contract = await getContract();
-  const tx = await contract?.addStudentData("Ajeet",hashArray);
+  const contractNFT = await getNFTContract();
+  //const tx = await contract?.addStudentData("Ajeet",hashArray);
+  const tx = await contractNFT?.safeMint(account,hashArray);
   tx.wait();
-  console.log("tx",tx);
+  //console.log("tx",tx);
   if(tx?.hash)
   {
     setTxHash(tx.hash)
     toast.dismiss(id);
-    toast.success("certificate regiostered");
+    toast.success("certificate registered");
   }
 }catch(err)
 {

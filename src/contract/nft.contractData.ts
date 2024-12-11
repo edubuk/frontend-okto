@@ -1,7 +1,9 @@
 
-export const contractAddress="0x04D05a3d962B590D8Ab20E1a1dc6D2531c74AE41";
+//export const contractAddress="0x04D05a3d962B590D8Ab20E1a1dc6D2531c74AE41";
+// mainnet add- 0x36eB834d06Cd2Be4BFbF465d2d9B04d77A5381FB
+export const contractNFTAddress="0x455cD952ED9cFa399231f5C1D2AaC45498580D33";
 
-export const abi=
+export const abiNFT                                                                                                                                                                                                                                     =
 
 [
 	{
@@ -287,19 +289,13 @@ export const abi=
 				"type": "address"
 			},
 			{
-				"internalType": "string",
+				"internalType": "string[]",
 				"name": "uri",
-				"type": "string"
+				"type": "string[]"
 			}
 		],
 		"name": "safeMint",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
+		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
