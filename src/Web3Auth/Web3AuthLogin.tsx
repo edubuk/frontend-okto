@@ -32,7 +32,7 @@ const web3auth = new Web3Auth({
 
 
     const initWeb3Auth = async () => {
-      const id = toast.loading("Logging....");
+      const id = toast.loading("Logging in, please wait...");
       try {
         await web3auth.initModal();
         await web3auth.connect();
