@@ -76,40 +76,17 @@ const NFTGallery: React.FC<NFTGalleryProps> = ({ contractAddress, abi }) => {
         <p className="text-red-500 text-center text-lg">No NFTs found.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {nfts.map((nft) => (
+          {nfts.map((nft,i) => (
             <div
               key={nft.id}
               className="flex justify-center items-center border border-gray-300 rounded-lg overflow-hidden shadow-md hover:shadow-lg transform transition duration-300 hover:scale-105"
             >
               <img src={nft.image} alt={nft.name} className="w-20 h-20 object-cover items-center" />
               <div className="p-4">
-                <h2 className="text-lg font-semibold">{nft.name}</h2>
+                <h2 className="text-lg font-semibold">{nft.name} {i+1}</h2>
                 <p className="text-sm text-gray-600">{nft.description}</p>
-                <p className="text-sm text-gray-800 font-semibold mt-2">Token ID: {nft.id}</p>
-                 {nft?.hash&&<a href={`https://purple-odd-toad-540.mypinata.cloud/ipfs/${nft.hash}`} target="_blank">View Certificate</a>}
-                {/* {nft.external_url && (
-                  <a
-                    href={nft.external_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block text-blue-500 mt-2 underline hover:text-blue-700"
-                  >
-                    View More
-                  </a>
-                )} */}
-
-                {/* {nft.attributes.length > 0 && (
-                  <div className="mt-4">
-                    <h3 className="text-sm font-semibold">Attributes:</h3>
-                    <ul className="text-sm text-gray-700">
-                      {nft.attributes.map((attr, index) => (
-                        <li key={index}>
-                          <strong>{attr.trait_type}:</strong> {attr.value}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )} */}
+                <p className="text-sm text-gray-800 font-semibold mt-2 mb-4">Token ID: {nft.id}</p>
+                 {nft?.hash&&<a className="text-[#ff7300] border border-[#0033ff] p-2 rounded-full hover:bg-[#006666] hover:text-white" href={`https://purple-odd-toad-540.mypinata.cloud/ipfs/${nft.hash}`} target="_blank">View Certificate</a>}
               </div>
             </div>
           ))}
