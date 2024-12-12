@@ -110,18 +110,16 @@ export function AnimatedVerification({
     // for validations needed to stop the user from directly skip verifications;
     setValue(`${validationStep}[${field}].isSelfAttested`, true);
   };
-
+  
   const uploadImageToDB = async () => {
     if (files.length === 0) return;
 
     const proofArray: string[] = [];
     const hashArray: string[] = [];
-    //const storage = getStorage(app);
-    let hash:any;
-    //setIsUploading(true);
+  
     const {metaDataHash,docHash} = await uploadToIpfs(files[0],setIsUploading);
-    
-    if(hash)
+    console.log("metaData and docHash",metaDataHash,docHash);
+    if(docHash)
       {
         if (
           verificationStep === "experienceVerifications" ||
@@ -154,11 +152,6 @@ export function AnimatedVerification({
       }
 
     try {
-      // Wait for all uploads to complete
-
-      
-      // await Promise.all(uploadPromises);
-      // console.log("Proof Array:", proofArray); // Ensure proofArray is correct
     
       // for updating ui to proof uploaded updating verifications object using its setter;
       setterVerificationObject((prev: any) => ({
@@ -191,7 +184,7 @@ export function AnimatedVerification({
 
   // TODO: uploadProof button onClick handler;
   const uploadProofOnclickHandler = () => {
-    console.log("onclick called for upload button");
+    //console.log("onclick called for upload button");
     // you can have files in files[] before upload it to the database;
     // <<---------------------------------------->>
 
