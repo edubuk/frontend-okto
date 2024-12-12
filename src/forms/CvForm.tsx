@@ -1084,7 +1084,7 @@ const CvForm = () => {
                 <Button type="button" onClick={getAccount}>
                   Connect Wallet
                 </Button>
-              ) : txHash ? (
+              ) : !txHash ? (
                 <Button type="button" onClick={registerCertificates}>
                   Register Certificates
                 </Button>
