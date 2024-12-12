@@ -119,36 +119,8 @@ export function AnimatedVerification({
     //const storage = getStorage(app);
     let hash:any;
     //setIsUploading(true);
-    hash = await uploadToIpfs(files[0],setIsUploading);
-    // const uploadPromises = files.map((file) => {
-
-      
-    //   // const fileName = new Date().getTime() + file.name;
-    //   // const storageRef = ref(storage, fileName);
-
-    //   // return new Promise<void>((resolve, reject) => {
-    //   //   const uploadTask = uploadBytesResumable(storageRef, file);
-
-    //   //   uploadTask.on(
-    //   //     "state_changed",
-    //   //     (snapshot) => {
-    //   //       const progress =
-    //   //         (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    //   //       console.log(`Upload is ${progress}% done`);
-    //   //     },
-    //   //     (error) => {
-    //   //       console.log(`Error while uploading to Firebase: ${error}`);
-    //   //       reject(error);
-    //   //     },
-    //   //     () => {
-    //   //       getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
-    //   //         proofArray.push(downloadUrl); // Add download URL to the array
-    //   //         resolve();
-    //   //       });
-    //   //     }
-    //   //   );
-    //   // });
-    // });
+    const {metaDataHash,docHash} = await uploadToIpfs(files[0],setIsUploading);
+    
     if(hash)
       {
         if (
@@ -157,7 +129,7 @@ export function AnimatedVerification({
           verificationStep === "awardVerifications" ||
           verificationStep === "courseVerifications"
         ) {
-          hashArray.push(hash);
+          hashArray.push(metaDataHash as string);
         
           // Retrieve existing hashArray from localStorage
           let data = localStorage.getItem("hashArray");
@@ -175,8 +147,8 @@ export function AnimatedVerification({
           localStorage.setItem("hashArray", JSON.stringify(updatedArray));
         }
         
-      setIpfsHash(hash);
-      proofArray.push(hash);
+      setIpfsHash(docHash as string);
+      proofArray.push(docHash as string);
       setDialogOpen(false);
       console.log("Proof Array:", proofArray); // Ensure proofArray is correct
       }

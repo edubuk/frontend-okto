@@ -2,11 +2,11 @@
 export const uploadToIpfs = async (
   inputFile: File | null,
   setIsUploading: (value: React.SetStateAction<boolean>) => void
-): Promise<string | null> => {
+): Promise<{ metaDataHash: string | null; docHash: string | null }> => {
   try {
     if (!inputFile) {
       console.warn("No file provided");
-      return null;
+      return {metaDataHash:null,docHash:null};
     }
 
     setIsUploading(true);
@@ -57,7 +57,7 @@ export const uploadToIpfs = async (
 
       if (jsonUploadResult?.IpfsHash) {
         console.log("Metadata uploaded successfully:", jsonUploadResult.IpfsHash);
-        return jsonUploadResult.IpfsHash;
+       return {metaDataHash:jsonUploadResult.IpfsHash, docHash:fileUploadResult.IpfsHash};
       } else {
         console.error("Failed to upload JSON metadata:", jsonUploadResult);
       }
@@ -70,7 +70,7 @@ export const uploadToIpfs = async (
     setIsUploading(false);
   }
 
-  return null; // Return null if upload fails
+  return {metaDataHash:null,docHash:null}; // Return null if upload fails
 };
 
   
