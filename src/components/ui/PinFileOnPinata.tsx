@@ -35,7 +35,7 @@ export const uploadToIpfs = async (
         description:
           "This NFT represents a unique and verifiable certification of educational achievement in the education domain.",
         image:
-          "https://gateway.pinata.cloud/ipfs/bafkreigo6up2ty4n62vuxvem7e7u77gfwsh53c3vcldzf7vofzgagukmmm",
+          "https://gateway.pinata.cloud/ipfs/bafkreiht6k6nbku5msadjocol4varmwykh67sjbhmfrbprqmqpse6lzk6u",
         hash: fileUploadResult.IpfsHash,
         date: new Date().toISOString(),
       };
