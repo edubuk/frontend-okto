@@ -21,6 +21,7 @@ export const useCV = () => {
     if (!response.ok) {
       throw new Error("Could not create cv at the moment try again latter");
     }
+    localStorage.clear();
     return response.json();
   };
 

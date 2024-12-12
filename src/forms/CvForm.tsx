@@ -15,16 +15,16 @@ import ProfileSummary from "./ProfileSummary";
 import { useCV } from "@/api/cv.apis";
 import LoadingButton from "@/components/LoadingButton";
 import dayjs from "dayjs";
-import {nanoid} from 'nanoid'
-import {connectWallet,getNFTContract} from "@/api/contract.api";
-import toast from 'react-hot-toast';
+import { nanoid } from "nanoid";
+import { connectWallet, getNFTContract } from "@/api/contract.api";
+import toast from "react-hot-toast";
 
 const formSchema = z.object({
-  loginMailId:z
-  .string({
-    required_error: "loginMaidId is required",
-  })
-  .max(50),
+  loginMailId: z
+    .string({
+      required_error: "loginMaidId is required",
+    })
+    .max(50),
   nanoId: z.string().optional(),
   name: z
     .string({
@@ -640,21 +640,20 @@ const CvForm = () => {
     },
   });
 
-  const { step, setStep,account,setAccount} = useCvFromContext();
+  const { step, setStep, account, setAccount } = useCvFromContext();
   const [profession, setProfession] = useState<string | null>(null);
   const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>(new FormData());
   const [txHash, setTxHash] = useState<string | null>(null);
   //const [account,setAccount] = useState<string | null>(null);
-   // trying to set nanoId in localStorage;
-   useEffect(() => {
+  // trying to set nanoId in localStorage;
+  useEffect(() => {
     const nanoId = nanoid(16);
     const storedNanoId = localStorage.getItem("nanoId");
     if (!storedNanoId) {
       localStorage.setItem("nanoId", nanoId);
     }
   }, []);
-
 
   const [selectedQualification, setSelectedQualification] = useState<string>(
     () => {
@@ -956,8 +955,9 @@ const CvForm = () => {
 
       // adding verifications;
     } else if (step === 6) {
-      const nanoId = (localStorage.getItem("nanoId"))??"12345678";
-      const loginMailId = sessionStorage.getItem("userMailId")??"ajeet@gmail.com";
+      const nanoId = localStorage.getItem("nanoId") ?? "12345678";
+      const loginMailId =
+        sessionStorage.getItem("userMailId") ?? "ajeet@gmail.com";
       //const userName= sessionStorage.getItem("userName"); // Use a fallback string
       console.log("Form is getting submitted now");
       console.log(currentFormData);
@@ -982,44 +982,41 @@ const CvForm = () => {
   // const onSubmit = (formDataJson: CvFormDataType) => {
   //   console.log("Submitted form data", formDataJson);
   // };
- const getAccount = async()=>{
-  try
-  {
-    const acc = await connectWallet();
-    if(acc)
-    {
-      setAccount(acc);
+  const getAccount = async () => {
+    try {
+      const acc = await connectWallet();
+      if (acc) {
+        setAccount(acc);
+      }
+      console.log("logged acc", acc);
+    } catch (e) {
+      console.log("error", e);
     }
-    console.log("logged acc",acc);
-  }
-  catch(e){
-    console.log("error",e)
-  }
- }
+  };
 
- const registerCertificates = async()=>{
-  const id=  toast.loading("registration initiated. Please wait...");
-  try{
-  const hashArray: string[] = JSON.parse(localStorage.getItem("hashArray") || "[]");
-  console.log("hashArray",hashArray);
-  const contractNFT = await getNFTContract();
-  //const tx = await contract?.addStudentData("Ajeet",hashArray);
-  const tx = await contractNFT?.safeMint(account,hashArray);
-  tx.wait();
-  //console.log("tx",tx);
-  if(tx?.hash)
-  {
-    setTxHash(tx.hash)
-    toast.dismiss(id);
-    toast.success("certificate registered");
-  }
-}catch(err)
-{
-  toast.dismiss(id);
-  console.log("error",err);
-  toast.error("something went wrong");
-}
- }
+  const registerCertificates = async () => {
+    const id = toast.loading("registration initiated. Please wait...");
+    try {
+      const hashArray: string[] = JSON.parse(
+        localStorage.getItem("hashArray") || "[]"
+      );
+      console.log("hashArray", hashArray);
+      const contractNFT = await getNFTContract();
+      //const tx = await contract?.addStudentData("Ajeet",hashArray);
+      const tx = await contractNFT?.safeMint(account, hashArray);
+      tx.wait();
+      //console.log("tx",tx);
+      if (tx?.hash) {
+        setTxHash(tx.hash);
+        toast.dismiss(id);
+        toast.success("certificate registered");
+      }
+    } catch (err) {
+      toast.dismiss(id);
+      console.log("error", err);
+      toast.error("something went wrong");
+    }
+  };
 
   return (
     <div>
@@ -1082,23 +1079,27 @@ const CvForm = () => {
                 {step === 6 ? "Submit" : "Save and next"}
               </Button>
             )}
-           {
-  step === 6 && (!account ? (
-    <Button type="button" onClick={getAccount}>Connect Wallet</Button>
-  ) : !txHash ? (
-    <Button type="button" onClick={registerCertificates}>Register Certificates</Button>
-  ) : (
-    <a 
-    className="w-full border border-[#006666] text-center rounded hover:bg-[#ccc] hover:opacity-90"
-      href={`https://amoy.polygonscan.com/tx/${txHash}`} 
-      target="_blank" 
-      rel="noopener noreferrer"
-    >
-      View Transaction
-    </a>
-  ))
-}
-
+            {step === 6 &&
+              (!account ? (
+                <Button type="button" onClick={getAccount}>
+                  Connect Wallet
+                </Button>
+              ) : txHash ? (
+                <Button type="button" onClick={registerCertificates}>
+                  Register Certificates
+                </Button>
+              ) : (
+                <div className="flex justify-center items-center w-full">
+                <a
+                  className="w-full px-2 py-1 text-center items-center border  rounded hover:bg-[#f8f9fa] font-semibold hover:opacity-90"
+                  href={`https://polygonscan.com/tx/${txHash}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                View Transaction
+                </a>
+                </div>
+              ))}
           </div>
         </form>
       </Form>
