@@ -4,12 +4,14 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
+import { twMerge } from "tailwind-merge";
 
 interface Props {
   value: any;
   setValue: React.Dispatch<React.SetStateAction<any>>;
   defaultDate: any;
   isDateFrom?: boolean;
+  isCurrentlyWorking?:boolean;
   index: number;
 }
 
@@ -17,9 +19,11 @@ export default function ReferenceDateUsingValue({
   value,
   setValue,
   // defaultDate,
+  isCurrentlyWorking,
   isDateFrom = false,
   index,
 }: Props) {
+  console.log("value to date",value);
   const storedFormData = localStorage.getItem("step3CvData");
   let Experience;
   if (storedFormData) {
@@ -40,6 +44,7 @@ export default function ReferenceDateUsingValue({
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={["DatePicker"]}>
         <DatePicker
+          disabled={!isDateFrom&&isCurrentlyWorking}
           value={value}
           onChange={setValue}
           // defaultValue={dayjs(`2022-04-17`)}
@@ -59,7 +64,7 @@ export default function ReferenceDateUsingValue({
           // )}
           defaultValue={initialDefaultDate}
           views={["year", "month", "day"]}
-          className="w-full"
+          className={twMerge("w-full",!isDateFrom&&isCurrentlyWorking?"cursor-not-allowed":"")}
         />
       </DemoContainer>
     </LocalizationProvider>

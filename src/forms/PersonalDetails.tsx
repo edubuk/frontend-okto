@@ -21,6 +21,8 @@ import { app } from "@/firebase";
 import { useState } from "react";
 import SelfAttestButton from "@/components/Buttons/SelfAttest";
 import { useCvFromContext } from "@/context/CvForm.context";
+import { FaGithub, FaInstagram, FaLinkedin, FaTelegram, FaTwitter } from "react-icons/fa";
+import { MdEmail, MdLocationPin, MdPerson, MdPhone } from "react-icons/md";
 
 type Props = {
   handleProfessionSelect: (profession: string) => void;
@@ -51,6 +53,21 @@ type PersonalVerificationsType = {
   phoneNumber: {
     isSelfAttested: boolean;
   };
+  linkedinProfile:{
+    isSelfAttested: boolean;
+  };
+  twitterProfile:{
+    isSelfAttested: boolean;
+  };
+  telegramProfile:{
+    isSelfAttested: boolean;
+  };
+  instagramProfile:{
+    isSelfAttested: boolean;
+  };
+  githubProfile:{
+    isSelfAttested: boolean;
+  }
 };
 
 const PersonalDetails = ({
@@ -125,7 +142,7 @@ const PersonalDetails = ({
 
   // console.log(personalDetailsVerifications);
   return (
-    <div className="flex flex-col gap-2 py-2">
+    <div className="flex flex-col gap-4 py-2">
       {/* name and email */}
       <div className="flex flex-col md:flex-row gap-2 px-2 md:px-10">
         <div className="flex-1">
@@ -134,7 +151,7 @@ const PersonalDetails = ({
             name="name"
             render={({ field }) => (
               <FormItem className="flex-1">
-                <FormLabel>Full name</FormLabel>
+                <FormLabel><div className="flex gap-1"> <MdPerson className="text-[#006666]"/>Full name</div></FormLabel>
                 <FormControl>
                   <Input placeholder="Enter full name" {...field} />
                 </FormControl>
@@ -169,7 +186,7 @@ const PersonalDetails = ({
             name="email"
             render={({ field }) => (
               <FormItem className="flex-1">
-                <FormLabel>Email</FormLabel>
+                <FormLabel><div className="flex gap-1"><MdEmail className="text-[#006666]"/>Email</div></FormLabel>
                 <FormControl>
                   <Input
                     required
@@ -202,16 +219,13 @@ const PersonalDetails = ({
             )}
           />
         </div>
-      </div>
-      {/* location and phone number */}
-      <div className="flex gap-2 md:gap-5 px-2 md:px-10">
         <div className="flex-1">
           <FormField
             control={control}
             name="location"
             render={({ field }) => (
               <FormItem className="flex-1">
-                <FormLabel>Location</FormLabel>
+                <FormLabel><div className="flex gap-1"><MdLocationPin className="text-[#006666]"/>Location</div></FormLabel>
                 <FormControl>
                   <Input placeholder="Your current location" {...field} />
                 </FormControl>
@@ -239,13 +253,17 @@ const PersonalDetails = ({
             )}
           />
         </div>
+
+      </div>
+      {/* location and phone number */}
+      <div className="flex flex-col md:flex-row gap-2 px-2 md:px-10">
         <div className="flex-1">
           <FormField
             control={control}
             name="phoneNumber"
             render={({ field }) => (
               <FormItem className="flex-1">
-                <FormLabel>Phone number</FormLabel>
+                <FormLabel><div className="flex gap-1"><MdPhone className="text-[#006666]"/> Phone number</div></FormLabel>
                 <FormControl>
                   <Input
                     type="number"
@@ -270,6 +288,191 @@ const PersonalDetails = ({
                   isAttested={
                     storedVerification &&
                     storedVerification?.phoneNumber?.isSelfAttested
+                  }
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="flex-1">
+          <FormField
+            control={control}
+            name="linkedinProfile"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel><div className="flex gap-1"><FaLinkedin className="text-[#0a66c2]"/>LinkedIn Profile URL</div></FormLabel>
+                <FormControl>
+                  <Input placeholder="Your linkedin url" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* self attest button */}
+          <FormField
+            control={control}
+            name="personalVerifications.linkedinProfile.isSelfAttested"
+            render={() => (
+              <FormItem className="flex-1">
+                <SelfAttestButton
+                  onClick={() => {
+                    handleSelfAttest("linkedinProfile");
+                  }}
+                  isAttested={
+                    storedVerification &&
+                    storedVerification?.linkedinProfile?.isSelfAttested
+                  }
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="flex-1">
+          <FormField
+            control={control}
+            name="twitterProfile"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel><div className="flex gap-1"><FaTwitter className="text-[#1da1f2]"/> X(twitter) Profile URL </div></FormLabel>
+                <FormControl>
+                  <Input
+                    type="string"
+                    placeholder="Your twitter profile"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* self attest button */}
+          <FormField
+            control={control}
+            name="personalVerifications.twitterProfile.isSelfAttested"
+            render={() => (
+              <FormItem className="flex-1">
+                <SelfAttestButton
+                  onClick={() => {
+                    handleSelfAttest("twitterProfile");
+                  }}
+                  isAttested={
+                    storedVerification &&
+                    storedVerification?.twitterProfile?.isSelfAttested
+                  }
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+      </div>
+      {/* social links */}
+      <div className="flex flex-col md:flex-row gap-2 px-2 md:px-10">
+        <div className="flex-1">
+          <FormField
+            control={control}
+            name="telegramProfile"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel><div className="flex gap-1"><FaTelegram className="text-[#0088cc]"/>Telegram Profile URL</div></FormLabel>
+                <FormControl>
+                  <Input placeholder="Your telegram url" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* self attest button */}
+          <FormField
+            control={control}
+            name="personalVerifications.telegramProfile.isSelfAttested"
+            render={() => (
+              <FormItem className="flex-1">
+                <SelfAttestButton
+                  onClick={() => {
+                    handleSelfAttest("telegramProfile");
+                  }}
+                  isAttested={
+                    storedVerification &&
+                    storedVerification?.telegramProfile?.isSelfAttested
+                  }
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="flex-1">
+          <FormField
+            control={control}
+            name="instagramProfile"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel><div className="flex gap-1"><FaInstagram className="text-[#c32aa3]"/>Instagram Profile URL</div></FormLabel>
+                <FormControl>
+                  <Input
+                    type="string"
+                    placeholder="Your instagram profile"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* self attest button */}
+          <FormField
+            control={control}
+            name="personalVerifications.instagramProfile.isSelfAttested"
+            render={() => (
+              <FormItem className="flex-1">
+                <SelfAttestButton
+                  onClick={() => {
+                    handleSelfAttest("instagramProfile");
+                  }}
+                  isAttested={
+                    storedVerification &&
+                    storedVerification?.instagramProfile?.isSelfAttested
+                  }
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="flex-1">
+          <FormField
+            control={control}
+            name="githubProfile"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel><div className="flex gap-1"><FaGithub className="text-[#171515]"/>Github Profile URL</div></FormLabel>
+                <FormControl>
+                  <Input
+                    type="string"
+                    placeholder="Your github profile"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* self attest button */}
+          <FormField
+            control={control}
+            name="personalVerifications.githubProfile.isSelfAttested"
+            render={() => (
+              <FormItem className="flex-1">
+                <SelfAttestButton
+                  onClick={() => {
+                    handleSelfAttest("githubProfile");
+                  }}
+                  isAttested={
+                    storedVerification &&
+                    storedVerification?.githubProfile?.isSelfAttested
                   }
                 />
                 <FormMessage />

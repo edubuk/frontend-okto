@@ -1,3 +1,5 @@
+import PostGraduateCal from "@/components/calendars/PostGraduateCal";
+import UnderGraduateCal from "@/components/calendars/UnderGradualteCal";
 import { AnimatedVerification } from "@/components/ui/AnimatedVerification";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,9 +11,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useCvFromContext } from "@/context/CvForm.context";
+import { convertDateToString } from "@/utils";
+import dayjs from "dayjs";
 //import { convertDateToString } from "@/utils";
 //import dayjs from "dayjs";
-import { useState} from "react";
+import { useEffect, useRef, useState} from "react";
 import { useFormContext } from "react-hook-form";
 
 const highestQualification: string[] = [
@@ -40,44 +44,72 @@ const Education = ({
   console.log(getValues());
 
 
-  //  // Initialize date from localStorage only once
-  //  const initialDate = useRef(() => {
-  //   const storedFormData = localStorage.getItem("step2CvData");
-  //   if (storedFormData) {
-  //     const parsedFormData = JSON.parse(storedFormData);
-  //     return (
-  //       parsedFormData?.underGraduateDuration?.duration || {
-  //         from: null,
-  //         to: null,
-  //       }
-  //     );
-  //   }
-  //   return { from: null, to: null };
-  // });
+   // Initialize date from localStorage only once
+   const initialDate = useRef(() => {
+    const storedFormData = localStorage.getItem("step2CvData");
+    if (storedFormData) {
+      const parsedFormData = JSON.parse(storedFormData);
+      return (
+        parsedFormData?.underGraduateDuration?.duration || {
+          from: null,
+          to: null,
+        }
+      );
+    }
+    return { from: null, to: null };
+  });
 
-  // const {setValue} = useFormContext();
+   const initialDate2 = useRef(() => {
+    const storedFormData = localStorage.getItem("step2CvData");
+    console.log("stored farm data",storedFormData);
+    if (storedFormData) {
+      const parsedFormData = JSON.parse(storedFormData);
+      return (
+        parsedFormData?.postGraduateDuration?.duration || {
+          from: null,
+          to: null,
+        }
+      );
+    }
+    return { from: null, to: null };
+  });
+
+  const {setValue} = useFormContext();
 
 
-  // const [date, setDate] = useState(initialDate.current);
-  // const [dateFrom, setDateFrom] = useState(dayjs(date.from));
-  // const [dateTo, setDateTo] = useState(dayjs(date.to));
-  // console.log("date check is ", date);
-  // // Update the form field whenever date changes
-  // useEffect(() => {
-  //   if (date.from && date.to) {
-  //     setValue(`underGraduateDuration.duration`, date);
-  //   }
-  // }, [date, setValue]);
+  const [date, setDate] = useState(initialDate.current);
+  const [date2, setDate2] = useState(initialDate2.current);
+  const [dateFrom, setDateFrom] = useState(dayjs(date.from));
+  const [dateTo, setDateTo] = useState(dayjs(date.to));
+  const [dateFrom2, setDateFrom2] = useState(dayjs(date2.from));
+  const [dateTo2, setDateTo2] = useState(dayjs(date2.to));
+  console.log("undergraduate date ", date);
+  console.log("postgraduate date", date2);
+  // Update the form field whenever date changes
+  useEffect(() => {
+    if (date.from && date.to) {
+      setValue(`underGraduateDuration.duration`, date);
+    }
+    if (date2.from && date2.to) {
+      setValue(`postGraduateDuration.duration`, date2);
+    }
+  }, [date,date2,setValue]);
 
-  // // Update date when dateFrom or dateTo changes
-  // useEffect(() => {
-  //   if (dateFrom && dateTo) {
-  //     setDate({
-  //       from: convertDateToString(dateFrom),
-  //       to: convertDateToString(dateTo),
-  //     });
-  //   }
-  // }, [dateFrom, dateTo]);
+  // Update date when dateFrom or dateTo changes
+  useEffect(() => {
+    if (dateFrom && dateTo) {
+      setDate({
+        from: convertDateToString(dateFrom),
+        to: convertDateToString(dateTo),
+      });
+    }
+    if (dateFrom2 && dateTo2) {
+      setDate2({
+        from: convertDateToString(dateFrom2),
+        to: convertDateToString(dateTo2),
+      });
+    }
+  }, [dateFrom, dateTo,dateFrom2, dateTo2]);
 
   return (
     <>
@@ -317,7 +349,7 @@ const Education = ({
                 />
               </div>
 
-        {/*     <div className="flex justify-center gap-2 items-center py-2">
+    <div className="flex justify-center gap-2 items-center py-2">
   
         <FormField
           name={`underGraduateDuration.duration`}
@@ -458,6 +490,38 @@ const Education = ({
                   )}
                 />
               </div>
+              <div className="flex justify-center gap-2 items-center py-2">
+  
+        <FormField
+          name={`postGraduateDuration.duration`}
+          control={control}
+          render={() => (
+            <FormItem className="flex  gap-1 flex-col justify-center mt-2">
+              <FormLabel className="">Post Graduation Duration</FormLabel>
+              <FormControl>
+                <div className="flex gap-10">
+                  <div className="">
+                    <p className="text-base">From</p>
+                    <PostGraduateCal
+                      value={dateFrom2}
+                      setValue={setDateFrom2}
+                      isDateFrom
+                    />
+                  </div>
+                  <div>
+                    <p className="text-base">To</p>
+                     <PostGraduateCal
+                      value={dateTo2}
+                      setValue={setDateTo2}
+                    />
+                  </div>
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
               {/* Animated skills section */}
               <div className="flex flex-col gap-4 sm:px-10">
                 {/* for tablets and desktops */}

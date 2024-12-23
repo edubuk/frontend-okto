@@ -7,11 +7,13 @@ export const sendEmail = async (
     mailId:string
   ) => {
     //event.preventDefault();
+    const sluggedField = field.trim().replace(/\s+/g, '-');
     const nanoId= localStorage.getItem("nanoId");
+    const userName = localStorage.getItem("userName")
     const templateParams = {
-      receiver_name: "University",
-      student_name: "Ajeet",
-      doc_link: `${import.meta.env.VITE_BaseURL}/cv/verifyDoc/${pinataHash}/${verificationStep}/${field}/${nanoId}`,
+      receiver_name: "University/Institution",
+      student_name: userName,
+      doc_link: `${import.meta.env.VITE_BaseURL}/cv/verifyDoc/${pinataHash}/${verificationStep}/${sluggedField}/${nanoId}`,
       receiver_email: mailId,
       
     };

@@ -18,6 +18,7 @@ import { AnimatedVerification } from "@/components/ui/AnimatedVerification";
 import { convertDateToString } from "@/utils";
 import dayjs from "dayjs";
 
+
 type Props = {
   fields: Record<"id", string>[];
   index: number;
@@ -56,6 +57,7 @@ const ExperienceFields = ({ index, removeExperienceFields, fields }: Props) => {
   });
 
   const [date, setDate] = useState(initialDate.current);
+  const [isCurrentlyWorking, setCurrentlyWorking] = useState<boolean>(false)
   const [dateFrom, setDateFrom] = useState(dayjs(date.from));
   const [dateTo, setDateTo] = useState(dayjs(date.to));
   console.log("date check is ", date);
@@ -71,7 +73,7 @@ const ExperienceFields = ({ index, removeExperienceFields, fields }: Props) => {
     if (dateFrom && dateTo) {
       setDate({
         from: convertDateToString(dateFrom),
-        to: convertDateToString(dateTo),
+        to:isCurrentlyWorking? "present":convertDateToString(dateTo),
       });
     }
   }, [dateFrom, dateTo]);
@@ -139,6 +141,11 @@ const ExperienceFields = ({ index, removeExperienceFields, fields }: Props) => {
           render={() => (
             <FormItem className="flex flex-1 gap-1 flex-col justify-center mt-2">
               <FormLabel className="">Duration</FormLabel>
+              <FormLabel className="flex  gap-1"><Input
+                     className="size-4"
+                     type="checkbox" 
+                     onChange={()=>setCurrentlyWorking(!isCurrentlyWorking)}
+                     />You are currently working here</FormLabel>
               <FormControl>
                 <div className="flex gap-10">
                   <div className="">
@@ -158,6 +165,7 @@ const ExperienceFields = ({ index, removeExperienceFields, fields }: Props) => {
                       setValue={setDateTo}
                       defaultDate={date}
                       index={index}
+                    isCurrentlyWorking={isCurrentlyWorking}
                     />
                   </div>
                 </div>

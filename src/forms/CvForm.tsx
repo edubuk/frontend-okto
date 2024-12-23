@@ -99,6 +99,35 @@ const formSchema = z.object({
       .min(0, { message: "Enter GPA between 0 to 10" })
       .max(10, { message: "Enter GPA between 0 to 10" })
   ),
+
+  underGraduateDuration:z.object({
+  duration:z
+        .object({
+          from: z
+            .union([z.string(), z.date()])
+            .refine((val) => val && dayjs(val).isValid(), {
+              message: "Start date is required",
+            }),
+          to: z
+            .union([z.string(), z.date()])
+            .refine((val) => val && dayjs(val).isValid(), {
+              message: "End date is required",
+            }),
+        })
+        .refine(
+          (data) => {
+            // Check if both from and to are valid and present
+            const isFromValid = data.from && dayjs(data.from).isValid();
+            const isToValid = data.to && dayjs(data.to).isValid();
+
+            // Both dates must be valid
+            return isFromValid && isToValid;
+          },
+          {
+            message: "Both start date and end date are required.",
+          }
+        ),
+      }),
   //postgraduation
   postGraduateCollegeName: z.string({
     required_error: "post graduation college is required",
@@ -118,6 +147,35 @@ const formSchema = z.object({
       .min(0, { message: "Enter GPA between 0 to 10" })
       .max(10, { message: "Enter GPA between 0 to 10" })
   ),
+
+  postGraduateDuration:z.object({
+    duration:z
+          .object({
+            from: z
+              .union([z.string(), z.date()])
+              .refine((val) => val && dayjs(val).isValid(), {
+                message: "Start date is required",
+              }),
+            to: z
+              .union([z.string(), z.date()])
+              .refine((val) => val && dayjs(val).isValid(), {
+                message: "End date is required",
+              }),
+          })
+          .refine(
+            (data) => {
+              // Check if both from and to are valid and present
+              const isFromValid = data.from && dayjs(data.from).isValid();
+              const isToValid = data.to && dayjs(data.to).isValid();
+  
+              // Both dates must be valid
+              return isFromValid && isToValid;
+            },
+            {
+              message: "Both start date and end date are required.",
+            }
+          ),
+        }),
 
   // step 3 fields  (Experience)
   Years_of_experience: z.preprocess(
@@ -149,23 +207,20 @@ const formSchema = z.object({
             }),
           to: z
             .union([z.string(), z.date()])
-            .refine((val) => val && dayjs(val).isValid(), {
+            .refine((val) => val || dayjs(val).isValid(), {
               message: "End date is required",
-            }),
-        })
-        .refine(
-          (data) => {
-            // Check if both from and to are valid and present
-            const isFromValid = data.from && dayjs(data.from).isValid();
-            const isToValid = data.to && dayjs(data.to).isValid();
-
-            // Both dates must be valid
-            return isFromValid && isToValid;
-          },
-          {
-            message: "Both start date and end date are required.",
-          }
-        ),
+            })
+        }),
+        // }).refine(
+        //   (data) => {
+        //     const isFromValid = data.from && dayjs(data.from).isValid();
+        //     const isToValid = !data.to || dayjs(data.to).isValid(); // Allow `to` to be optional
+        //     return isFromValid && isToValid;
+        //   },
+        //   {
+        //     message: "Start date is required, and end date must be valid if provided.",
+        //   }
+        // ),
       description: z
         .string({ required_error: "Work description is required" })
         .min(1, { message: "description is required" }),
@@ -747,6 +802,11 @@ const CvForm = () => {
           "personalVerifications.location.isSelfAttested" as any,
           "personalVerifications.imageUrl.isSelfAttested" as any,
           "personalVerifications.phoneNumber.isSelfAttested" as any,
+          "personalVerifications.linkedinProfile.isSelfAttested" as any,
+          "personalVerifications.twitterProfile.isSelfAttested" as any,
+          "personalVerifications.telegramProfile.isSelfAttested" as any,
+          "personalVerifications.instagramProfile.isSelfAttested" as any,
+          "personalVerifications.githubProfile.isSelfAttested" as any,
           // "personalDetailsVerifications.email.isSelfAttested",
           // "personalDetailsVerifications.location.isSelfAttested",
           // "personalDetailsVerifications.profession.isSelfAttested",
@@ -770,6 +830,11 @@ const CvForm = () => {
           "personalVerifications.location.isSelfAttested" as any,
           "personalVerifications.imageUrl.isSelfAttested" as any,
           "personalVerifications.phoneNumber.isSelfAttested" as any,
+          "personalVerifications.linkedinProfile.isSelfAttested" as any,
+          "personalVerifications.twitterProfile.isSelfAttested" as any,
+          "personalVerifications.telegramProfile.isSelfAttested" as any,
+          "personalVerifications.instagramProfile.isSelfAttested" as any,
+          "personalVerifications.githubProfile.isSelfAttested" as any,
           // "personalDetailsVerifications.email.isSelfAttested",
           // "personalDetailsVerifications.location.isSelfAttested",
           // "personalDetailsVerifications.profession.isSelfAttested",
@@ -837,6 +902,7 @@ const CvForm = () => {
           "underGraduateCollegeName",
           "underGraduateDegreeName",
           "underGraduateGPA",
+          "underGraduateDuration",
           "educationVerificationValidations.undergraduation" as any
         );
       }
@@ -847,6 +913,7 @@ const CvForm = () => {
           "postGraduateCollegeName",
           "postGraduateDegreeName",
           "postGraduateGPA",
+          "postGraduateDuration",
           "educationVerificationValidations.postgraduation" as any
         );
       }
@@ -982,6 +1049,8 @@ const CvForm = () => {
   // const onSubmit = (formDataJson: CvFormDataType) => {
   //   console.log("Submitted form data", formDataJson);
   // };
+
+  // setting account address
   const getAccount = async () => {
     try {
       const acc = await connectWallet();
@@ -994,6 +1063,7 @@ const CvForm = () => {
     }
   };
 
+  // certificates registration on chain
   const registerCertificates = async () => {
     const id = toast.loading("registration initiated. Please wait...");
     try {
@@ -1017,6 +1087,41 @@ const CvForm = () => {
       toast.error("something went wrong");
     }
   };
+
+  // reset page data
+  const resetPageHandler = (step:number):void=>{
+    switch(step)
+    {
+      case 1:
+        localStorage.removeItem("step1CvData");
+        localStorage.setItem("currentStep",step.toString());
+        window.location.reload();
+        break;
+      case 2:
+        localStorage.removeItem("step2CvData");
+        localStorage.setItem("currentStep",step.toString());
+        window.location.reload();
+        break;
+      case 3:
+        localStorage.removeItem("step3CvData");
+        localStorage.setItem("currentStep",step.toString());
+        window.location.reload();
+        break;
+      case 4:
+        localStorage.removeItem("step4CvData");
+        localStorage.setItem("currentStep",step.toString());
+        window.location.reload();
+        break;
+      case 5:
+        localStorage.removeItem("step5CvData");
+        localStorage.setItem("currentStep",step.toString());
+        window.location.reload();
+        break;
+      default:
+        toast.error("This page data not stored. Please refresh the page...");
+
+    }
+  }
 
   return (
     <div>
@@ -1049,58 +1154,71 @@ const CvForm = () => {
           {step === 5 && <Achievements />}
           {step === 6 && <ProfileSummary />}
           {/* save and next button */}
-          <div className="w-full mt-40 px-0 md:px-12  flex gap-5">
-            {step !== 1 && (
-              <Button
-                onClick={() => {
-                  setStep((prev) => prev - 1);
-                }}
-                type="button"
-                variant={"outline"}
-                className="w-fit"
-              >
-                <GrLinkPrevious className="mr-3" /> Go to Previous step
-              </Button>
-            )}
+          <div className="w-full mt-40 px-0 md:px-12 flex flex-col gap-5 sm:w-full">
+  {step !== 1 && (
+    <Button
+      onClick={() => {
+        setStep((prev) => prev - 1);
+      }}
+      type="button"
+      variant={"outline"}
+      className="w-full sm:w-auto"
+    >
+      <GrLinkPrevious className="mr-3" /> Go to Previous step
+    </Button>
+  )}
 
-            {isLoading ? (
-              <LoadingButton className="w-full bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)]" />
-            ) : (
-              <Button
-                type="button"
-                onClick={stepsHandler}
-                disabled={isImageUploading}
-                className={`w-full bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)] hover:opacity-90 ${
-                  isImageUploading
-                    ? "cursor-not-allowed opacity-100"
-                    : "cursor-pointer"
-                }`}
-              >
-                {step === 6 ? "Submit" : "Save and next"}
-              </Button>
-            )}
-            {step === 6 &&
-              (!account ? (
-                <Button type="button" onClick={getAccount}>
-                  Connect Wallet
-                </Button>
-              ) : !txHash ? (
-                <Button type="button" onClick={registerCertificates}>
-                  Register Certificates
-                </Button>
-              ) : (
-                <div className="flex justify-center items-center w-full">
-                <a
-                  className="w-full px-2 py-1 text-center items-center border  rounded hover:bg-[#f8f9fa] font-semibold hover:opacity-90"
-                  href={`https://polygonscan.com/tx/${txHash}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                View Transaction
-                </a>
-                </div>
-              ))}
-          </div>
+  {isLoading ? (
+    <LoadingButton className="w-full bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)]" />
+  ) : (
+    <div className="flex gap-2 w-full flex-col sm:flex-row">
+      <Button
+        type="button"
+        onClick={stepsHandler}
+        disabled={isImageUploading}
+        className={`w-full sm:w-auto bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)] hover:opacity-90 ${
+          isImageUploading
+            ? "cursor-not-allowed opacity-100"
+            : "cursor-pointer"
+        }`}
+      >
+        {step === 6 ? "Submit" : "Save and next"}
+      </Button>
+      {step !== 6 && (
+        <Button
+          type="button"
+          onClick={() => resetPageHandler(step)}
+          className="w-full sm:w-auto mt-2 sm:mt-0"
+        >
+          Reset
+        </Button>
+      )}
+    </div>
+  )}
+
+  {step === 6 &&
+    (!account ? (
+      <Button type="button" onClick={getAccount} className="w-full sm:w-auto">
+        Connect Wallet
+      </Button>
+    ) : !txHash ? (
+      <Button type="button" onClick={registerCertificates} className="w-full sm:w-auto">
+        Register Certificates
+      </Button>
+    ) : (
+      <div className="flex justify-center items-center w-full">
+        <a
+          className="w-full px-2 py-1 text-center items-center border rounded hover:bg-[#f8f9fa] font-semibold hover:opacity-90"
+          href={`https://polygonscan.com/tx/${txHash}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View Transaction
+        </a>
+      </div>
+    ))}
+</div>
+
         </form>
       </Form>
     </div>

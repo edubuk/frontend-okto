@@ -9,9 +9,11 @@ type EducationType = {
   underGraduateCollege?: string;
   underGraduateDegree?: string;
   underGraduateGPA?: Number;
+  underGraduateDuration?:string;
   postGraduateCollege?: string;
   postGraduateDegree?: string;
   postGraduateGPA?: Number;
+  postGraduateDuration?:string;
 };
 
 export type ExperienceObjectType = {
@@ -55,6 +57,11 @@ type PersonalDetailsType = {
   profession: string;
   imageUrl: string;
   phoneNumber: string;
+  linkedinProfile:string;
+  twitterProfile:string;
+  telegramProfile:string;
+  instagramProfile:string;
+  githubProfile:string;
   years_of_experience: string;
 };
 

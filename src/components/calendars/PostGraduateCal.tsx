@@ -5,32 +5,32 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 
-interface Props {
+interface Props2 {
   value: any;
   setValue: React.Dispatch<React.SetStateAction<any>>;
   isDateFrom?: boolean;
 }
 
-export default function UnderGraduateCal({
+export default function PostGraduateCal({
   value,
   setValue,
   // defaultDate,
   isDateFrom = false,
-}: Props) {
+}: Props2) {
   const storedFormData = localStorage.getItem("step2CvData");
-  let underGraduateDuration;
+  let postGraduateDuration;
   if (storedFormData) {
     const parsedData = JSON.parse(storedFormData);
-    const { underGraduateDuration: pr } = parsedData;
-    underGraduateDuration = pr;
+    const { postGraduateDuration: pr } = parsedData;
+    postGraduateDuration = pr;
   }
 
   // Determine the initial default date as a dayjs object
-  const initialDefaultDate =
+  const initialDefaultDate2 =
     dayjs(
       isDateFrom
-        ? underGraduateDuration?.duration?.from
-        : underGraduateDuration?.duration?.to
+        ? postGraduateDuration?.duration?.from
+        : postGraduateDuration?.duration?.to
     ) || dayjs("2022-04-17"); // Fallback to a specific date if undefined
 
   return (
@@ -39,7 +39,7 @@ export default function UnderGraduateCal({
         <DatePicker
           value={value}
           onChange={setValue}
-          defaultValue={initialDefaultDate}
+          defaultValue={initialDefaultDate2}
           views={["year", "month", "day"]}
           className="w-full"
         />
@@ -47,5 +47,8 @@ export default function UnderGraduateCal({
     </LocalizationProvider>
   );
 }
+
+
+
 
 

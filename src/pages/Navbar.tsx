@@ -1,18 +1,35 @@
+import React, { useState } from "react";
 import logo from "../assets/EdubukLogoClean.png";
 import { Link } from "react-router-dom";
-import { useState} from "react";
-import {handleConnect,logout}  from "@/Web3Auth/Web3AuthLogin";
+import { handleConnect, logout } from "@/Web3Auth/Web3AuthLogin";
+
+interface LinkItem {
+  path: string;
+  name: string;
+}
+
+interface SidebarProps {
+  isOpen: boolean;
+  links: LinkItem[];
+  setIsSidebarOpen:React.Dispatch<React.SetStateAction<boolean>>
+}
 
 const Navbar = () => {
   const [isActive, setActive] = useState("Home");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const handlerLogin = async()=>{
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prevState) => !prevState);
+  };
+
+  const handlerLogin = async () => {
     await handleConnect();
-  }
-    const handlerLogout = async()=>{
+  };
+
+  const handlerLogout = async () => {
     await logout();
-   
-    }
+  };
+
   const handlerActive = (linkName: string): void => {
     setActive(linkName);
   };
@@ -32,13 +49,13 @@ const Navbar = () => {
     },
   ];
 
-
   return (
     <div className="flex justify-between items-center px-8 py-4 w-screen h-[20vh]">
       <img src={logo} alt="Logo" className="h-16 w-16" />
-      <div className="flex space-x-6">
-      {links?.map((link, i) =>
-          (link.name==="Home"?
+      <div className="flex gap-2 justify-between items-center">
+      <div className=" space-x-6 hidden md:block">
+        {links?.map((link, i) =>
+          link.name === "Home" ? (
             <Link
               key={i + 1}
               to={link.path}
@@ -48,7 +65,92 @@ const Navbar = () => {
               } hover:text-blue-500 transition duration-200 py-2`}
             >
               {link.name}
-            </Link>:sessionStorage.getItem("userMailId")&&<Link
+            </Link>
+          ) : (
+            sessionStorage.getItem("userMailId") && (
+              <Link
+                key={i + 1}
+                to={link.path}
+                onClick={() => handlerActive(link.name)}
+                className={`${
+                  isActive === link.name ? "text-blue-500" : "text-[#006666]"
+                } hover:text-blue-500 transition duration-200 py-2`}
+              >
+                {link.name}
+              </Link>
+            )
+          )
+        )}
+        {!sessionStorage.getItem("userMailId") ? (
+          <button
+            onClick={handlerLogin}
+            className="bg-blue-500 py-2 px-4 rounded-full text-white"
+          >
+            Login
+          </button>
+        ) : (
+          <button
+            onClick={handlerLogout}
+            className="bg-white-500 border border-slate-500 py-2 px-4 rounded-full text-[#006666]"
+          >
+            Logout
+          </button>
+        )}
+      </div>
+      {/* Hamburger Menu */}
+      <div
+        className={`relative flex flex-col items-center justify-center w-8 h-8 cursor-pointer space-y-1.5 transition-all duration-300 ease-in-out ${
+          isSidebarOpen ? "open" : ""
+        }`}
+        onClick={toggleSidebar}
+      >
+        <span
+          className={`block w-8 h-1 bg-[#006666] rounded transition duration-300 ease-in-out ${
+            isSidebarOpen ? "transform translate-y-3 rotate-45" : ""
+          }`}
+        ></span>
+        <span
+          className={`block w-8 h-1 bg-[#006666] rounded transition duration-300 ease-in-out ${
+            isSidebarOpen ? "opacity-0" : ""
+          }`}
+        ></span>
+        <span
+          className={`block w-8 h-1 bg-[#006666] rounded transition duration-300 ease-in-out ${
+            isSidebarOpen ? "transform -translate-y-2 -rotate-45" : ""
+          }`}
+        ></span>
+      </div>
+      </div>
+      {/* Sidebar */}
+      <Sidebar isOpen={isSidebarOpen} links={links}  setIsSidebarOpen={setIsSidebarOpen} />
+    </div>
+  );
+};
+
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, links,setIsSidebarOpen }) => {
+  const [isActive, setActive] = useState("Home");
+  const handlerLogin = async () => {
+    await handleConnect();
+  };
+
+  const handlerLogout = async () => {
+    await logout();
+  };
+
+  const handlerActive = (linkName: string): void => {
+    setActive(linkName);
+    setIsSidebarOpen(false);
+  };
+
+  return (
+    <div
+  className={`fixed top-0 left-0 w-64 h-full bg-white text-[#006666] transform transition duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"} shadow-lg z-10`}
+>
+  <ul className="flex flex-col space-y-4 p-4">
+  <img src={logo} alt="Logo" className="h-16 w-16" />
+  {links?.map((link, i) =>
+          link.name === "Home" ? (
+            <Link
               key={i + 1}
               to={link.path}
               onClick={() => handlerActive(link.name)}
@@ -58,14 +160,39 @@ const Navbar = () => {
             >
               {link.name}
             </Link>
+          ) : (
+            sessionStorage.getItem("userMailId") && (
+              <Link
+                key={i + 1}
+                to={link.path}
+                onClick={() => handlerActive(link.name)}
+                className={`${
+                  isActive === link.name ? "text-blue-500" : "text-[#006666]"
+                } hover:text-blue-500 transition duration-200 py-2`}
+              >
+                {link.name}
+              </Link>
+            )
           )
         )}
-        {!sessionStorage.getItem("userMailId")?
-        <button onClick={handlerLogin} className="bg-blue-500 py-2 px-4 rounded-full text-white">Login</button>
-        :<button onClick={handlerLogout} className="bg-white-500 border border-slate-500 py-2 px-4 rounded-full text-[#006666]">Logout</button>
-        }
-      </div>
-    </div>
+        {!sessionStorage.getItem("userMailId") ? (
+          <button
+            onClick={handlerLogin}
+            className="bg-blue-500 py-2 px-4 rounded-full text-white"
+          >
+            Login
+          </button>
+        ) : (
+          <button
+            onClick={handlerLogout}
+            className="bg-white-500 border border-slate-500 py-2 px-4 rounded-full text-[#006666]"
+          >
+            Logout
+          </button>
+        )}
+  </ul>
+</div>
+
   );
 };
 
