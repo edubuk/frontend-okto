@@ -11,7 +11,7 @@ const CircularLoader: React.FC<CircularLoaderProps> = ({ status }) => {
   const [text, setText] = useState<string>("00");
 
   useEffect(() => {
-    if (status !== "RUNNING") return; // Only run the timer when status is "RUNNING"
+    //if (status !== "RUNNING") return; // Only run the timer when status is "RUNNING"
 
     let count = 0;
     const totalSeconds = 120;
