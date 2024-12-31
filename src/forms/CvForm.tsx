@@ -1,3 +1,4 @@
+
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -6,6 +7,7 @@ import { GrLinkPrevious } from "react-icons/gr";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import PersonalDetails from "./PersonalDetails";
+import CircularLoader from "../components/ui/CircularLoader"
 import { useCvFromContext } from "@/context/CvForm.context";
 import Education from "./Education";
 import Experience from "./Experience";
@@ -19,7 +21,8 @@ import { nanoid } from "nanoid";
 import toast from "react-hot-toast";
 import { useOkto } from "okto-sdk-react";
 import { ethers } from "ethers";
-import CircularLoader from "../components/ui/CircularLoader";
+
+
 
 const formSchema = z.object({
   loginMailId: z
@@ -703,7 +706,7 @@ const CvForm = () => {
   const [formData, setFormData] = useState<FormData>(new FormData());
   const [txHash, setTxHash] = useState<string | null>(null);
   const {executeRawTransaction,getRawTransactionStatus,getWallets} = useOkto();
-  const [status,setStatus] = useState<string>("RUNNING");
+  const [status, setStatus] = useState<"RUNNING" | "PUBLISHED" | "SUCCESS">("RUNNING");
   const [loading,setLoading] = useState<boolean>(false);
   // trying to set nanoId in localStorage;
   useEffect(() => {
@@ -1116,7 +1119,7 @@ const CvForm = () => {
           const timer = setInterval(async()=>{
             count++
             const res = await getRawTransactionStatus(orderId);
-            setStatus(res.jobs[0].status);
+            setStatus(res.jobs[0].status as "RUNNING" | "PUBLISHED" | "SUCCESS");
             if(res?.jobs[0]?.status==="SUCCESS")
             {
               //toast.dismiss();

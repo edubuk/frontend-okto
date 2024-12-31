@@ -1,4 +1,4 @@
-import React, {useState } from "react";
+import React, {useEffect, useState } from "react";
 import logo from "../assets/EdubukLogoClean.png";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import { MdCancel, MdContentCopy, MdOutlineAccountBalanceWallet } from "react-ic
 import { LiaNetworkWiredSolid } from "react-icons/lia";
 import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
+
 interface LinkItem {
   path: string;
   name: string;
@@ -50,6 +51,7 @@ interface Wallet {
 const Navbar = () => {
   const [isActive, setActive] = useState("/");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [auth,setAuth] = useState<string>();
   const [userDetails, setUserDetails] = useState<User>();
   const [address,setAddress] = useState<string>();
   const [networkName,setNetworkName] = useState<string>();
@@ -105,15 +107,11 @@ const Navbar = () => {
     //console.log("google idtoken: ", idToken);
     authenticate(idToken, async (authResponse, error) => {
       if (authResponse) {
-        const userDetails = await getUserDetails();
-        if(userDetails)
-        {
-          console.log("user-details",userDetails);
-        }
-        console.log("Authentication check: ", authResponse);
+        //console.log("Authentication check: ", authResponse);
         //setAuthToken(authResponse.auth_token);
+        setAuth(authResponse.auth_token)
         sessionStorage.setItem("oktoAuthToken",authResponse.auth_token)
-        console.log("auth token received", authResponse.auth_token);
+        //console.log("auth token received", authResponse.auth_token);
         setLoginModel(false);
         navigate("/");
       }
@@ -159,6 +157,24 @@ const Navbar = () => {
       path: "/dashboard",
     },
   ];
+
+  const getUserData =async()=>{
+    try {
+      const userDetails = await getUserDetails();
+        if(userDetails)
+        {
+          console.log("user-details",userDetails.email);
+          sessionStorage.setItem("userMailId",userDetails.email)
+        }
+    } catch (error) {
+      
+    }
+  }
+
+
+  useEffect(()=>{
+    getUserData();
+  },[auth])
 
   return (
     <div className="flex justify-between items-center px-8 py-4 w-screen h-[20vh]">
