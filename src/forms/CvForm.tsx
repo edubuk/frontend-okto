@@ -16,8 +16,10 @@ import { useCV } from "@/api/cv.apis";
 import LoadingButton from "@/components/LoadingButton";
 import dayjs from "dayjs";
 import { nanoid } from "nanoid";
-import { connectWallet, getNFTContract } from "@/api/contract.api";
 import toast from "react-hot-toast";
+import { useOkto } from "okto-sdk-react";
+import { ethers } from "ethers";
+import CircularLoader from "../components/ui/CircularLoader";
 
 const formSchema = z.object({
   loginMailId: z
@@ -695,12 +697,14 @@ const CvForm = () => {
     },
   });
 
-  const { step, setStep, account, setAccount } = useCvFromContext();
+  const { step, setStep} = useCvFromContext();
   const [profession, setProfession] = useState<string | null>(null);
   const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>(new FormData());
   const [txHash, setTxHash] = useState<string | null>(null);
-  //const [account,setAccount] = useState<string | null>(null);
+  const {executeRawTransaction,getRawTransactionStatus,getWallets} = useOkto();
+  const [status,setStatus] = useState<string>("RUNNING");
+  const [loading,setLoading] = useState<boolean>(false);
   // trying to set nanoId in localStorage;
   useEffect(() => {
     const nanoId = nanoid(16);
@@ -1050,43 +1054,107 @@ const CvForm = () => {
   //   console.log("Submitted form data", formDataJson);
   // };
 
-  // setting account address
-  const getAccount = async () => {
-    try {
-      const acc = await connectWallet();
-      if (acc) {
-        setAccount(acc);
-      }
-      console.log("logged acc", acc);
-    } catch (e) {
-      console.log("error", e);
-    }
-  };
 
-  // certificates registration on chain
-  const registerCertificates = async () => {
-    const id = toast.loading("registration initiated. Please wait...");
+  const abi = [
+    {
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "to",
+					"type": "address"
+				},
+				{
+					"internalType": "string[]",
+					"name": "uri",
+					"type": "string[]"
+				}
+			],
+			"name": "safeMint",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		}
+  ];
+
+  // mint NFT on chain
+  const mintNFT = async () => {
+    const id = toast.loading("Registration started. Please wait.");
+    
+    const iface = new ethers.utils.Interface(abi);
     try {
-      const hashArray: string[] = JSON.parse(
-        localStorage.getItem("hashArray") || "[]"
-      );
-      console.log("hashArray", hashArray);
-      const contractNFT = await getNFTContract();
-      //const tx = await contract?.addStudentData("Ajeet",hashArray);
-      const tx = await contractNFT?.safeMint(account, hashArray);
-      tx.wait();
-      //console.log("tx",tx);
-      if (tx?.hash) {
-        setTxHash(tx.hash);
-        toast.dismiss(id);
-        toast.success("certificate registered");
+      const walletInfo = await getWallets();
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+  
+      if (walletInfo.wallets[1]?.address) {
+        const toAddress = walletInfo.wallets[1]?.address;
+        const uris = ["bafkreifjwb6t6zjqnqvesl6bzl677mzp3din4vbpyfzbex7zwjcasvdt3y"];
+  
+        // Encode the function data
+        const data = iface.encodeFunctionData("safeMint", [toAddress, uris]);
+  
+        const transactionData = {
+          from: toAddress, // user created wallet
+          to: "0xEe0cf0B70C3cC27bEEf29B3abCdBb33875a73bCD", // contract address
+          data: data, // abi encoded data
+          value: "0",
+        };
+  
+        const orderId: any = await executeRawTransaction({
+          network_name: walletInfo.wallets[1]?.network_name,
+          transaction: transactionData,
+        });
+  
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        console.log("orderid", orderId);
+
+        if(orderId)
+        {
+          let count=0;
+          toast.dismiss(id);
+          //let id2 = toast.loading("Current transaction status : RUNNING");
+          setLoading(true);
+          const timer = setInterval(async()=>{
+            count++
+            const res = await getRawTransactionStatus(orderId);
+            setStatus(res.jobs[0].status);
+            if(res?.jobs[0]?.status==="SUCCESS")
+            {
+              //toast.dismiss();
+              setTxHash(res?.jobs[0]?.transaction_hash)
+              toast.success("CV Registered Successfully.");
+              clearInterval(timer);
+              setLoading(false);
+              return ;
+            }
+            else if(res.jobs[0].status==="FAILED")
+            {
+              //toast.dismiss(id2);
+              toast.error("Transaction Failed. Please try again");
+              clearInterval(timer);
+              setLoading(false);
+            }
+            if(count>8)
+            {
+              setTxHash(res?.jobs[0]?.transaction_hash)
+              clearInterval(timer);
+              //toast.dismiss(id2);
+              setLoading(false);
+            }
+            //toast.dismiss(id2);
+            //id2 = toast.loading(`Current transaction status :${res.jobs[0].status}`);
+          },20000)
+        }
+
+      } else {
+        toast.error("Please add some POL Token to your address to proceed...");
       }
     } catch (err) {
       toast.dismiss(id);
       console.log("error", err);
-      toast.error("something went wrong");
+      toast.error("Something went wrong. please try again");
     }
   };
+  
 
   // reset page data
   const resetPageHandler = (step:number):void=>{
@@ -1124,6 +1192,7 @@ const CvForm = () => {
   }
 
   return (
+    <>
     <div>
       <Form {...form}>
         <form
@@ -1154,7 +1223,7 @@ const CvForm = () => {
           {step === 5 && <Achievements />}
           {step === 6 && <ProfileSummary />}
           {/* save and next button */}
-          <div className="w-full mt-40 px-0 md:px-12 flex flex-col gap-5 sm:w-full">
+          <div className="w-full mt-40 px-0 md:px-12 flex flex-col gap-5 sm:flex-row sm:w-full">
   {step !== 1 && (
     <Button
       onClick={() => {
@@ -1162,21 +1231,21 @@ const CvForm = () => {
       }}
       type="button"
       variant={"outline"}
-      className="w-full sm:w-auto"
+      className="w-auto sm:w-full"
     >
       <GrLinkPrevious className="mr-3" /> Go to Previous step
     </Button>
   )}
 
   {isLoading ? (
-    <LoadingButton className="w-full bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)]" />
+    <LoadingButton className="w-auto bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)]" />
   ) : (
     <div className="flex gap-2 w-full flex-col sm:flex-row">
       <Button
         type="button"
         onClick={stepsHandler}
         disabled={isImageUploading}
-        className={`w-full sm:w-auto bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)] hover:opacity-90 ${
+        className={`w-auto sm:w-full bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)] hover:opacity-90 ${
           isImageUploading
             ? "cursor-not-allowed opacity-100"
             : "cursor-pointer"
@@ -1184,44 +1253,43 @@ const CvForm = () => {
       >
         {step === 6 ? "Submit" : "Save and next"}
       </Button>
-      {step !== 6 && (
+      {step !== 6 ? (
         <Button
           type="button"
           onClick={() => resetPageHandler(step)}
-          className="w-full sm:w-auto mt-2 sm:mt-0"
+          className="w-auto sm:w-full mt-2 sm:mt-0 "
         >
           Reset
-        </Button>
+        </Button>):
+         ( !txHash ? (
+            <Button type="button" onClick={mintNFT} className="w-auto sm:w-full active:translate-y-2">
+              Register Your CV on Blockchain
+            </Button>
+          ) : (
+            <div className="flex justify-center items-center w-auto sm:w-full">
+              <a
+                className="w-full px-2 py-1 text-center items-center border rounded hover:bg-[#f8f9fa] font-semibold hover:opacity-90"
+                href={`https://polygonscan.com/tx/${txHash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View Transaction
+              </a>
+            </div>
+          )
       )}
     </div>
   )}
-
-  {step === 6 &&
-    (!account ? (
-      <Button type="button" onClick={getAccount} className="w-full sm:w-auto">
-        Connect Wallet
-      </Button>
-    ) : !txHash ? (
-      <Button type="button" onClick={registerCertificates} className="w-full sm:w-auto">
-        Register Certificates
-      </Button>
-    ) : (
-      <div className="flex justify-center items-center w-full">
-        <a
-          className="w-full px-2 py-1 text-center items-center border rounded hover:bg-[#f8f9fa] font-semibold hover:opacity-90"
-          href={`https://polygonscan.com/tx/${txHash}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View Transaction
-        </a>
-      </div>
-    ))}
 </div>
-
         </form>
       </Form>
     </div>
+    {loading&&
+    <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-100 z-50">
+    <CircularLoader status={status}/>
+    </div>
+    }
+    </>
   );
 };
 

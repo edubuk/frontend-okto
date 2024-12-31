@@ -259,8 +259,8 @@ export function AnimatedVerification({
             />
           </div>
           <div ref={div3Ref} className="z-50 mt-2">
-            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-              <DialogTrigger>
+            <Dialog  open={dialogOpen} onOpenChange={setDialogOpen}>
+              <DialogTrigger disabled>
                 {/* triggering dialogue */}
               {!ipfsHash&&
                 <UploadProofButton

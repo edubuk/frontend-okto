@@ -6,11 +6,14 @@ import { CvFomContextProvider } from "./context/CvForm.context.tsx";
 import { QueryClient, QueryClientProvider } from "react-query";
 import {Toaster} from 'react-hot-toast';
 import { BrowserRouter } from "react-router-dom";
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Buffer } from "buffer";
 import process from "process";
 window.Buffer = Buffer;
 window.process = process;
 
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+console.log("google client id",GOOGLE_CLIENT_ID);
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -24,7 +27,9 @@ createRoot(document.getElementById("root")!).render(
       <CvFomContextProvider>
       <Toaster position="top-right" />
       <BrowserRouter>
+      <GoogleOAuthProvider clientId = {GOOGLE_CLIENT_ID}>
         <App />
+        </GoogleOAuthProvider>
       </BrowserRouter>
       </CvFomContextProvider>
     </QueryClientProvider>

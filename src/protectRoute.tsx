@@ -4,13 +4,13 @@ import { useNavigate, Outlet } from "react-router-dom";
 
 const ProtectedRoute = () => {
   const navigate = useNavigate();
-  const userMailId = sessionStorage.getItem("userMailId");
+  const authToken = sessionStorage.getItem("oktoAuthToken");
 
   useEffect(() => {
-    if (!userMailId) {
+    if (!authToken) {
       return navigate("/", { replace: true });
     }
-  }, [userMailId, navigate]);
+  }, [authToken, navigate]);
 
   return (
       <Outlet />

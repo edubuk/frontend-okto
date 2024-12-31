@@ -6,10 +6,14 @@ import DashBoard from "./pages/DashBoard";
 import Navbar from "./pages/Navbar";
 import PrivateRoute from "./protectRoute";
 import Resume from "./pages/ResumeTem";
+import { OktoProvider, BuildType } from 'okto-sdk-react';
 
 function App() {
+  const oktoAPIKey= import.meta.env.VITE_OKTO_CLIENT_API_KEY;
+
   return (
     <div>
+  <OktoProvider apiKey={oktoAPIKey} buildType={BuildType.SANDBOX} >
     <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -20,6 +24,7 @@ function App() {
           <Route path="cv/:id" element={<CvOutputPage />} />
         </Route>
       </Routes>
+      </OktoProvider>
     </div>
   );
 }

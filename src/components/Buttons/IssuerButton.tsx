@@ -9,6 +9,7 @@ const IssuerButton = (
   const { className, text, onClick } = props;
   return (
     <Button
+    disabled
       type="button"
       onClick={onClick}
       className={twMerge(

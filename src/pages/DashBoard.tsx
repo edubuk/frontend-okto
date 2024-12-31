@@ -34,8 +34,10 @@ const DashBoard = () => {
     //  }
 
      const getAccount = async()=>{
+  
       try
       {
+        console.log("clicked")
         const acc = await connectWallet();
         if(acc)
         setAccount(acc);
@@ -91,16 +93,20 @@ const DashBoard = () => {
   return (
     <div className="flex flex-col justify-start items-center h-[80vh] w-screen">
         <div className="flex justify-center items-start gap-2 w-screen">
+          <div className="relative rounded-lg p-[1px] bg-gradient-to-r from-[blue] via-[#ffae00] to-[#00ffff]">
         <Button className={`text-center border border-slate-300 text-[#006666] hover:bg-slate-100 ${isActiveButton?"bg-slate-100":"bg-white border"}`} onClick={idFetchHandler}>Get Your CV</Button>
-        {!account?
+        </div>
+        {account?
         <Button type="button" onClick={getAccount}>Connect Wallet</Button>:
         <>
         {/* <Button className={`text-center border border-slate-300 text-[#006666] hover:bg-slate-100 ${!isActiveButton?"bg-slate-100":"bg-white border"}`} onClick={fetchDataHandler}>Fetch your on-chain documents</Button> */}
-        <Button className={`text-center border border-slate-300 text-[#006666] hover:bg-slate-100 ${            isNFT?"bg-slate-100":"bg-white border"}`} onClick={nftFetchHandler}>Fetch your NFTs</Button>
+        <div className="relative rounded-lg p-[1px] bg-gradient-to-r from-[blue] via-[#ffae00] to-[#00ffff]">
+        <Button className={`text-center border border-slate-300 text-[#006666] hover:bg-slate-100 ${isNFT?"bg-slate-100":"bg-white border"}`} onClick={nftFetchHandler}>Fetch your NFTs</Button>
+        </div>
         </>
 }
         </div>
-        <div className="flex justify-center items-center gap-2 h-screen">
+        <div className="flex justify-center items-center gap-2 my-4">
           {/* {
             !isActiveButton&&<OnChainData docData={docData}/>
           } */}

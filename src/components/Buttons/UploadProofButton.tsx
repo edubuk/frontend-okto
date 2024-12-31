@@ -14,6 +14,7 @@ const UploadProofButton = (
   return (
     <div className={twMerge("flex items-center gap-1", col && "flex-col")}>
       <Button
+      disabled={true}
         type="button"
         className={twMerge(
           "mt-2 bg-white border border-[#FB980E] text-[#FB980E] hover:bg-white hover:text-[#FB980E] h-8 shadow-md ",
