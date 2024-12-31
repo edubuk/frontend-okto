@@ -35,7 +35,7 @@ const CircularLoader: React.FC<CircularLoaderProps> = ({ status }) => {
 
     // Cleanup the interval when the component unmounts
     return () => clearInterval(interval);
-  }, [status]);
+  }, []);
 
   return (
     <div className="loader-container">
