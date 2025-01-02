@@ -342,6 +342,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, links,setIsSidebarOpen,setLog
               <Link
                 key={i + 1}
                 to={link.path}
+                onClick={() =>setIsSidebarOpen(false)}
                 className={`${
                   currentPath === link.path ? "text-blue-500" : "text-[#006666]"
                 } hover:text-blue-500 transition duration-200 py-2`}
@@ -353,7 +354,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, links,setIsSidebarOpen,setLog
         )}
         {!sessionStorage.getItem("oktoAuthToken") ? (
           <button
-          onClick={()=>setLoginModel(true)}
+          onClick={()=>{setLoginModel(true);setIsSidebarOpen(false)}}
             className="bg-blue-500 py-2 px-4 rounded-full text-white"
           >
             Login

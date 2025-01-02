@@ -7,7 +7,7 @@ import { GrLinkPrevious } from "react-icons/gr";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import PersonalDetails from "./PersonalDetails";
-import CircularLoader from "../components/ui/CircularLoader"
+// import CircularLoader from "../components/ui/CircularLoader"
 import { useCvFromContext } from "@/context/CvForm.context";
 import Education from "./Education";
 import Experience from "./Experience";
@@ -706,8 +706,9 @@ const CvForm = () => {
   const [formData, setFormData] = useState<FormData>(new FormData());
   const [txHash, setTxHash] = useState<string | null>(null);
   const {executeRawTransaction,getRawTransactionStatus,getWallets} = useOkto();
-  const [status, setStatus] = useState<"RUNNING" | "PUBLISHED" | "SUCCESS">("RUNNING");
-  const [loading,setLoading] = useState<boolean>(false);
+  
+  // const [status, setStatus] = useState<"RUNNING" | "PUBLISHED" | "SUCCESS">("RUNNING");
+  // const [loading,setLoading] = useState<boolean>(false);
   // trying to set nanoId in localStorage;
   useEffect(() => {
     const nanoId = nanoid(16);
@@ -1114,37 +1115,38 @@ const CvForm = () => {
         {
           let count=0;
           toast.dismiss(id);
-          //let id2 = toast.loading("Current transaction status : RUNNING");
-          setLoading(true);
+          let id2 = toast.loading("Current transaction status : RUNNING");
+          //setLoading(true);
           const timer = setInterval(async()=>{
             count++
             const res = await getRawTransactionStatus(orderId);
-            setStatus(res.jobs[0].status as "RUNNING" | "PUBLISHED" | "SUCCESS");
+            //setStatus(res.jobs[0].status as "RUNNING" | "PUBLISHED" | "SUCCESS");
             if(res?.jobs[0]?.status==="SUCCESS")
             {
-              //toast.dismiss();
+              toast.dismiss();
               setTxHash(res?.jobs[0]?.transaction_hash)
               toast.success("CV Registered Successfully.");
+              localStorage.setItem("transactionSuccess",res?.jobs[0]?.status);
               clearInterval(timer);
-              setLoading(false);
+              //setLoading(false);
               return ;
             }
             else if(res.jobs[0].status==="FAILED")
             {
-              //toast.dismiss(id2);
+              toast.dismiss(id2);
               toast.error("Transaction Failed. Please try again");
               clearInterval(timer);
-              setLoading(false);
+              //setLoading(false);
             }
             if(count>8)
             {
               setTxHash(res?.jobs[0]?.transaction_hash)
               clearInterval(timer);
-              //toast.dismiss(id2);
-              setLoading(false);
+              toast.dismiss(id2);
+              //setLoading(false);
             }
-            //toast.dismiss(id2);
-            //id2 = toast.loading(`Current transaction status :${res.jobs[0].status}`);
+            toast.dismiss(id2);
+            id2 = toast.loading(`Current transaction status :${res.jobs[0].status}`);
           },20000)
         }
 
@@ -1244,6 +1246,8 @@ const CvForm = () => {
     <LoadingButton className="w-auto bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)]" />
   ) : (
     <div className="flex gap-2 w-full flex-col sm:flex-row">
+      {
+      step===6&&localStorage.getItem("transactionSuccess")&&
       <Button
         type="button"
         onClick={stepsHandler}
@@ -1256,6 +1260,21 @@ const CvForm = () => {
       >
         {step === 6 ? "Submit" : "Save and next"}
       </Button>
+      }
+      {step!==6&&
+        <Button
+        type="button"
+        onClick={stepsHandler}
+        disabled={isImageUploading}
+        className={`w-auto sm:w-full bg-[rgb(0,102,102)] hover:bg-[rgb(0,102,102)] hover:opacity-90 ${
+          isImageUploading
+            ? "cursor-not-allowed opacity-100"
+            : "cursor-pointer"
+        }`}
+      >
+        Save and next
+      </Button>
+      }
       {step !== 6 ? (
         <Button
           type="button"
@@ -1287,11 +1306,11 @@ const CvForm = () => {
         </form>
       </Form>
     </div>
-    {loading&&
+    {/* {loading&&
     <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-100 z-50">
     <CircularLoader status={status}/>
     </div>
-    }
+    } */}
     </>
   );
 };

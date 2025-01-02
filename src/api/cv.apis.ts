@@ -21,7 +21,12 @@ export const useCV = () => {
     if (!response.ok) {
       throw new Error("Could not create cv at the moment try again latter");
     }
+    const localData = localStorage.getItem("AUTH_DETAILS");
+    
+    //const parseLocalData = JSON.parse(localData!);
    localStorage.clear();
+   localStorage.setItem("AUTH_DETAILS",localData!);
+
     return response.json();
   };
 
@@ -34,7 +39,11 @@ export const useCV = () => {
       if (data && data._id) {
         const { _id: id } = data;
         navigate(`/cv/${id}`);
-        localStorage.clear();
+        const localData = localStorage.getItem("AUTH_DETAILS");
+    
+    //const parseLocalData = JSON.parse(localData!);
+            localStorage.clear();
+            localStorage.setItem("AUTH_DETAILS",localData!);
       }
     },
   });

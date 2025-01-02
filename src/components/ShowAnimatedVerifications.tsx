@@ -47,8 +47,8 @@ export function ShowAnimatedVerifications({
   firstButtonText: string;
   buttonClass?: string;
   isSelfAttested: boolean;
-  mailStatus:string;
-  hash:[];
+  mailStatus?:string;
+  hash?:[];
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   // const div1Ref = useRef<HTMLDivElement>(null);

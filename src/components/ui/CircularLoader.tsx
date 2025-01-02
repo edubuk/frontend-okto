@@ -56,14 +56,14 @@ const CircularLoader: React.FC<CircularLoaderProps> = ({ status }) => {
           />
         </svg>
       </div>
-      <div className="status-container">
+      <div className="status-container gap-2">
         <p>Current Status</p>
         <div className="status-progress">
           <div className="status">
             <span
               style={
                 status === "RUNNING"
-                  ? { backgroundColor: "blue" }
+                  ? { backgroundColor: "blue"}
                   : {}
               }
               id="status-point"
@@ -71,7 +71,7 @@ const CircularLoader: React.FC<CircularLoaderProps> = ({ status }) => {
             <p
               style={
                 status === "RUNNING"
-                  ? { color: "blue" }
+                  ? { color: "blue", fontWeight:"bold" }
                   : {}
               }
             >
@@ -90,7 +90,7 @@ const CircularLoader: React.FC<CircularLoaderProps> = ({ status }) => {
             <p
               style={
                 status === "PUBLISHED"
-                  ? { color: "#006666" }
+                  ? { color: "#006666", fontWeight:"bold" }
                   : {}
               }
             >
@@ -109,7 +109,7 @@ const CircularLoader: React.FC<CircularLoaderProps> = ({ status }) => {
             <p
               style={
                 status === "SUCCESS"
-                  ? { color: "green" }
+                  ? { color: "green", fontWeight:"bold" }
                   : {}
               }
             >

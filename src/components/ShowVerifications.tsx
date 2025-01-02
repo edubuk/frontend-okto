@@ -58,7 +58,7 @@ const ShowVerifications = (
             )}
             {!onlySelfAttest && (
               <>
-                <span className={mailStatus==="pending"?"text-yellow-500":mailStatus==="approved"?"text-green-600":"text-red-500"}> {mailStatus} </span>{" "}
+                <span className={mailStatus==="pending"?"text-yellow-500":mailStatus==="approved"?"text-green-600":"text-red-500"}> </span>{" "}
                 <span
                   className={twMerge(
                     "text-blue-600 text-md cursor-pointer inline-flex items-center gap-1 ml-1 hover:underline",

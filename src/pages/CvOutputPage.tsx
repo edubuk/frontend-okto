@@ -6,7 +6,7 @@ import { GiAchievement } from "react-icons/gi";
 import { BiSolidBriefcase } from "react-icons/bi";
 import { GraduationCap, Mail, MapPinned, Phone } from "lucide-react";
 import { MdSchool } from "react-icons/md";
-import HyperText from "@/components/ui/AnimateHypertext";
+// import HyperText from "@/components/ui/AnimateHypertext";
 import ShowVerifications from "@/components/ShowVerifications";
 import { ShowAnimatedVerifications } from "@/components/ShowAnimatedVerifications";
 const CvOutputPage = () => {
@@ -19,11 +19,19 @@ const CvOutputPage = () => {
   const { cvData, isLoading } = useGetCv(id);
   console.log(cvData);
   if (isLoading) {
-    return <h1>Loading</h1>;
+    return(
+    <div className="flex justify-center items-center">
+      <h1 className="text-4xl font-bold text-[#006666]">Loading</h1>
+    </div>
+    );
   }
 
   if (!cvData) {
-    return <h1>No cv found</h1>;
+    return(
+      <div className="flex justify-center items-center">
+        <h1 className="text-4xl font-bold text-[#006666]">No CV Found</h1>
+      </div>
+      );
   }
   console.log(cvData.experienceVerifications);
   return (
@@ -36,7 +44,7 @@ const CvOutputPage = () => {
           />
         </div>
       </div> */}
-      <div className="flex items-center justify-center  px-10 py-2">
+      {/* <div className="flex items-center justify-center  px-10 py-2">
         <img
           src="/edubuklogo.png"
           alt="logo"
@@ -49,10 +57,13 @@ const CvOutputPage = () => {
             className="text-xl md:text-4xl font-semibold text-[#006666]"
           />
         </div>
-      </div>
+      </div> */}
+      <div className="flex justify-center items-center gap-4">
       <h1 className="text-md md:text-2xl text-center font-semibold text-[#006666]">
         Verified Curriculum Vitae (CV) on the Blockchain
       </h1>
+      <a className="border border-gray-500 p-2 rounded-lg hover:text-[#006666]" href={`http://localhost:5173/new-cv/${id}`}>View Other Template</a>
+      </div>
       <div className="mt-2 max-w-6xl mx-auto w-full border  border-l-0 shadow-lg   rounded-md overflow-x-scroll xl:overflow-x-clip">
         {/* main */}
         <div className="flex gap-3 md:gap-7">
@@ -411,6 +422,7 @@ const CvOutputPage = () => {
               {/* experience */}
               <div className="mt-5">
                 {/* title */}
+                {cvData.experience.length>0&&
                 <div className="flex items-center gap-5">
                   <div className="h-10 w-10 bg-[#FB980E] rounded-full text-white flex items-center justify-center">
                     <BiSolidBriefcase size={20} />
@@ -419,6 +431,7 @@ const CvOutputPage = () => {
                     Work Experience
                   </h1>
                 </div>
+                }
 
                 {/* experience cards */}
                 <div className="relative">
