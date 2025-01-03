@@ -13,7 +13,7 @@ window.Buffer = Buffer;
 window.process = process;
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-console.log("google client id",GOOGLE_CLIENT_ID);
+//console.log("google client id",GOOGLE_CLIENT_ID);
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

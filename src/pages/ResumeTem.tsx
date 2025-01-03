@@ -49,7 +49,7 @@ const Resume: React.FC = () => {
           <div className="text-gray-600 mt-2 space-y-1 flex flex-col sm:flex-row sm:justify-center">
             <p className="flex space-x-2 items-center">
               <FaPhoneAlt className="text-xl text-[#006666]" />
-              <span className="text-[#006666] hover:text-gray-800 font-bold">
+              <span className="text-gray-800 hover:text-[#006666] font-bold">
               {cvData.personalDetails.phoneNumber}
               </span>
             </p>
@@ -57,7 +57,7 @@ const Resume: React.FC = () => {
               <FaEnvelope className="text-xl text-[#006666]" />
               <a
                 href={`mailto:${cvData.personalDetails.email}`}
-                className="text-[#006666] hover:text-gray-800 font-bold"
+                className="text-gray-800 hover:text-[#006666] font-bold"
               >
                 {cvData.personalDetails.email}
               </a>
@@ -66,13 +66,13 @@ const Resume: React.FC = () => {
             <FaLinkedin className=" text-xl text-[#006666]" />
               <a
                 href={cvData?.personalDetails?.linkedinProfile}
-                className="text-[#006666] hover:text-gray-800 font-bold"
+                className="text-gray-800 hover:text-[#006666] font-bold"
               >linkedIn
               </a>
               <FaGithub className="text-xl text-[#006666]" />
               <a
                 href={cvData?.personalDetails?.githubProfile}
-                className="text-[#006666] hover:text-gray-800 font-bold"
+                className="text-gray-800 hover:text-[#006666] font-bold"
               >
                 Github
               </a>
@@ -182,7 +182,7 @@ const Resume: React.FC = () => {
               </div>
               <p className="text-gray-600 text-right">{formatDate(exp.duration.from)} - {formatDate(exp.duration.to)} </p>
             </div>
-            <ul className="list-disc list-inside text-gray-600 mt-2 space-y-2 pl-6">
+            <ul className="list-disc list-inside text-gray-600 mt-2 pl-6">
             {
               exp.description!==""&& 
               exp.description.split(".")
@@ -206,7 +206,7 @@ const Resume: React.FC = () => {
             Projects
           </h2>
           {cvData.achievements.projects.map((project,i)=>(
-            <div key={i} className="mt-4 space-y-6">
+            <div key={i} className="mt-4 space-y-4">
             <div>
               <div className="flex justify-between items-center">
                 <h3 className="font-bold text-[#006666]">{project.project_name}</h3>
@@ -214,7 +214,7 @@ const Resume: React.FC = () => {
                   {formatDate(project.duration.from)} - {formatDate(project.duration.to)}
                 </p>
               </div>
-              <ul className="list-disc list-inside text-gray-600 mt-2 space-y-2 pl-6">
+              <ul className="list-disc list-inside text-gray-600 mt-2 pl-6">
                 {
                   project.description.split(". ")
                   .filter((point)=>point.trim()!=="")
@@ -228,21 +228,21 @@ const Resume: React.FC = () => {
         </section>
         }
         {/* Courses Section */}
-        {cvData.achievements.courses.length>0 &&
+        {cvData.achievements.courses?.length>0 &&
         <section className="mb-8">
           <h2 className="text-xl font-semibold text-[#006666] border-b border-gray-300 pb-2">
             Courses
           </h2>
-          {cvData.achievements.projects.map((course,i)=>(
+          {cvData.achievements.courses.map((course,i)=>(
             <div key={i} className="mt-4 space-y-6">
             <div>
               <div className="flex justify-between items-center">
-                <h3 className="font-bold text-[#006666]">{course.project_name}</h3>
+                <h3 className="font-bold text-[#006666]">{course.course_name} | <i className="text-gray-600">{course.organization}</i></h3>
                 <p className="text-gray-600 text-right">
                   {formatDate(course.duration.from)} - {formatDate(course.duration.to)}
                 </p>
               </div>
-              <ul className="list-disc list-inside text-gray-600 mt-2 space-y-2 pl-6">
+              <ul className="list-disc list-inside text-gray-600 mt-2  pl-6">
                 {
                   course.description.split(". ")
                   .filter((point)=>point.trim()!=="")
@@ -265,7 +265,7 @@ const Resume: React.FC = () => {
             <div key={i} className="mt-4 space-y-6">
             <div>
               <div className="flex justify-between items-center">
-                <h3 className="font-bold text-[#006666]">{award.award_name} | <i className="font-bold text-[#007c80]">{award.awarding_organization}</i></h3> 
+                <h3 className="font-bold text-[#006666]">{award.award_name} | <i className="text-gray-600">{award.awarding_organization}</i></h3> 
                 <p className="text-gray-600 text-right">
                   {formatDate(award.date_of_achievement)}
                 </p>
