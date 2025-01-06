@@ -18,7 +18,13 @@ const Resume: React.FC = () => {
 
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+    const formatedDate= date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+    console.log("formated date",formatedDate)
+    if(formatedDate=="Invalid Date")
+      {
+        return dateString;
+      }
+      return formatedDate;
   };
   
   const { cvData, isLoading } = useGetCv(id!);
@@ -211,7 +217,7 @@ const Resume: React.FC = () => {
               <div className="flex justify-between items-center">
                 <h3 className="font-bold text-[#006666]">{project.project_name}</h3>
                 <p className="text-gray-600 text-right">
-                  {formatDate(project.duration.from)} - {formatDate(project.duration.to)}
+                  {formatDate(project.duration.from)} - {project.duration.to}
                 </p>
               </div>
               <ul className="list-disc list-inside text-gray-600 mt-2 pl-6">

@@ -1,10 +1,10 @@
 import * as React from "react";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+//import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-import { twMerge } from "tailwind-merge";
+//import { twMerge } from "tailwind-merge";
 
 interface Props {
   value: any;
@@ -42,7 +42,6 @@ export default function ReferenceDateUsingValue({
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DemoContainer components={["DatePicker"]}>
         <DatePicker
           disabled={!isDateFrom&&isCurrentlyWorking}
           value={value}
@@ -64,9 +63,8 @@ export default function ReferenceDateUsingValue({
           // )}
           defaultValue={initialDefaultDate}
           views={["year", "month", "day"]}
-          className={twMerge("w-full",!isDateFrom&&isCurrentlyWorking?"cursor-not-allowed":"")}
+          className="w-[130px] sm:w-full"
         />
-      </DemoContainer>
     </LocalizationProvider>
   );
 }
