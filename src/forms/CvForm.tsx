@@ -706,7 +706,8 @@ const CvForm = () => {
   const [formData, setFormData] = useState<FormData>(new FormData());
   const [txHash, setTxHash] = useState<string | null>(null);
   const {executeRawTransaction,getRawTransactionStatus,getWallets} = useOkto();
-  
+  //const [toAddress, setToAddress]= useState<string>();
+  //const [networkName, setNetworkName] = useState<string>();
   // const [status, setStatus] = useState<"RUNNING" | "PUBLISHED" | "SUCCESS">("RUNNING");
   // const [loading,setLoading] = useState<boolean>(false);
   // trying to set nanoId in localStorage;
@@ -1086,11 +1087,26 @@ const CvForm = () => {
     
     const iface = new ethers.utils.Interface(abi);
     try {
+      let toAddress=null;
+      let networkName=null; 
       const walletInfo = await getWallets();
       await new Promise((resolve) => setTimeout(resolve, 2000));
-  
-      if (walletInfo.wallets[1]?.address) {
-        const toAddress = walletInfo.wallets[1]?.address;
+      if(walletInfo.wallets?.length>0)
+      {
+        walletInfo?.wallets?.forEach(element => {
+          if(element.network_name==="POLYGON")
+          {
+            toAddress=element.address;
+            networkName=element.network_name;
+            console.log("network name",networkName);
+            //setToAddress(element?.address);
+            //setNetworkName(element?.network_name);
+            return;
+          }
+        });
+      }
+      //console.log("address :",walletInfo.wallets[2]?.address,"network ",walletInfo.wallets[2]?.network_name)
+      if (networkName) {
         const uris = ["bafkreifjwb6t6zjqnqvesl6bzl677mzp3din4vbpyfzbex7zwjcasvdt3y"];
   
         // Encode the function data
@@ -1104,7 +1120,7 @@ const CvForm = () => {
         };
   
         const orderId: any = await executeRawTransaction({
-          network_name: walletInfo.wallets[1]?.network_name,
+          network_name:networkName,
           transaction: transactionData,
         });
   
@@ -1133,30 +1149,33 @@ const CvForm = () => {
             }
             else if(res.jobs[0].status==="FAILED")
             {
-              toast.dismiss(id2);
+              toast.dismiss();
               toast.error("Transaction Failed. Please try again");
               clearInterval(timer);
               //setLoading(false);
             }
             if(count>8)
             {
+              toast.custom(<div className="flex p-4 bg-white rounded shadow-md"><h1 className="font-bold text-[#006666]">Timeout: </h1><p> Please click on view transaction button for further status</p></div>);
               setTxHash(res?.jobs[0]?.transaction_hash)
               clearInterval(timer);
-              toast.dismiss(id2);
+              toast.dismiss();
               //setLoading(false);
             }
             toast.dismiss(id2);
-            id2 = toast.loading(`Current transaction status :${res.jobs[0].status}`);
+            id2 = toast.loading(`Current transaction status: ${res.jobs[0].status}`);
           },20000)
         }
 
       } else {
+        console.log("networkName is not defined")
+        toast.dismiss();
         toast.error("Please add some POL Token to your address to proceed...");
       }
     } catch (err) {
       toast.dismiss(id);
       console.log("error", err);
-      toast.error("Something went wrong. please try again");
+      toast.error("Something went wrong. please try again.");
     }
   };
   

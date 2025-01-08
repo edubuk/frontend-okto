@@ -89,7 +89,14 @@ const Navbar = () => {
         if(newWallet?.wallets?.length>0)
         {
           toast.dismiss(id);
-          setAddress(newWallet?.wallets[1]?.address)
+          newWallet.wallets.forEach((wallet)=>{
+            if(wallet.network_name==="POLYGON")
+            {
+              setAddress(wallet.address);
+              setNetworkName(wallet.network_name);
+              return;
+            }
+          })
           toast.success("Wallet setup completed.");
           setOpenWalletInfo(true)
         }
@@ -249,7 +256,7 @@ const Navbar = () => {
           {(userDetails!==undefined && userDetails?.total>0) &&
           <div className="flex justify-center items-center gap-4">
             <MdOutlineAccountBalanceWallet className="text-lg text-[#006666] cursor-pointer"/>
-           <p className="text-[#0077ff] font-medium">{userDetails?.tokens[0].quantity} {userDetails?.tokens[0].token_name}</p>
+           <p className="text-[#0077ff] font-medium">{userDetails?.tokens[0].quantity?.slice(0,7)} {userDetails?.tokens[0].token_name}</p>
           </div>
           }
           <button className="flex justify-center items-center gap-4" onClick={copyAddress}>
