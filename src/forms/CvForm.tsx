@@ -1085,7 +1085,7 @@ const CvForm = () => {
   // mint NFT on chain
   const mintNFT = async () => {
     setTxStarted(true);
-    const id = toast.loading("Registration started. Please wait. It usually takes 2 min to complete transaction ");
+    const id = toast.loading("Registration started. Please wait. It usually takes 2-5 min to complete transaction ");
     
     const iface = new ethers.utils.Interface(abi);
     try {
