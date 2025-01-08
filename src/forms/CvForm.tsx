@@ -705,6 +705,7 @@ const CvForm = () => {
   const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>(new FormData());
   const [txHash, setTxHash] = useState<string | null>(null);
+  const [txStarted, setTxStarted] = useState<boolean>(false);
   const {executeRawTransaction,getRawTransactionStatus,getWallets} = useOkto();
   //const [toAddress, setToAddress]= useState<string>();
   //const [networkName, setNetworkName] = useState<string>();
@@ -1083,6 +1084,7 @@ const CvForm = () => {
 
   // mint NFT on chain
   const mintNFT = async () => {
+    setTxStarted(true);
     const id = toast.loading("Registration started. Please wait. It usually takes 2 min to complete transaction ");
     
     const iface = new ethers.utils.Interface(abi);
@@ -1140,6 +1142,7 @@ const CvForm = () => {
             if(res?.jobs[0]?.status==="SUCCESS")
             {
               toast.dismiss();
+              setTxStarted(false);
               setTxHash(res?.jobs[0]?.transaction_hash)
               toast.success("CV Registered Successfully.");
               localStorage.setItem("transactionSuccess",res?.jobs[0]?.status);
@@ -1150,6 +1153,7 @@ const CvForm = () => {
             else if(res.jobs[0].status==="FAILED")
             {
               toast.dismiss();
+              setTxStarted(false);
               toast.error("Transaction Failed. Please try again");
               clearInterval(timer);
               //setLoading(false);
@@ -1157,6 +1161,7 @@ const CvForm = () => {
             if(count>15)
             {
               toast.dismiss();
+              setTxStarted(false);
               toast.custom(<div className="flex p-4 bg-white rounded shadow-md"><h1 className="font-bold text-[#006666]">Timeout: </h1><p> Please click on view transaction button for further status</p></div>);
               setTxHash(res?.jobs[0]?.transaction_hash)
               clearInterval(timer);
@@ -1168,12 +1173,14 @@ const CvForm = () => {
         }
 
       } else {
+        setTxStarted(false);
         console.log("networkName is not defined")
         toast.dismiss();
         toast.error("Please add some POL Token to your address to proceed...");
       }
     } catch (err) {
-      toast.dismiss(id);
+      toast.dismiss();
+      setTxStarted(false);
       console.log("error", err);
       toast.error("Something went wrong. please try again.");
     }
@@ -1303,9 +1310,16 @@ const CvForm = () => {
           Reset
         </Button>):
          ( !txHash ? (
-            <Button type="button" onClick={mintNFT} className="w-auto sm:w-full active:translate-y-2">
-              Register Your CV on Blockchain
-            </Button>
+          <Button
+          disabled={txStarted}
+          type="button"
+          onClick={mintNFT}
+          className={`w-auto sm:w-full active:translate-y-2 ${
+            txStarted ? "cursor-not-allowed opacity-50" : "cursor-pointer"
+          }`}
+        >
+          Register Your CV on Blockchain
+        </Button>
           ) : (
             <div className="flex justify-center items-center w-auto sm:w-full">
               <a
