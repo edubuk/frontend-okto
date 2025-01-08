@@ -1154,12 +1154,12 @@ const CvForm = () => {
               clearInterval(timer);
               //setLoading(false);
             }
-            if(count>8)
+            if(count>15)
             {
+              toast.dismiss();
               toast.custom(<div className="flex p-4 bg-white rounded shadow-md"><h1 className="font-bold text-[#006666]">Timeout: </h1><p> Please click on view transaction button for further status</p></div>);
               setTxHash(res?.jobs[0]?.transaction_hash)
               clearInterval(timer);
-              toast.dismiss();
               //setLoading(false);
             }
             toast.dismiss(id2);
