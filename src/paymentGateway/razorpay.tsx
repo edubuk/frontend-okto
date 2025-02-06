@@ -100,8 +100,7 @@ const PaymentPopup: React.FC<Props> = ({ showPopup, setShowPopup }) => {
   const verifyCoupon = async () => {
     try {
       const res = await axios.get(
-        `https://edubukcvonchain.net/cv/coupon_verify/${coupon}`,
-        { headers: { "Content-Type": "application/json" } }
+        `https://edubukcvonchain.net/cv/coupon_verify/${coupon}`
       );
       if (res.data.success) {
         console.log("coupon log", res);

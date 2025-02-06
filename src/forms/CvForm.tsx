@@ -716,7 +716,7 @@ const CvForm = () => {
         >
           Reset
         </Button>):
-         paymentStatus?( !txHash ? (
+         !paymentStatus?( !txHash ? (
           <Button
           disabled={txStarted}
           type="button"
