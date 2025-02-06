@@ -1,6 +1,7 @@
 import { CvFormDataType } from "@/forms/CvForm";
-import { API_BASE_URL } from "@/main";
+//import { API_BASE_URL } from "@/main";
 import { Cv_resoponse_type } from "@/types";
+import axios from "axios";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +11,7 @@ export const useCV = () => {
   const createCV = async (
     formData: CvFormDataType
   ): Promise<Cv_resoponse_type> => {
-    const response = await fetch(`${API_BASE_URL}/cv/create`, {
+    const response = await fetch("/cv/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -20,6 +21,12 @@ export const useCV = () => {
 
     if (!response.ok) {
       throw new Error("Could not create cv at the moment try again latter");
+    }
+    const paymentId = localStorage.getItem("paymentId");
+    const changeCvStatus = await axios.put("/cv/update_cv_status",{paymentId:paymentId});
+    if(changeCvStatus.data.success)
+    {
+      console.log(changeCvStatus.data.message);
     }
     const localData = localStorage.getItem("AUTH_DETAILS");
     
@@ -58,7 +65,7 @@ export const useCV = () => {
 
 export const useGetCv = (id: string) => {
   const getCvRequest = async (): Promise<Cv_resoponse_type> => {
-    const response = await fetch(`${API_BASE_URL}/cv/getCv/${id}`);
+    const response = await fetch(`/cv/getCv/${id}`);
     if (!response.ok) {
       throw new Error("Could not get cv!");
     }

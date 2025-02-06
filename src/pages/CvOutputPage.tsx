@@ -9,6 +9,8 @@ import { MdSchool } from "react-icons/md";
 // import HyperText from "@/components/ui/AnimateHypertext";
 import ShowVerifications from "@/components/ShowVerifications";
 import { ShowAnimatedVerifications } from "@/components/ShowAnimatedVerifications";
+
+
 const CvOutputPage = () => {
   const { id } = useParams();
 
@@ -33,7 +35,7 @@ const CvOutputPage = () => {
       </div>
       );
   }
-  console.log(cvData.experienceVerifications);
+  //console.log(cvData.experienceVerifications);
   return (
     <div className="px-1 mt-5 md:mt-0 md:px-10 mb-10 overflow-hidden">
       {/* <div className="border flex">

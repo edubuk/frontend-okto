@@ -7,7 +7,7 @@ import { GrLinkPrevious } from "react-icons/gr";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import PersonalDetails from "./PersonalDetails";
-// import CircularLoader from "../components/ui/CircularLoader"
+import CircularLoader from "../components/ui/CircularLoader"
 import { useCvFromContext } from "@/context/CvForm.context";
 import Education from "./Education";
 import Experience from "./Experience";
@@ -16,659 +16,16 @@ import Achievements from "./Achievements";
 import ProfileSummary from "./ProfileSummary";
 import { useCV } from "@/api/cv.apis";
 import LoadingButton from "@/components/LoadingButton";
-import dayjs from "dayjs";
 import { nanoid } from "nanoid";
 import toast from "react-hot-toast";
 import { useOkto } from "okto-sdk-react";
 import { ethers } from "ethers";
+import axios from "axios";
+import PaymentPopup from '../paymentGateway/razorpay'
+import { formSchema } from "@/components/FormSchema/formSchema";
 
+//const oktoBaseUrl = import.meta.env.VITE_Okto_Server;
 
-
-const formSchema = z.object({
-  loginMailId: z
-    .string({
-      required_error: "loginMaidId is required",
-    })
-    .max(50),
-  nanoId: z.string().optional(),
-  name: z
-    .string({
-      required_error: "Name is required",
-    })
-    .max(50),
-  location: z.string({
-    required_error: "Location is required",
-  }),
-  profession: z.string({
-    required_error: "Profession is required",
-  }),
-  email: z
-    .string({
-      required_error: "email is required",
-    })
-    .email({ message: "Invalid email format" }),
-  phoneNumber: z
-    .string({ required_error: "Phone number is required" })
-    .regex(/^\d{10}$/, { message: "Phone number must be exactly 10 digits" }),
-  imageFile: z
-    .union([z.instanceof(File, { message: "Image is required" }), z.string()])
-    .refine(
-      (value) =>
-        value instanceof File ||
-        (typeof value === "string" && value.length > 0),
-      {
-        message: "Image is required",
-      }
-    ),
-  imageUrl: z.string().optional(),
-  //------------------>>  step2 fields;
-  class10SchoolName: z.string({ required_error: "School name is required" }),
-  class10Board: z.string({ required_error: "10th board is required" }),
-  class10Grade: z.preprocess(
-    (val) => {
-      const parsed = Number(val);
-      return isNaN(parsed) || val === "" ? undefined : parsed;
-    },
-    z
-      .number({
-        required_error: "10th grade is required",
-      })
-      .max(100, { message: "Grades cannot be greater than 100" })
-      .min(0, { message: "Enter grades between 0 and 100" })
-  ),
-
-  class12CollegeName: z.string({
-    required_error: "College name is required",
-  }),
-  class12Board: z.string({ required_error: "12th board is required" }),
-  class12Grade: z.preprocess((val) => {
-    const parsed = Number(val);
-    return isNaN(parsed) || val === "" ? undefined : parsed;
-  }, z.number({ required_error: "12th grade is required" }).max(100, "Grades can not be greater than 100").min(0, { message: "Enter grades between 0 to 100" })),
-  // undergraduation
-  underGraduateCollegeName: z.string({
-    required_error: "undergraduation college is required",
-  }),
-  underGraduateDegreeName: z.string({
-    required_error: "undergraduation Degree name is required",
-  }),
-  underGraduateGPA: z.preprocess(
-    (val) => {
-      const parsed = Number(val);
-      return isNaN(parsed) || val === "" ? undefined : parsed;
-    },
-    z
-      .number({
-        required_error: "undergraduation GPA till time is required",
-      })
-      .min(0, { message: "Enter GPA between 0 to 10" })
-      .max(10, { message: "Enter GPA between 0 to 10" })
-  ),
-
-  underGraduateDuration:z.object({
-  duration:z
-        .object({
-          from: z
-            .union([z.string(), z.date()])
-            .refine((val) => val && dayjs(val).isValid(), {
-              message: "Start date is required",
-            }),
-          to: z
-            .union([z.string(), z.date()])
-            .refine((val) => val && dayjs(val).isValid(), {
-              message: "End date is required",
-            }),
-        })
-        .refine(
-          (data) => {
-            // Check if both from and to are valid and present
-            const isFromValid = data.from && dayjs(data.from).isValid();
-            const isToValid = data.to && dayjs(data.to).isValid();
-
-            // Both dates must be valid
-            return isFromValid && isToValid;
-          },
-          {
-            message: "Both start date and end date are required.",
-          }
-        ),
-      }),
-  //postgraduation
-  postGraduateCollegeName: z.string({
-    required_error: "post graduation college is required",
-  }),
-  postGraduateDegreeName: z.string({
-    required_error: "post graduation Degree name is required",
-  }),
-  postGraduateGPA: z.preprocess(
-    (val) => {
-      const parsed = Number(val);
-      return isNaN(parsed) || val === "" ? undefined : parsed;
-    },
-    z
-      .number({
-        required_error: "post graduation GPA till time is required",
-      })
-      .min(0, { message: "Enter GPA between 0 to 10" })
-      .max(10, { message: "Enter GPA between 0 to 10" })
-  ),
-
-  postGraduateDuration:z.object({
-    duration:z
-          .object({
-            from: z
-              .union([z.string(), z.date()])
-              .refine((val) => val && dayjs(val).isValid(), {
-                message: "Start date is required",
-              }),
-            to: z
-              .union([z.string(), z.date()])
-              .refine((val) => val && dayjs(val).isValid(), {
-                message: "End date is required",
-              }),
-          })
-          .refine(
-            (data) => {
-              // Check if both from and to are valid and present
-              const isFromValid = data.from && dayjs(data.from).isValid();
-              const isToValid = data.to && dayjs(data.to).isValid();
-  
-              // Both dates must be valid
-              return isFromValid && isToValid;
-            },
-            {
-              message: "Both start date and end date are required.",
-            }
-          ),
-        }),
-
-  // step 3 fields  (Experience)
-  Years_of_experience: z.preprocess(
-    (val) => {
-      const parsed = Number(val);
-      return isNaN(parsed) || val === "" ? undefined : parsed;
-    },
-    z
-      .number({
-        required_error: "Years of experience is required",
-      })
-      .min(0, { message: "Enter valid years of experience" })
-      .max(100, { message: "Enter valid years of experience" })
-  ),
-  Experience: z.array(
-    z.object({
-      company_name: z
-        .string({ required_error: "Company name is required" })
-        .min(1, { message: "Company name is required" }),
-      job_role: z
-        .string({ required_error: "job role is required" })
-        .min(1, "Job role is required"),
-      duration: z
-        .object({
-          from: z
-            .union([z.string(), z.date()])
-            .refine((val) => val && dayjs(val).isValid(), {
-              message: "Start date is required",
-            }),
-          to: z
-            .union([z.string(), z.date()])
-            .refine((val) => val || dayjs(val).isValid(), {
-              message: "End date is required",
-            })
-        }),
-        // }).refine(
-        //   (data) => {
-        //     const isFromValid = data.from && dayjs(data.from).isValid();
-        //     const isToValid = !data.to || dayjs(data.to).isValid(); // Allow `to` to be optional
-        //     return isFromValid && isToValid;
-        //   },
-        //   {
-        //     message: "Start date is required, and end date must be valid if provided.",
-        //   }
-        // ),
-      description: z
-        .string({ required_error: "Work description is required" })
-        .min(1, { message: "description is required" }),
-    })
-  ),
-
-  // Step 4: Skills
-  Skills: z
-    .array(z.string())
-    .min(1, { message: "Please select or enter at least one skill" })
-    .max(5, { message: "You can only select 5 skills" })
-    .default([]),
-  // Step 5 : Achievements
-  Awards: z.array(
-    z.object({
-      award_name: z
-        .string({ required_error: "Award name is required" })
-        .min(1, { message: "Award name is required" }),
-      awarding_organization: z
-        .string({ required_error: "Awarding organization is required" })
-        .min(1, "Awarding organization is required"),
-      // date_of_achievement: z
-      //   .union([
-      //     z.date().optional(),
-      //     z.literal("").refine((val) => val === "", {
-      //       message: "Date of achievement is required",
-      //     }),
-      //   ])
-      //   .refine((data) => typeof data !== "string", {
-      //     message: "Date of achievement is required",
-      //   }),
-      date_of_achievement: z
-        .union([z.string(), z.date()])
-        .refine((val) => val && dayjs(val).isValid(), {
-          message: "Date of achievement is required and must be a valid date",
-        }),
-      description: z
-        .string({ required_error: "A brief description is required" })
-        .min(1, { message: "A brief description is required" }),
-    })
-  ),
-  Courses: z.array(
-    z.object({
-      course_name: z
-        .string({ required_error: "Course name is required" })
-        .min(1, { message: "Course name is required" }),
-      organization: z
-        .string({ required_error: "Institution/organization is required" })
-        .min(1, "Institution/organization is required"),
-      duration: z
-        .object({
-          from: z
-            .union([z.string(), z.date()])
-            .refine((val) => val && dayjs(val).isValid(), {
-              message: "Start date is required",
-            }),
-          to: z
-            .union([z.string(), z.date()])
-            .refine((val) => val && dayjs(val).isValid(), {
-              message: "End date is required",
-            }),
-        })
-        .refine(
-          (data) => {
-            // Check if both from and to are valid and present
-            const isFromValid = data.from && dayjs(data.from).isValid();
-            const isToValid = data.to && dayjs(data.to).isValid();
-
-            // Both dates must be valid
-            return isFromValid && isToValid;
-          },
-          {
-            message: "Both start date and end date are required.",
-          }
-        ),
-      description: z
-        .string({ required_error: "Course description is required" })
-        .min(1, { message: "Course description is required" }),
-    })
-  ),
-  Projects: z.array(
-    z.object({
-      project_name: z
-        .string({ required_error: "Project name is required" })
-        .min(1, { message: "Project name is required" }),
-      project_url: z.string().optional(),
-      duration: z
-        .object({
-          from: z
-            .union([z.string(), z.date()])
-            .refine((val) => val && dayjs(val).isValid(), {
-              message: "Start date is required",
-            }),
-          to: z
-            .union([z.string(), z.date()])
-            .refine((val) => val && dayjs(val).isValid(), {
-              message: "End date is required",
-            }),
-        })
-        .refine(
-          (data) => {
-            // Check if both from and to are valid and present
-            const isFromValid = data.from && dayjs(data.from).isValid();
-            const isToValid = data.to && dayjs(data.to).isValid();
-
-            // Both dates must be valid
-            return isFromValid && isToValid;
-          },
-          {
-            message: "Both start date and end date are required.",
-          }
-        ),
-      description: z
-        .string({ required_error: "Project description is required" })
-        .min(1, { message: "Project description is required" }),
-    })
-  ),
-
-  // step 6: Profile Summary;
-  profile_summary: z
-    .string({ required_error: "Profile summary is required" })
-    .min(1, { message: "Profile summary is required" })
-    .max(300, {
-      message: "Enter profile summary within 300 characters only",
-    }),
-  // verifications;
-
-  // 1) personal Details verifications validations;
-  personalVerifications: z.object({
-    name: z.object(
-      {
-        isSelfAttested: z.boolean({
-          message: "Name needs to be self-attested",
-        }),
-        // .refine((val) => val === false, {
-        //   message: "Name needs to be self-attested",
-        // }),
-      },
-      { message: "Name need to self attested" }
-    ),
-    email: z.object(
-      {
-        isSelfAttested: z.boolean({
-          message: "Email needs to be self-attested",
-        }),
-        // .refine((val) => val === false, {
-        //   message: "Email needs to be self-attested",
-        // }),
-      },
-      { message: "Email need to self attested" }
-    ),
-    location: z.object(
-      {
-        isSelfAttested: z.boolean({
-          message: "Location needs to be self-attested",
-        }),
-        // .refine((val) => val === false, {
-        //   message: "location needs to be self-attested",
-        // }),
-      },
-      { message: "Location needs to self attested" }
-    ),
-    profession: z.object(
-      {
-        isSelfAttested: z.boolean({
-          message: "Profession needs to be self-attested",
-        }),
-        // .refine((val) => val === false, {
-        //   message: "Profession needs to be self-attested",
-        // }),
-      },
-      {
-        message: "Profession needs to be self-attested",
-      }
-    ),
-    imageUrl: z.object(
-      {
-        isSelfAttested: z.boolean({
-          message: "Image needs to be self attested",
-        }),
-        // .refine((val) => val === false, {
-        //   message: "Profile needs to be self-attested",
-        // }),
-      },
-      {
-        message: "Your photo needs to be self-attested",
-      }
-    ),
-    phoneNumber: z.object(
-      {
-        isSelfAttested: z.boolean({
-          message: "Phone number needs to be self attested",
-        }),
-        // .refine((val) => val === false, {
-        //   message: "Phone number needs to be self-attested",
-        // }),
-      },
-      {
-        message: "Phone number needs to be self-attested",
-      }
-    ),
-  }),
-  // 2) Education verifications validations
-  educationVerificationValidations: z.object({
-    class10: z
-      .object(
-        {
-          isSelfAttested: z.boolean().optional(),
-          mailStatus: z.string().optional(),
-          proof: z.array(z.string()).optional(),
-        },
-        {
-          message:
-            "At least one of selfAssested, mail to Issuer, or proofs is required for class10",
-        }
-      )
-      .refine(
-        (data) =>
-          data.isSelfAttested !== undefined ||
-          data.mailStatus !== undefined ||
-          (data.proof && data.proof.length > 0),
-        {
-          message:
-            "At least one of isSelfAttested, mailStatus, or proofs is required for class10",
-        }
-      ),
-    class12: z
-      .object(
-        {
-          isSelfAttested: z.boolean().optional(),
-          mailStatus: z.string().optional(),
-          proof: z.array(z.string()).optional(),
-        },
-        {
-          message:
-            "At least one of selfAssested, mail to Issuer, or proofs is required for class12",
-        }
-      )
-      .refine(
-        (data) =>
-          data.isSelfAttested !== undefined ||
-          data.mailStatus !== undefined ||
-          (data.proof && data.proof.length > 0),
-        {
-          message:
-            "At least one of isSelfAttested, mailStatus, or proofs is required for class10",
-        }
-      ),
-    undergraduation: z
-      .object(
-        {
-          isSelfAttested: z.boolean().optional(),
-          mailStatus: z.string().optional(),
-          proof: z.array(z.string()).optional(),
-        },
-        {
-          message:
-            "At least one of selfAssested, mail to Issuer, or proofs is required for undergraduation",
-        }
-      )
-      .refine(
-        (data) =>
-          data.isSelfAttested !== undefined ||
-          data.mailStatus !== undefined ||
-          (data.proof && data.proof.length > 0),
-        {
-          message:
-            "At least one of isSelfAttested, mailStatus, or proofs is required for class10",
-        }
-      ),
-    postgraduation: z
-      .object(
-        {
-          isSelfAttested: z.boolean().optional(),
-          mailStatus: z.string().optional(),
-          proof: z.array(z.string()).optional(),
-        },
-        {
-          message:
-            "At least one of selfAssested, mail to Issuer, or proofs is required for postgraduation",
-        }
-      )
-      .refine(
-        (data) =>
-          data.isSelfAttested !== undefined ||
-          data.mailStatus !== undefined ||
-          (data.proof && data.proof.length > 0),
-        {
-          message:
-            "At least one of isSelfAttested, mailStatus, or proofs is required for class10",
-        }
-      ),
-  }),
-
-  // 3) Experience verifications validations
-  experienceVerificationsValidations: z.record(
-    z
-      .object(
-        {
-          isSelfAttested: z.boolean().optional(),
-          mailStatus: z.string().optional(),
-          proof: z.array(z.string()).optional(),
-        },
-        {
-          message:
-            "At least one of selfAssested, mail to Issuer, or proofs is required",
-        }
-      )
-      .refine(
-        (data) =>
-          data.isSelfAttested !== undefined ||
-          data.mailStatus !== undefined ||
-          (data.proof && data.proof.length > 0),
-        {
-          message:
-            "At least one of selfAssested, mail to Issuer, or proofs is required",
-        }
-      )
-  ),
-
-  // 4) Skills verifications validations;
-  skillsVerificationsValidations: z.record(
-    z
-      .object(
-        {
-          isSelfAttested: z.boolean().optional(),
-          mailStatus: z.string().optional(),
-          proof: z.array(z.string()).optional(),
-        },
-        {
-          message:
-            "At least one of selfAssested, mail to Issuer, or proofs is required",
-        }
-      )
-      .refine(
-        (data) =>
-          data.isSelfAttested !== undefined ||
-          data.mailStatus !== undefined ||
-          (data.proof && data.proof.length > 0),
-        {
-          message:
-            "At least one of selfAssested, mail to Issuer, or proofs is required",
-        }
-      )
-  ),
-
-  // 5) award verifications validations;
-  awardVerificationsValidations: z.record(
-    z
-      .object(
-        {
-          isSelfAttested: z.boolean().optional(),
-          mailStatus: z.string().optional(),
-          proof: z.array(z.string()).optional(),
-        },
-        {
-          message:
-            "At least one of selfAssested, mail to Issuer, or proofs is required",
-        }
-      )
-      .refine(
-        (data) =>
-          data.isSelfAttested !== undefined ||
-          data.mailStatus !== undefined ||
-          (data.proof && data.proof.length > 0),
-        {
-          message:
-            "At least one of selfAssested, mail to Issuer, or proofs is required",
-        }
-      )
-  ),
-
-  // 6) course verifications validations;
-  courseVerificationsValidations: z.record(
-    z
-      .object(
-        {
-          isSelfAttested: z.boolean().optional(),
-          mailStatus: z.string().optional(),
-          proof: z.array(z.string()).optional(),
-        },
-        {
-          message:
-            "At least one of selfAssested, mail to Issuer, or proofs is required",
-        }
-      )
-      .refine(
-        (data) =>
-          data.isSelfAttested !== undefined ||
-          data.mailStatus !== undefined ||
-          (data.proof && data.proof.length > 0),
-        {
-          message:
-            "At least one of selfAssested, mail to Issuer, or proofs is required",
-        }
-      )
-  ),
-
-  //7) project verifications validations;
-  projectVerificationsValidations: z.record(
-    z
-      .object(
-        {
-          isSelfAttested: z.boolean().optional(),
-          mailStatus: z.string().optional(),
-          proof: z.array(z.string()).optional(),
-        },
-        {
-          message:
-            "At least one of selfAssested, mail to Issuer, or proofs is required",
-        }
-      )
-      .refine(
-        (data) =>
-          data.isSelfAttested !== undefined ||
-          data.mailStatus !== undefined ||
-          (data.proof && data.proof.length > 0),
-        {
-          message:
-            "At least one of selfAssested, mail to Issuer, or proofs is required",
-        }
-      )
-  ),
-
-  // 8) profile summary verification validations;
-  profileSummarVerificationValidations: z.object({
-    profile_summary: z.object(
-      {
-        isSelfAttested: z.boolean({
-          message: "Profile summary needs to be self-attested",
-        }),
-        // .refine((val) => val === false, {
-        //   message: "Name needs to be self-attested",
-        // }),
-      },
-      { message: "Name need to self attested" }
-    ),
-  }),
-});
-// .refine((data) => data.imageFile || data.imageUrl, {
-//   message: "Either imageFile or imageUrl is required",
-//   path: ["imageFile"],
-// });
 
 export type CvFormDataType = z.infer<typeof formSchema>;
 
@@ -706,19 +63,37 @@ const CvForm = () => {
   const [formData, setFormData] = useState<FormData>(new FormData());
   const [txHash, setTxHash] = useState<string | null>(null);
   const [txStarted, setTxStarted] = useState<boolean>(false);
-  const {executeRawTransaction,getRawTransactionStatus,getWallets} = useOkto();
-  //const [toAddress, setToAddress]= useState<string>();
-  //const [networkName, setNetworkName] = useState<string>();
-  // const [status, setStatus] = useState<"RUNNING" | "PUBLISHED" | "SUCCESS">("RUNNING");
-  // const [loading,setLoading] = useState<boolean>(false);
-  // trying to set nanoId in localStorage;
+  const {getWallets} = useOkto();
+  const [showPopup, setShowPopup] = useState<boolean>(false);
+  const [paymentStatus, setPaymentStatus] = useState<boolean>(true);
+  const [status, setStatus] = useState<string>("RUNNING");
+  const [loading,setLoading] = useState<boolean>(false);
+
   useEffect(() => {
     const nanoId = nanoid(16);
     const storedNanoId = localStorage.getItem("nanoId");
     if (!storedNanoId) {
       localStorage.setItem("nanoId", nanoId);
     }
-  }, []);
+    const paymentId = localStorage.getItem("paymentId");
+    const checkStatus= async()=>{
+      console.log("payment id ",paymentId);
+      try {
+        const paymentStatus = await axios.get(`https://edubukcvonchain.net/cv/check_cv_status/${paymentId}`);
+        if(paymentStatus.data.success)
+        {
+          setPaymentStatus(paymentStatus.data.value);
+          console.log(paymentStatus)
+        }
+      } catch (error) {
+        console.log("error while checking payment status")
+      }
+    }
+    if(paymentId)
+    {
+      checkStatus();
+    }
+  }, [showPopup]);
 
   const [selectedQualification, setSelectedQualification] = useState<string>(
     () => {
@@ -775,11 +150,6 @@ const CvForm = () => {
     }
   }, [step]);
 
-  // const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (!event.target.files) return null;
-  //   const file = event.target.files[0];
-  //   setImagePreview(file ? URL.createObjectURL(file) : null);
-  // };
 
   const handleProfessionSelect = (profession: string) => {
     form.setValue("profession", profession);
@@ -817,13 +187,6 @@ const CvForm = () => {
           "personalVerifications.telegramProfile.isSelfAttested" as any,
           "personalVerifications.instagramProfile.isSelfAttested" as any,
           "personalVerifications.githubProfile.isSelfAttested" as any,
-          // "personalDetailsVerifications.email.isSelfAttested",
-          // "personalDetailsVerifications.location.isSelfAttested",
-          // "personalDetailsVerifications.profession.isSelfAttested",
-          // "personalDetailsVerifications.phoneNumber.isSelfAttested",
-          // "personalDetailsVerifications.imageUrl.isSelfAttested",
-
-          // "personalDetailsVerifications.email.isSelfAttested",
         ];
       } else {
         fieldsToValidate = [
@@ -845,13 +208,6 @@ const CvForm = () => {
           "personalVerifications.telegramProfile.isSelfAttested" as any,
           "personalVerifications.instagramProfile.isSelfAttested" as any,
           "personalVerifications.githubProfile.isSelfAttested" as any,
-          // "personalDetailsVerifications.email.isSelfAttested",
-          // "personalDetailsVerifications.location.isSelfAttested",
-          // "personalDetailsVerifications.profession.isSelfAttested",
-          // "personalDetailsVerifications.phoneNumber.isSelfAttested",
-          // "personalDetailsVerifications.imageUrl.isSelfAttested",
-
-          // "personalDetailsVerifications.email.isSelfAttested",
         ];
       }
     } else if (step === 2) {
@@ -879,15 +235,6 @@ const CvForm = () => {
         "class10Grade",
         // verifications validations
         "educationVerificationValidations.class10" as any,
-        // "class12CollegeName",
-        // "class12Board",
-        // "class12Grade",
-        // "underGraduateCollegeName",
-        // "underGraduateDegreeName",
-        // "underGraduateGPA",
-        // "postGraduateCollegeName",
-        // "postGraduateDegreeName",
-        // "postGraduateGPA",
       ];
 
       // dynamically set class 12 validations based on selectedQualification of client;
@@ -1016,6 +363,7 @@ const CvForm = () => {
     const updatedFormData = formData;
     if (step === 1) {
       // appending first step data;
+      localStorage.setItem("userName",currentFormData.name);
       updatedFormData.append("name", currentFormData.name);
       updatedFormData.append("email", currentFormData.email);
       updatedFormData.append("location", currentFormData.location);
@@ -1030,24 +378,83 @@ const CvForm = () => {
         updatedFormData.append("imageFile", currentFormData.imageFile);
       }
 
+      const step5CvData = localStorage.getItem("step5CvData");
+      if(step5CvData)
+      {
+        const {name,email,location,phoneNumber,imageUrl,profession} = currentFormData;
+        const parsedStep5Data = JSON.parse(step5CvData);
+        const dataToBeStored = {...parsedStep5Data,name,email,location,phoneNumber,imageUrl,profession};
+        localStorage.setItem("step5CvData",JSON.stringify(dataToBeStored));
+        localStorage.setItem("userName",name);
+      }
+
       // adding verifications;
-    } else if (step === 6) {
+    }else if(step === 2) {
+      const step5CvData = localStorage.getItem("step5CvData");
+      if(step5CvData)
+      {
+        const {
+          class10SchoolName,class10Board,class10Grade,
+          class12Board,class12CollegeName,class12Grade,
+          underGraduateCollegeName,underGraduateDegreeName,underGraduateDuration,underGraduateGPA,
+          postGraduateCollegeName,postGraduateDuration,postGraduateGPA,postGraduateDegreeName} = currentFormData;
+        const parsedStep5Data = JSON.parse(step5CvData);
+        const dataToBeStored = {...parsedStep5Data,class10SchoolName,class10Board,class10Grade,
+          class12Board,class12CollegeName,class12Grade,
+          underGraduateCollegeName,underGraduateDegreeName,underGraduateDuration,underGraduateGPA,
+          postGraduateCollegeName,postGraduateDuration,postGraduateGPA,postGraduateDegreeName
+        };
+        localStorage.setItem("step5CvData",JSON.stringify(dataToBeStored));
+      }
+
+      // adding verifications;
+    }
+    else if(step===3)
+    {
+      const step5CvData = localStorage.getItem("step5CvData");
+      if(step5CvData)
+      {
+        const parsedStep5Data = JSON.parse(step5CvData);
+        const {Experience} = currentFormData;
+        const dataToBeStored = {...parsedStep5Data,Experience};
+        localStorage.setItem("step5CvData",JSON.stringify(dataToBeStored));
+      }
+    }
+    else if(step===4)
+    {
+      const step5CvData = localStorage.getItem("step5CvData");
+      if(step5CvData)
+      {
+        const parsedStep5Data = JSON.parse(step5CvData);
+        const {Skills} = currentFormData;
+        const dataToBeStored = {...parsedStep5Data,Skills};
+        localStorage.setItem("step5CvData",JSON.stringify(dataToBeStored));
+      }
+    }
+    else if (step === 6) {
       const nanoId = localStorage.getItem("nanoId") ?? "12345678";
       const loginMailId =
         sessionStorage.getItem("userMailId") ?? "ajeet@gmail.com";
       //const userName= sessionStorage.getItem("userName"); // Use a fallback string
       console.log("Form is getting submitted now");
       console.log(currentFormData);
+      const {profile_summary} = form.getValues();
+      const currentFormDataFromStep5 = localStorage.getItem("step5CvData");
+      const parseStep5Data = JSON.parse(currentFormDataFromStep5!);
       const finalAllData = {
-        ...currentFormData,
+        ...parseStep5Data,
+        profile_summary,
         loginMailId,
         nanoId,
       };
+
+      console.log("final updated data : ",finalAllData);
       createCVInBackend(finalAllData);
     }
 
     localStorage.setItem(`step${step}CvData`, JSON.stringify(currentFormData));
     setFormData(updatedFormData);
+
     const currentStep = step + 1;
     // console.log(currentStep);
     if (step !== 6) {
@@ -1055,6 +462,8 @@ const CvForm = () => {
       localStorage.setItem("currentStep", currentStep.toString());
     }
   };
+
+  console.log("step- ",step);
   // console.log(form.formState.errors);
   // const onSubmit = (formDataJson: CvFormDataType) => {
   //   console.log("Submitted form data", formDataJson);
@@ -1063,26 +472,27 @@ const CvForm = () => {
 
   const abi = [
     {
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "to",
-					"type": "address"
-				},
-				{
-					"internalType": "string[]",
-					"name": "uri",
-					"type": "string[]"
-				}
-			],
-			"name": "safeMint",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		}
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "internalType": "string[]",
+          "name": "tokenURIs",
+          "type": "string[]"
+        }
+      ],
+      "name": "mintMyNFT",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
   ];
+  
 
-  // mint NFT on chain
+  //mint NFT on chain
   const mintNFT = async () => {
     setTxStarted(true);
     const id = toast.loading("Registration started. Please wait. It usually takes 2-5 min to complete transaction ");
@@ -1090,98 +500,95 @@ const CvForm = () => {
     const iface = new ethers.utils.Interface(abi);
     try {
       let toAddress=null;
-      let networkName=null; 
+      let networkName=null;
+      //const twUserId= import.meta.env.VITE_CW_User_Id; 
+      //const job_id=null;
       const walletInfo = await getWallets();
+      console.log("wallet info",walletInfo);
       await new Promise((resolve) => setTimeout(resolve, 2000));
+
       if(walletInfo.wallets?.length>0)
       {
-        walletInfo?.wallets?.forEach(element => {
-          if(element.network_name==="POLYGON")
+        walletInfo?.wallets?.forEach(wallet => {
+          if(wallet.network_name==="POLYGON")
           {
-            toAddress=element.address;
-            networkName=element.network_name;
+            toAddress=wallet.address;
+            networkName=wallet.network_name;
             console.log("network name",networkName);
-            //setToAddress(element?.address);
-            //setNetworkName(element?.network_name);
             return;
           }
         });
       }
-      //console.log("address :",walletInfo.wallets[2]?.address,"network ",walletInfo.wallets[2]?.network_name)
-      if (networkName) {
+      if(networkName)
+      {
         const uris = ["bafkreifjwb6t6zjqnqvesl6bzl677mzp3din4vbpyfzbex7zwjcasvdt3y"];
-  
         // Encode the function data
-        const data = iface.encodeFunctionData("safeMint", [toAddress, uris]);
-  
-        const transactionData = {
-          from: toAddress, // user created wallet
-          to: "0xEe0cf0B70C3cC27bEEf29B3abCdBb33875a73bCD", // contract address
-          data: data, // abi encoded data
-          value: "0",
-        };
-  
-        const orderId: any = await executeRawTransaction({
-          network_name:networkName,
-          transaction: transactionData,
-        });
-  
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        console.log("orderid", orderId);
+        const data = iface.encodeFunctionData("mintMyNFT", [toAddress, uris]);
 
-        if(orderId)
+        const rawExecuteUrl = "https://edubukcvonchain.net/cv/exerawtx";
+
+        const res:any = await axios.post(rawExecuteUrl,
+          {
+            "network_name":networkName,
+            "walletAddress":toAddress,
+            "data":data,
+            "twUserId":"05fff27d-407e-4473-9226-2b1f6ff43574",
+            "cwAdd":"0x7bA0B06856f968dC8785f65F3e46F89070eB2A5B"
+          },
+        )
+        // //a2ee394d-027b-4eaf-ae71-14324a6854b7
+        console.log("response",res.data.data.data.orderId);
+        if(res.data.data.data.orderId)
         {
+          const fetchedOrderId:any= res.data.data.data.orderId;
+          //console.log("fetched orderId",fetchedOrderId);
           let count=0;
           toast.dismiss(id);
-          let id2 = toast.loading("Current transaction status : RUNNING");
-          //setLoading(true);
+          setLoading(true);
           const timer = setInterval(async()=>{
-            count++
-            const res = await getRawTransactionStatus(orderId);
-            //setStatus(res.jobs[0].status as "RUNNING" | "PUBLISHED" | "SUCCESS");
-            if(res?.jobs[0]?.status==="SUCCESS")
-            {
-              toast.dismiss();
-              setTxStarted(false);
-              setTxHash(res?.jobs[0]?.transaction_hash)
-              toast.success("CV Registered Successfully.");
-              localStorage.setItem("transactionSuccess",res?.jobs[0]?.status);
-              clearInterval(timer);
-              //setLoading(false);
-              return ;
-            }
-            else if(res.jobs[0].status==="FAILED")
-            {
-              toast.dismiss();
-              setTxStarted(false);
-              toast.error("Transaction Failed. Please try again");
-              clearInterval(timer);
-              //setLoading(false);
-            }
-            if(count>15)
-            {
-              toast.dismiss();
-              setTxStarted(false);
-              toast.custom(<div className="flex p-4 bg-white rounded shadow-md"><h1 className="font-bold text-[#006666]">Timeout: </h1><p> Please click on view transaction button for further status</p></div>);
-              setTxHash(res?.jobs[0]?.transaction_hash)
-              clearInterval(timer);
-              //setLoading(false);
-            }
-            toast.dismiss(id2);
-            id2 = toast.loading(`Current transaction status: ${res.jobs[0].status}`);
-          },20000)
-        }
+            const statusUrl = `https://edubukcvonchain.net/cv/get_bulkorder_details/05fff27d-407e-4473-9226-2b1f6ff43574/${fetchedOrderId}`;
 
-      } else {
-        setTxStarted(false);
-        console.log("networkName is not defined")
-        toast.dismiss();
-        toast.error("Please add some POL Token to your address to proceed...");
+            const orderIdRes = await axios.get(statusUrl);
+            console.log("orderId res",orderIdRes);
+            setStatus(orderIdRes.data.data.status as "RUNNING" | "PUBLISHED" | "SUCCESS");
+              count++;
+            
+              if(orderIdRes.data.data[0].status==="SUCCESS")
+                {
+                  toast.dismiss();
+                  setTxStarted(false);
+                  setTxHash(orderIdRes.data.data[0].transaction_hash)
+                  toast.success("CV Registered Successfully.");
+                  localStorage.setItem("transactionSuccess",orderIdRes.data.data[0].status);
+                  clearInterval(timer);
+                  setLoading(false);
+                  return ;
+                }
+                else if(orderIdRes.data.data[0].status==="FAILED")
+                {
+                  toast.dismiss();
+                  setTxStarted(false);
+                  toast.error("Transaction Failed. Please try again");
+                  clearInterval(timer);
+                  setLoading(false);
+                }
+                if(count>15)
+                  {
+                    toast.dismiss();
+                    setTxStarted(false);
+                    toast.custom(<div className="flex p-4 bg-white rounded shadow-md"><h1 className="font-bold text-[#006666]">Timeout: </h1><p> Please click on view transaction button for further status</p></div>);
+                    setTxHash(orderIdRes.data.data[0].transaction_hash)
+                    clearInterval(timer);
+                    setLoading(false);
+                  }
+                },20000)
       }
+    }
     } catch (err) {
       toast.dismiss();
       setTxStarted(false);
       console.log("error", err);
+      setLoading(false);
       toast.error("Something went wrong. please try again.");
     }
   };
@@ -1273,7 +680,7 @@ const CvForm = () => {
   ) : (
     <div className="flex gap-2 w-full flex-col sm:flex-row">
       {
-      step===6&&localStorage.getItem("transactionSuccess")&&
+      step===6&&!paymentStatus&&localStorage.getItem("transactionSuccess")&&
       <Button
         type="button"
         onClick={stepsHandler}
@@ -1309,7 +716,7 @@ const CvForm = () => {
         >
           Reset
         </Button>):
-         ( !txHash ? (
+         paymentStatus?( !txHash ? (
           <Button
           disabled={txStarted}
           type="button"
@@ -1332,18 +739,28 @@ const CvForm = () => {
               </a>
             </div>
           )
-      )}
+      ):<Button
+      disabled={txStarted}
+      type="button"
+      onClick={()=>setShowPopup(true)}
+      className="w-auto sm:w-full active:translate-y-2"
+    >
+      Register Your CV on Blockchain
+    </Button>}
     </div>
   )}
 </div>
         </form>
       </Form>
     </div>
-    {/* {loading&&
+    {showPopup&&
+    <PaymentPopup showPopup={showPopup} setShowPopup={setShowPopup}/>
+}
+    {loading&&
     <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-100 z-50">
-    <CircularLoader status={status}/>
+    <CircularLoader status={status as "RUNNING" | "PUBLISHED" | "SUCCESS" }/>
     </div>
-    } */}
+    }
     </>
   );
 };

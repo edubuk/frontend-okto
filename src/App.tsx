@@ -13,7 +13,7 @@ function App() {
 
   return (
     <div>
-  <OktoProvider apiKey={oktoAPIKey} buildType={BuildType.SANDBOX} >
+  <OktoProvider apiKey={oktoAPIKey} buildType={BuildType.PRODUCTION} >
     <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

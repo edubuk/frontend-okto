@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import toast from "react-hot-toast";
 import { useOkto } from "okto-sdk-react";
+import axios from "axios";
 
 interface NFT {
   id: string;
@@ -35,8 +36,9 @@ const fetchNFTs = async () => {
     if(walletInfo)
     {
       const userPolygonAdd = walletInfo.wallets[1].address;
+      console.log("Polygon address",userPolygonAdd);
       const idData={
-        contractAddress:"0xEe0cf0B70C3cC27bEEf29B3abCdBb33875a73bCD",
+        contractAddress:"0x3193852D4ac3154C001ca420841118917Efed680",
         abi:{
           "inputs": [
             {
@@ -61,27 +63,51 @@ const fetchNFTs = async () => {
       }
       }
     // Fetch all token IDs from the contract
-    const tokenIds: string[][] = await readContractData("POLYGON", idData); // Assuming tokenIds is an array of arrays
+    //const tokenIds: string[][] = await readContractData("POLYGON", idData); // Assuming tokenIds is an array of arrays
+    const res = await axios.post("https://sandbox-api.okto.tech/s2s/api/v1/readContractData",{
+      "network_name":"POLYGON",
+      "data":idData
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "X-Api-Key": "b942dc59-f2eb-499c-9038-1cd4691f3c13", // Correct API key header
+      },
+    }
+  )
 
-    if (tokenIds && tokenIds.length > 0) {
-      console.log("Token IDs:", tokenIds);
+    console.log("res from readcontract data",res);
+    if (res.data.status==="success") {
+      console.log("Token IDs:", res.data.data);
 
       // Flatten the array if `tokenIds` is an array of arrays
-      const flattenedTokenIds = tokenIds.flat(); // Flattens nested arrays into a single array
+      const flattenedTokenIds = res.data.data.flat(); // Flattens nested arrays into a single array
 
       // Fetch metadata for each token ID
       const nftPromises = flattenedTokenIds.map(async (tokenId: string) => {
         try {
           const nftData = {
-            contractAddress:"0xEe0cf0B70C3cC27bEEf29B3abCdBb33875a73bCD", 
+            contractAddress:"0x3193852D4ac3154C001ca420841118917Efed680", 
             abi: {
-              inputs: [{ internalType: "uint256", name: "_tokenId", type: "uint256" }],
-              name: "tokenURI",
-              outputs: [{ internalType: "string", name: "", type: "string" }],
-              stateMutability: "view",
-              type: "function",
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "tokenId",
+                  "type": "uint256"
+                }
+              ],
+              "name": "tokenURI",
+              "outputs": [
+                {
+                  "internalType": "string",
+                  "name": "",
+                  "type": "string"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
             },
-            args: { _tokenId: Number(tokenId) },
+            args: { "tokenId":Number(tokenId) },
           };
 
           console.log("Fetching metadata for token ID:", tokenId);
