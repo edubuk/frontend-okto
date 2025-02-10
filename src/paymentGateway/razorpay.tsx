@@ -28,7 +28,7 @@ const PaymentPopup: React.FC<Props> = ({ showPopup, setShowPopup }) => {
     try {
       setLoading(true);
       const orderRes = await axios.post(
-        "https://edubukcvonchain.net/cv/checkout",
+        "https://edubukcvonchain.net/api/v1/cv/checkout",
         { amount: 1 * 100 }, // Send amount in paise
         { headers: { 
           "Content-Type": "application/json",
@@ -62,7 +62,7 @@ const PaymentPopup: React.FC<Props> = ({ showPopup, setShowPopup }) => {
               }
 
               const res = await axios.post(
-                "https://edubukcvonchain.net/cv/payment_verification",
+                "https://edubukcvonchain.net/api/v1/cv/paymentverification",
                 payload,
                 { headers: { "Content-Type": "application/json" } }
               );
@@ -100,7 +100,7 @@ const PaymentPopup: React.FC<Props> = ({ showPopup, setShowPopup }) => {
   const verifyCoupon = async () => {
     try {
       const res = await axios.get(
-        `https://edubukcvonchain.net/cv/coupon_verify/${coupon}`
+        `https://edubukcvonchain.net/api/v1/cv/coupon_verification/${coupon}`
       );
       if (res.data.success) {
         console.log("coupon log", res);

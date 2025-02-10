@@ -79,7 +79,7 @@ const CvForm = () => {
     const checkStatus= async()=>{
       console.log("payment id ",paymentId);
       try {
-        const paymentStatus = await axios.get(`https://edubukcvonchain.net/cv/check_cv_status/${paymentId}`);
+        const paymentStatus = await axios.get(`https://edubukcvonchain.net/api/v1/cv/cvsubmitted_status/${paymentId}`);
         if(paymentStatus.data.success)
         {
           setPaymentStatus(paymentStatus.data.value);
@@ -525,7 +525,7 @@ const CvForm = () => {
         // Encode the function data
         const data = iface.encodeFunctionData("mintMyNFT", [toAddress, uris]);
 
-        const rawExecuteUrl = "https://edubukcvonchain.net/cv/exerawtx";
+        const rawExecuteUrl = "https://edubukcvonchain.net/api/v1/cv/exerawtx";
 
         const res:any = await axios.post(rawExecuteUrl,
           {
@@ -546,7 +546,7 @@ const CvForm = () => {
           toast.dismiss(id);
           setLoading(true);
           const timer = setInterval(async()=>{
-            const statusUrl = `https://edubukcvonchain.net/cv/get_bulkorder_details/05fff27d-407e-4473-9226-2b1f6ff43574/${fetchedOrderId}`;
+            const statusUrl = `https://edubukcvonchain.net/api/v1/cv/get_bulkorder_details/05fff27d-407e-4473-9226-2b1f6ff43574/${fetchedOrderId}`;
 
             const orderIdRes = await axios.get(statusUrl);
             console.log("orderId res",orderIdRes);
@@ -716,7 +716,7 @@ const CvForm = () => {
         >
           Reset
         </Button>):
-         paymentStatus?( !txHash ? (
+         !paymentStatus?( !txHash ? (
           <Button
           disabled={txStarted}
           type="button"
