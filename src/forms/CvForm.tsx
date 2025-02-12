@@ -680,7 +680,7 @@ const CvForm = () => {
   ) : (
     <div className="flex gap-2 w-full flex-col sm:flex-row">
       {
-      step===6&&!paymentStatus&&localStorage.getItem("transactionSuccess")&&
+      step===6&&paymentStatus&&localStorage.getItem("transactionSuccess")&&
       <Button
         type="button"
         onClick={stepsHandler}

@@ -29,7 +29,7 @@ const PaymentPopup: React.FC<Props> = ({ showPopup, setShowPopup }) => {
       setLoading(true);
       const orderRes = await axios.post(
         "https://edubukcvonchain.net/cv/checkout",
-        { amount: amount * 100 }, // Send amount in paise
+        { amount: 1 * 100 }, // Send amount in paise
         { headers: { 
           "Content-Type": "application/json",
         } }
@@ -38,7 +38,7 @@ const PaymentPopup: React.FC<Props> = ({ showPopup, setShowPopup }) => {
       if (orderRes.data.success) {
         const options = {
           key: import.meta.env.VITE_Rz_Key,
-          amount: amount* 100,
+          amount: 1* 100,
           currency: "INR",
           name: "Edubuk (Eduprovince Technologies Private Limited)",
           description: "Order-123",
@@ -62,7 +62,7 @@ const PaymentPopup: React.FC<Props> = ({ showPopup, setShowPopup }) => {
               }
 
               const res = await axios.post(
-                "https://edubukcvonchain.net/api/v1/cv/paymentverification",
+                "https://edubukcvonchain.net/cv/paymentverification",
                 payload,
                 { headers: { "Content-Type": "application/json" } }
               );
