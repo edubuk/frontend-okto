@@ -1,5 +1,5 @@
 import { CvFormDataType } from "@/forms/CvForm";
-//import { API_BASE_URL } from "@/main";
+import { API_BASE_URL } from "@/main";
 import { Cv_resoponse_type } from "@/types";
 import axios from "axios";
 import { useMutation, useQuery } from "react-query";
@@ -11,7 +11,7 @@ export const useCV = () => {
   const createCV = async (
     formData: CvFormDataType
   ): Promise<Cv_resoponse_type> => {
-    const response = await fetch("https://edubukcvonchain.net/cv/create", {
+    const response = await fetch(`${API_BASE_URL}/cv/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -23,7 +23,7 @@ export const useCV = () => {
       throw new Error("Could not create cv at the moment try again latter");
     }
     const paymentId = localStorage.getItem("paymentId");
-    const changeCvStatus = await axios.put("https://edubukcvonchain.net/cv/update_cv_status",{paymentId:paymentId});
+    const changeCvStatus = await axios.put(`${API_BASE_URL}/cv/update_cv_status`,{paymentId:paymentId});
     if(changeCvStatus.data.success)
     {
       console.log(changeCvStatus.data.message);
@@ -65,7 +65,7 @@ export const useCV = () => {
 
 export const useGetCv = (id: string) => {
   const getCvRequest = async (): Promise<Cv_resoponse_type> => {
-    const response = await fetch(`https://edubukcvonchain.net/cv/getCv/${id}`);
+    const response = await fetch(`${API_BASE_URL}/cv/getCv/${id}`);
     if (!response.ok) {
       throw new Error("Could not get cv!");
     }

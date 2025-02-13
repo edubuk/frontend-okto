@@ -4,7 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 //import Razorpay from "razorpay";
 import SmallLoader from "@/components/Loader/Loader";
-
+import { API_BASE_URL } from "@/main";
 interface Props {
   showPopup: boolean;
   setShowPopup: React.Dispatch<React.SetStateAction<boolean>>;
@@ -28,7 +28,7 @@ const PaymentPopup: React.FC<Props> = ({ showPopup, setShowPopup }) => {
     try {
       setLoading(true);
       const orderRes = await axios.post(
-        "https://edubukcvonchain.net/cv/checkout",
+        `${API_BASE_URL}/cv/checkout`,
         { amount: 1 * 100 }, // Send amount in paise
         { headers: { 
           "Content-Type": "application/json",
@@ -41,7 +41,7 @@ const PaymentPopup: React.FC<Props> = ({ showPopup, setShowPopup }) => {
           amount: 1* 100,
           currency: "INR",
           name: "Edubuk (Eduprovince Technologies Private Limited)",
-          description: "Order-123",
+          description: "",
           order_id: orderRes.data.order.id,
           handler: async (response: {
             razorpay_payment_id: string;
@@ -62,7 +62,7 @@ const PaymentPopup: React.FC<Props> = ({ showPopup, setShowPopup }) => {
               }
 
               const res = await axios.post(
-                "https://edubukcvonchain.net/cv/payment_verification",
+                `${API_BASE_URL}/cv/payment_verification`,
                 payload,
                 { headers: { "Content-Type": "application/json" } }
               );
@@ -100,7 +100,7 @@ const PaymentPopup: React.FC<Props> = ({ showPopup, setShowPopup }) => {
   const verifyCoupon = async () => {
     try {
       const res = await axios.get(
-        `https://edubukcvonchain.net/cv/coupon_verify/${coupon}`
+        `${API_BASE_URL}/cv/coupon_verify/${coupon}`
       );
       if (res.data.success) {
         console.log("coupon log", res);
