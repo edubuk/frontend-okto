@@ -83,7 +83,7 @@ const CvForm = () => {
         if(paymentStatus.data.success)
         {
           setPaymentStatus(paymentStatus.data.value);
-          console.log(paymentStatus)
+          console.log("paymentStatus",paymentStatus)
         }
       } catch (error) {
         console.log("error while checking payment status")
@@ -559,9 +559,10 @@ const CvForm = () => {
                   setTxStarted(false);
                   setTxHash(orderIdRes.data.data[0].transaction_hash)
                   toast.success("CV Registered Successfully.");
-                  localStorage.setItem("transactionSuccess",orderIdRes.data.data[0].status);
+                  localStorage.setItem("transactionSuccess","success");
                   clearInterval(timer);
                   setLoading(false);
+                  setPaymentStatus(true);
                   return ;
                 }
                 else if(orderIdRes.data.data[0].status==="FAILED")
