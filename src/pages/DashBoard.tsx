@@ -5,7 +5,7 @@ import CvById from "./CvById";
 import { connectWallet } from "@/api/contract.api";
 import toast from "react-hot-toast";
 import { useCvFromContext } from "@/context/CvForm.context";
-import { API_BASE_URL } from "@/main";
+//import { API_BASE_URL } from "@/main";
 import { contractNFTAddress,abiNFT } from "@/contract/nft.contractData";
 import NFTGallery from "./NFTData";
 
