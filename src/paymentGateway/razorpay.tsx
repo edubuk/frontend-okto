@@ -62,7 +62,7 @@ const PaymentPopup: React.FC<Props> = ({ showPopup, setShowPopup }) => {
               }
 
               const res = await axios.post(
-                "https://edubukcvonchain.net/cv/paymentverification",
+                "https://edubukcvonchain.net/cv/payment_verification",
                 payload,
                 { headers: { "Content-Type": "application/json" } }
               );
