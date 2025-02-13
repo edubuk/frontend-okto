@@ -209,7 +209,7 @@ const Navbar = () => {
     {
       name: "Dashboard",
       path: "/dashboard",
-    },
+    }
   ];
 
   const getUserData = async () => {
