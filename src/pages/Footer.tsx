@@ -78,7 +78,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <a href="https://www.edubukeseal.com/about#teamInfo" target="_blank" className="text-teal-700 hover:text-orange-500">
-                  <span className="text-orange-500">→</span> Meet Our Co-Founders
+                  <span className="text-orange-500">→</span> Meet our Team & Advisors
                 </a>
               </li>
               <li>
