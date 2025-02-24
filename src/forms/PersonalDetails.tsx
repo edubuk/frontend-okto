@@ -103,6 +103,7 @@ const PersonalDetails = ({
     setImagePreview("");
     setIsImageUploading(true);
     setValue("imageFile", e.target.files[0]);
+    console.log("imageFile", e.target.files[0]);
     const storage = getStorage(app);
     const fileName = new Date().getTime() + e.target.files[0]?.name!;
     const storageRef = ref(storage, fileName);

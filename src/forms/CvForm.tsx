@@ -37,7 +37,7 @@ const CvForm = () => {
     },
   });
 
-  const { step, setStep } = useCvFromContext();
+  const { step, setStep} = useCvFromContext();
   const [profession, setProfession] = useState<string | null>(null);
   const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>(new FormData());
@@ -48,7 +48,6 @@ const CvForm = () => {
   const [paymentStatus, setPaymentStatus] = useState<boolean>(true);
   const [status, setStatus] = useState<string>("RUNNING");
   const [loading, setLoading] = useState<boolean>(false);
-
   useEffect(() => {
     const nanoId = nanoid(16);
     const storedNanoId = localStorage.getItem("nanoId");
@@ -680,7 +679,7 @@ const CvForm = () => {
               ) : (
                 <div className="flex gap-2 w-full flex-col sm:flex-row">
                   {step === 6 &&
-                    paymentStatus &&
+                    (localStorage.getItem("isFreeCoupon") || paymentStatus) &&
                     localStorage.getItem("transactionSuccess") && (
                       <Button
                         type="button"
@@ -717,7 +716,7 @@ const CvForm = () => {
                     >
                       Reset
                     </Button>
-                  ) : !paymentStatus ? (
+                  ) : (localStorage.getItem("isFreeCoupon") || !paymentStatus) ? (
                     !txHash ? (
                       <Button
                         disabled={txStarted}
@@ -760,7 +759,7 @@ const CvForm = () => {
         </Form>
       </div>
       {showPopup && (
-        <PaymentPopup showPopup={showPopup} setShowPopup={setShowPopup} />
+        <PaymentPopup showPopup={showPopup} setShowPopup={setShowPopup}/>
       )}
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-100 z-50">

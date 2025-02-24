@@ -3,6 +3,8 @@ import React, { createContext, useContext, useState } from "react";
 interface AppState {
   account:string|null,
   isLogin:boolean,
+  isFreeCoupon:boolean,
+  setFreeCoupon:React.Dispatch<React.SetStateAction<boolean>>,
   setLogin:React.Dispatch<React.SetStateAction<boolean>>,
   setAccount:React.Dispatch<React.SetStateAction<string | null>>,
   step: number;
@@ -110,6 +112,7 @@ export const CvFomContextProvider = ({
 }) => {
   const [step, setStep] = useState<number>(1);
   const [isLogin,setLogin] = useState<boolean>(false);
+  const [isFreeCoupon, setFreeCoupon] = useState<boolean>(false);
   const [selectedSkills, setSelectedSkills] = useState<string[]>(() => {
     const demo = localStorage.getItem("step4CvData");
     const parsedDemo = JSON.parse(demo!);
@@ -204,7 +207,9 @@ export const CvFomContextProvider = ({
         setAccount,
         account,
         isLogin,
-        setLogin
+        setLogin,
+        setFreeCoupon,
+        isFreeCoupon,
       }}
     >
       {children}

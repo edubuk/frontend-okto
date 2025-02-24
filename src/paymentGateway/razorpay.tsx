@@ -18,7 +18,7 @@ interface payload {
   userMailId: string;
 }
 
-const PaymentPopup: React.FC<Props> = ({ showPopup, setShowPopup }) => {
+const PaymentPopup: React.FC<Props> = ({ showPopup, setShowPopup}) => {
   const [coupon, setCoupon] = useState<string>("");
   const [amount, setAmount] = useState<number>(89);
   const [isCouponValid, setCouponValid] = useState<boolean>(false);
@@ -103,9 +103,19 @@ const PaymentPopup: React.FC<Props> = ({ showPopup, setShowPopup }) => {
         `${API_BASE_URL}/cv/coupon_verify/${coupon}`
       );
       if (res.data.success) {
+        if(res.data.value===0)
+        {
+          localStorage.setItem("isFreeCoupon","true");
+          toast.success("This one's on us! Enjoy your free access.")
+          setAmount(res.data.value);
+          setCouponValid(true);
+          setShowPopup(false);
+        }
+        else{
         console.log("coupon log", res);
         setAmount(res.data.value);
         setCouponValid(true);
+        }
       } else {
         setAmount(res.data.value);
       }
