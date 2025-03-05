@@ -15,12 +15,12 @@ const Home = () => {
         <Lottie 
         animationData={animationData} 
         loop={false}
-        className="w-90 h-90 sm:w-96 sm:h-96" />
+        className="w-90 h-90 sm:w-96 sm:h-96 md:w-[450px] md:h-[450px]" />
       </div>
     </div>
     <div className='flex flex-col justify-center items-center gap-4 w-dvw h-dvh'>
       <h1 className='text-center text-[30px] text-[#006666] font-bold border-b-2 border-[#006666] w-full'>How To Use</h1>
-      <iframe className='w-[300px] h-[250px] md:w-[560px] md:h-[315px]' src="https://www.youtube.com/embed/LsOgjC6zWkQ?si=OEgthlMrZXzgUd_7" title="YouTube video player"  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" ></iframe>
+      <iframe className='w-[300px] h-[250px] md:w-[600px] md:h-[350px] lg:w-[850px] lg:h-[450px]' src="https://www.youtube.com/embed/LsOgjC6zWkQ?si=OEgthlMrZXzgUd_7" title="YouTube video player" allowFullScreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" ></iframe>
     </div>
     <Footer />
     </>
