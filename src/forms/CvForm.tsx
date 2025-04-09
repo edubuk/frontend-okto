@@ -518,7 +518,7 @@ const CvForm = () => {
       }
       if (networkName) {
         const uris = [
-          "bafkreifjwb6t6zjqnqvesl6bzl677mzp3din4vbpyfzbex7zwjcasvdt3y",
+          "bafkreicojn2jmuymgcccwqznmntyyvendd47jwccvtnqpwaung6mvkrrta",
         ];
         // Encode the function data
         const data = iface.encodeFunctionData("mintMyNFT", [toAddress, uris]);

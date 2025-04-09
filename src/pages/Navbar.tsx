@@ -228,7 +228,7 @@ const Navbar = () => {
 
   return (
     <div className="flex justify-between items-center px-8 py-4 w-screen h-[20vh]">
-      <img src={logo} alt="Logo" className="h-20 w-20" />
+      <img src={logo} alt="Logo" className="h-24 w-24" />
       <div className="flex gap-2 justify-between items-center">
         <div className="space-x-4 hidden md:block">
           {links?.map((link, i) =>
@@ -406,7 +406,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       } shadow-lg z-10`}
     >
       <ul className="flex flex-col space-y-4 p-4">
-        <img src={logo} alt="Logo" className="h-16 w-16" />
+        <img src={logo} alt="Logo" className="h-20 w-20" />
         {links?.map((link, i) =>
           link.name === "Home" ? (
             <Link
