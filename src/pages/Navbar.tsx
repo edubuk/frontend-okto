@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import logo from "../assets/EdubukLogoClean.png";
+import logo from "../assets/newLogo.png";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useOkto } from "okto-sdk-react";
@@ -228,7 +228,7 @@ const Navbar = () => {
 
   return (
     <div className="flex justify-between items-center px-8 py-4 w-screen h-[20vh]">
-      <img src={logo} alt="Logo" className="h-16 w-16" />
+      <img src={logo} alt="Logo" className="h-20 w-20" />
       <div className="flex gap-2 justify-between items-center">
         <div className="space-x-4 hidden md:block">
           {links?.map((link, i) =>
