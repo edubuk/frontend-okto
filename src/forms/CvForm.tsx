@@ -517,9 +517,11 @@ const CvForm = () => {
         });
       }
       if (networkName) {
-        const uris = [
-          "bafkreicojn2jmuymgcccwqznmntyyvendd47jwccvtnqpwaung6mvkrrta",
-        ];
+        const arr = localStorage.getItem("hashArray");
+        const uris = arr? JSON.parse(arr): ["bafkreicojn2jmuymgcccwqznmntyyvendd47jwccvtnqpwaung6mvkrrta"];
+        // const uris = [
+        //   "bafkreicojn2jmuymgcccwqznmntyyvendd47jwccvtnqpwaung6mvkrrta",
+        // ];
         // Encode the function data
         const data = iface.encodeFunctionData("mintMyNFT", [toAddress, uris]);
 

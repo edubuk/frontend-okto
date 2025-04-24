@@ -4,16 +4,16 @@ import { cn } from "@/lib/utils";
 import { AnimatedBeam } from "./animated-beam";
 import SelfAttestButton from "../Buttons/SelfAttest";
 import UploadProofButton from "../Buttons/UploadProofButton";
-import IssuerButton from "../Buttons/IssuerButton";
+// import IssuerButton from "../Buttons/IssuerButton";
 import { twMerge } from "tailwind-merge";
 import { useFormContext } from "react-hook-form";
 import { Dialog, DialogContent, DialogTrigger } from "./dialog";
 import { FileUpload } from "./file-upload";
 import {uploadToIpfs} from "./PinFileOnPinata";
-import {sendEmail} from './MailToVerify';
-import toast from "react-hot-toast";
-import { Input } from "./input";
-import { Button } from "./button";
+// import {sendEmail} from './MailToVerify';
+// import toast from "react-hot-toast";
+// import { Input } from "./input";
+// import { Button } from "./button";
 
 
 const Circle = forwardRef<
@@ -52,6 +52,19 @@ export function AnimatedVerification({
   validationStep,
   // verificationObject,
   setterVerificationObject,
+  jobRole,
+  companyName,
+  skill,
+  awardName,
+  awardOrg,
+  courseName,
+  courseOrg,
+  underGraduateCollegeName,
+  postGraduateCollegeName,
+  class10SchoolName,
+  class12CollegeName,
+  underGraduateDegreeName,
+  postGraduateDegreeName,
 }: {
   className?: string;
   firstButtonText: string;
@@ -69,6 +82,19 @@ export function AnimatedVerification({
     };
   };
   setterVerificationObject: React.Dispatch<React.SetStateAction<any>>;
+  jobRole?:string;
+  companyName?:string;
+  skill?:string;
+  awardName?:string;
+  awardOrg?:string;
+  courseName?:string;
+  courseOrg?:string;
+  class12CollegeName?:string;
+  class10SchoolName?:string;
+  underGraduateCollegeName?:string;
+  postGraduateCollegeName?:string;
+  underGraduateDegreeName?:string;
+  postGraduateDegreeName?:string;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   // const div1Ref = useRef<HTMLDivElement>(null);
@@ -85,13 +111,13 @@ export function AnimatedVerification({
   const { setValue, getValues } = useFormContext();
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-  const [mailId,setMailId] = useState<string>("");
-  const [openMailDialog, setOpenMailDialog] = useState<boolean>(false);
+  // const [mailId,setMailId] = useState<string>("");
+  // const [openMailDialog, setOpenMailDialog] = useState<boolean>(false);
   // Safely check if the verificationObject contains the field
   // const verificationData = verificationObject[field] || {};
-  console.log(storedVerifications[field], "checking the verification status");
+  console.log("skill",);
   const verificationData = storedVerifications[field] || {};
-  console.log(files);
+  //console.log(files);
   // console.log("form object", getValues());
   const formObject = getValues();
   useEffect(() => {
@@ -117,18 +143,63 @@ export function AnimatedVerification({
     const proofArray: string[] = [];
     const hashArray: string[] = [];
   
-    const {metaDataHash,docHash} = await uploadToIpfs(files[0],setIsUploading);
+    let metaDataHash,docHash;
+    const userName = localStorage.getItem("userName");
+    switch(verificationStep)
+    {
+      case "educationVerifications":
+        if(field==="class10")
+        {
+          const eduUserData1 = `completing ${firstButtonText} by ${userName} from ${class10SchoolName}`;
+        ({ metaDataHash, docHash } = await uploadToIpfs(files[0], setIsUploading,eduUserData1));
+        }
+        else if(field==="class12")
+        {
+          const eduUserData1 = `completing ${firstButtonText} by ${userName} from ${class12CollegeName}`;
+        ({ metaDataHash, docHash } = await uploadToIpfs(files[0], setIsUploading,eduUserData1));
+        }
+        else if(field==="undergraduation")
+        {
+          const eduUserData1 = `completing ${underGraduateDegreeName} by ${userName} from ${underGraduateCollegeName}`;
+        ({ metaDataHash, docHash } = await uploadToIpfs(files[0], setIsUploading,eduUserData1));
+        }
+        else if(field==="postgraduation")
+        {
+          const eduUserData1 = `completing ${postGraduateDegreeName} by ${userName} from ${postGraduateCollegeName}`;
+        ({ metaDataHash, docHash } = await uploadToIpfs(files[0], setIsUploading,eduUserData1));
+        }
+        break;
+      case "experienceVerifications":
+        const userData1 = `completing ${jobRole} job by ${userName} at ${companyName}`;
+        ({ metaDataHash, docHash } = await uploadToIpfs(files[0], setIsUploading,userData1));
+        break;
+
+      case "skillsVerifications":
+        const userData2 = `completing ${skill} skill by ${userName}`;
+        ({ metaDataHash, docHash } = await uploadToIpfs(files[0], setIsUploading,userData2));
+        break;
+
+      case "awardVerifications":
+        const userData3 = `receiving ${awardName} certificate by ${userName} at ${awardOrg}`;
+        ({ metaDataHash, docHash } = await uploadToIpfs(files[0], setIsUploading,userData3));
+        break;
+      case "courseVerifications":
+        const userData4 = `completing ${courseName} course by ${userName} at ${courseOrg}`;
+        ({ metaDataHash, docHash } = await uploadToIpfs(files[0], setIsUploading,userData4));
+        break;
+    }
     console.log("metaData and docHash",metaDataHash,docHash);
     if(docHash)
       {
         if (
+          verificationStep === "educationVerifications" ||
           verificationStep === "experienceVerifications" ||
           verificationStep === "skillsVerifications" ||
           verificationStep === "awardVerifications" ||
           verificationStep === "courseVerifications"
         ) {
           hashArray.push(metaDataHash as string);
-        
+          console.log("verification data : ",verificationData)
           // Retrieve existing hashArray from localStorage
           let data = localStorage.getItem("hashArray");
         
@@ -203,15 +274,15 @@ export function AnimatedVerification({
   };
   setValue(`${verificationStep}[${field}].mailStatus`, "pending");
   // handle mail to issuer;
-  const handleMailToIssuer = () => {
-    // TODO: handling mail to issuer;
-    //e.preventDefault();
-    if(!ipfsHash)
-    {
-      return toast.error("proof document is not uploaded");
-    }
-    sendEmail(ipfsHash,verificationStep,field,mailId);
-  };
+  // const handleMailToIssuer = () => {
+  //   // TODO: handling mail to issuer;
+  //   //e.preventDefault();
+  //   if(!ipfsHash)
+  //   {
+  //     return toast.error("proof document is not uploaded");
+  //   }
+  //   sendEmail(ipfsHash,verificationStep,field,mailId);
+  // };
   return (
     <div
       className={cn(
@@ -258,9 +329,31 @@ export function AnimatedVerification({
               isAttested={verificationData?.isSelfAttested}
             />
           </div>
+          <div ref={div4Ref} className="z-50">
+            {/* {!openMailDialog&&<IssuerButton
+              text="Mail to issuer"
+              onClick={()=>setOpenMailDialog(true)}
+              className="-ml-2  text-xs sm:text-base sm:ml-0"
+            />} */}
+            {/* {
+              openMailDialog&&
+            <div className="flex flex-col items-center justify-center gap-1 w-40">
+                  <Input
+                    type="string"
+                    placeholder="Enter Institute MailId"
+                    value={mailId}
+                    onChange={(e)=>setMailId(e.target.value)}
+                  />
+                  <div className="flex items-center justify-center gap-2">
+                  <Button type="button" onClick={handleMailToIssuer}>send</Button>
+                  <Button type="button" onClick={()=>setOpenMailDialog(false)}>close</Button>
+                  </div>
+                  </div>
+                  } */}
+          </div>
           <div ref={div3Ref} className="z-50 mt-2">
-            <Dialog  open={dialogOpen} onOpenChange={setDialogOpen}>
-              <DialogTrigger disabled>
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+              <DialogTrigger>
                 {/* triggering dialogue */}
               {!ipfsHash&&
                 <UploadProofButton
@@ -288,28 +381,6 @@ export function AnimatedVerification({
               </DialogContent>
             </Dialog>
           </div>
-          <div ref={div4Ref} className="z-50">
-            {!openMailDialog&&<IssuerButton
-              text="Mail to issuer"
-              onClick={()=>setOpenMailDialog(true)}
-              className="-ml-2  text-xs sm:text-base sm:ml-0"
-            />}
-            {
-              openMailDialog&&
-            <div className="flex flex-col items-center justify-center gap-1 w-40">
-                  <Input
-                    type="string"
-                    placeholder="Enter Institute MailId"
-                    value={mailId}
-                    onChange={(e)=>setMailId(e.target.value)}
-                  />
-                  <div className="flex items-center justify-center gap-2">
-                  <Button type="button" onClick={handleMailToIssuer}>send</Button>
-                  <Button type="button" onClick={()=>setOpenMailDialog(false)}>close</Button>
-                  </div>
-                  </div>
-}
-          </div>
         </div>
       </div>
 
@@ -332,12 +403,12 @@ export function AnimatedVerification({
         toRef={div6Ref}
         duration={3}
       />
-      <AnimatedBeam
+      {/* <AnimatedBeam
         containerRef={containerRef}
         fromRef={div4Ref}
         toRef={div6Ref}
         duration={3}
-      />
+      /> */}
       <AnimatedBeam
         containerRef={containerRef}
         fromRef={div5Ref}

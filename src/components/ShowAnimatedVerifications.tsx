@@ -150,6 +150,6 @@ export function ShowAnimatedVerifications({
         toRef={div7Ref}
         duration={3}
       />
-    </div>
+    </div> 
   );
 }
