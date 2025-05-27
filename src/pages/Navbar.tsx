@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import logo from "../assets/newLogo.png";
-import truCv from "../assets/truCv2.png";
+import truCv from "../assets/truCV2.png";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useOkto } from "okto-sdk-react";
