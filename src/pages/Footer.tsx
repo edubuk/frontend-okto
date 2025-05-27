@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import logo from "../assets/edubuklogo.png";
+import logo from "@/assets/edubuklogo.png";
 import social1 from '../assets/Social/social1.png'
 import social2 from '../assets/Social/social2.png'
 import social3 from '../assets/Social/social3.png'
