@@ -1,33 +1,58 @@
-import animationData from '../assets/resumeAnimation.json';
-import Lottie from 'lottie-react';
-import Footer from './Footer';
+import Facts from "@/components/HomePageSections/Facts";
+import heroImg from "../assets/hero.png";
+import ImageSlider from "../components/HomePageSections/ImageSlider";
+import OurAdvisor from "../components/HomePageSections/OurAdvisor";
+import OurExecutives from "../components/HomePageSections/OurExecutives";
+import ThreeDot from "../components/HomePageSections/ThreeDot";
+import VideoSection from "../components/HomePageSections/VideoSection";
+import Footer from "./Footer";
+import StepToCreateCV from "../components/HomePageSections/StepToCreateCV";
+import Collaborators from "../components/HomePageSections/Collaborators";
 
 const Home = () => {
-
-
   return (
-    <>
-    <div className="flex justify-center items-center flex-col w-vw h-[80vh] top-0">
-      <div className="flex flex-col justify-center items-center text-center px-4">
-        <h1 className="text-3xl font-bold mb-6 text-[#006666]">
-          Create your fully verified <strong className="text-blue-500">CV</strong> and apply to your dream job
-        </h1>
-        <Lottie 
-        animationData={animationData} 
-        loop={false}
-        className="w-90 h-90 sm:w-96 sm:h-96 md:w-[450px] md:h-[450px]" />
+    <div className="flex justify-center items-center flex-col gap-8">
+    <div className="relative w-full">
+      <div className="flex justify-around items-center flex-wrap-reverse gap-10 md:gap-20 border-b-4 border-amber-300 md:h-[80vh]">
+        <div className="flex justify-center items-center flex-col gap-4 pb-4">
+          <p className="text-white bg-[#006666] px-6 py-4 font-bold rounded-lg text-2xl sm:text-3xl md:text-4xl">
+            TruCV
+          </p>
+          <p className="text-[#03257E] text-center text-2xl sm:text-3xl md:text-5xl font-bold">
+            Your Verifiable CV<br></br> on Blockchain
+          </p>
+          <p className="text-[#f14419] text-center font-bold text-xl sm:text-2xl">
+            [ Academic & Professional Credentials ]
+          </p>
+        </div>
+        <div className="relative w-fit ">
+          <img
+            src={heroImg}
+            alt="hero-img"
+            className="w-full h-[60vh] sm:h-[70vh] rounded-b-full object-cover"
+          />
+          <div className="absolute left-1/2 bottom-0 -translate-x-1/2 w-[320px] h-[320px] bg-[#03257e] rounded-full -z-10"></div>
+        </div>
+        </div>
+        <div className="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-[#03257e] via-[#006666] to-[#f14419]">
+        </div>
       </div>
+      <ImageSlider />
+      <ThreeDot />
+      <Facts />
+      <ThreeDot />
+      <StepToCreateCV />
+      <ThreeDot />
+      <VideoSection />
+      <ThreeDot />
+      <Collaborators />
+      <ThreeDot />
+      <OurExecutives />
+      <ThreeDot />
+      <OurAdvisor />
+      <Footer />
     </div>
-    <div className='flex flex-col justify-center items-center gap-4 w-dvw h-dvh'>
-      <h1 className='text-center text-[30px] text-[#006666] font-bold border-b-2 border-[#006666] w-full'>How To Use</h1>
-      <iframe className='w-[300px] h-[250px] md:w-[600px] md:h-[350px] lg:w-[850px] lg:h-[450px]' src="https://www.youtube.com/embed/LsOgjC6zWkQ?si=OEgthlMrZXzgUd_7" title="YouTube video player" allowFullScreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" ></iframe>
-    </div>
-    <Footer />
-    </>
   );
 };
 
 export default Home;
-
-
-

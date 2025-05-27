@@ -15,13 +15,24 @@ export default {
       backgroundImage: {},
       animation: {
         'fade-in': 'fadeIn 0.3s ease-out',
+       slide: 'slide 10s linear infinite',
+        slideOpposite: 'slideOpposite 10s linear infinite',
       },
       keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0', transform: 'scale(0.95)' },
-          '100%': { opacity: '1', transform: 'scale(1)' },
-        },
-      },
+  fadeIn: {
+    '0%': { opacity: '0', transform: 'scale(0.95)' },
+    '100%': { opacity: '1', transform: 'scale(1)' },
+  },
+  slide: {
+    '0%': { transform: 'translateX(0)' },
+    '100%': { transform: 'translateX(-50%)' },
+  },
+  slideOpposite: {
+    '0%': { transform: 'translateX(-50%)' },
+    '100%': { transform: 'translateX(0)' },
+  },
+}
+
     },
   },
   plugins: [tailwindcssAnimate],

@@ -1,152 +1,47 @@
-import React from "react";
-import { FaFacebook, FaLinkedin, FaTwitter, FaInstagram, FaYoutube, FaTelegram } from "react-icons/fa";
+
 import { Link } from "react-router-dom";
-
-const Footer: React.FC = () => {
+import logo from "../assets/edubuklogo.png";
+import social1 from '../assets/Social/social1.png'
+import social2 from '../assets/Social/social2.png'
+import social3 from '../assets/Social/social3.png'
+import social4 from '../assets/Social/social4.png'
+import social5 from '../assets/Social/social5.png'
+import social6 from '../assets/Social/social6.png'
+import { MdEmail, MdLocationPin, MdPhone } from "react-icons/md";
+import { FaRegFileAlt } from "react-icons/fa";
+const Footer = () => {
   return (
-    <div className="w-full rounded border-t border-[#006666] mt-10 bg-white shadow-lg">
-      {/* Contact Us Section */}
-      <div className=" flex justify-around items-center bg-teal-700 text-white p-2 rounded-lg w-full  sm:w-3/4 text-xs mx-auto absolute md:text-lg translate-y-[-50%] z-30">
-        <div className="flex flex-col items-start text-center md:text-left">
-          <h1 className="text-lg md:text-xl lg:text-2xl font-bold">Ready for Certified CV</h1>
-          <p className="text-orange-500">Let's get started</p>
+    <div className="flex flex-col bg-white sm:px-4 gap-4 border-b-8 border-[#006666] w-full">
+      <div className="flex flex-wrap justify-center sm:justify-between items-center gap-8 border-b-2 border-t-2 border-gray-300 pb-3 " >
+        <img src={logo} alt="logo" className="md:w-[200px] md:h-[200px] w-[152px] h-[152px]"></img>
+        <div className="flex flex-col justify-center gap-4 sm:pl-16 ml-10">
+            <div className="font-semibold text-xl text-black uppercase">Contact Us:</div>
+            <div className="flex justify-start gap-2 items-center text-black"><MdEmail />Email: support@edubukeseal.org</div>
+            <div className="flex justify-start gap-2 items-center text-black"><MdPhone />Phone: +91 9250411261</div>
         </div>
-        <Link to="/create-cv">
-          <button className="bg-white text-teal-700 px-4 py-2 rounded-lg hover:bg-gray-200 mt-4 md:mt-0">
-            Create Your CV
-          </button>
-        </Link>
+        <div className="flex flex-col justify-center gap-4 sm:pl-16">
+            <div className="font-semibold text-xl text-black uppercase">Legals:</div>
+            <Link to="/terms-and-conditions" className="flex justify-start gap-2 items-center text-black"><FaRegFileAlt />Terms & Conditions</Link>
+            <Link to="/cancellation-policy" className="flex justify-start gap-2 items-center text-black"><FaRegFileAlt />Cancellation Policy</Link>
+            <Link to="/refund-policy" className="flex justify-start gap-2 items-center text-black"><FaRegFileAlt />Refund Policy</Link>
+        </div>
+        <div className="flex flex-col justify-center gap-4 sm:pl-16">
+            <div className="font-semibold text-xl text-black uppercase">Our Offices:</div>
+            <div className="flex justify-start gap-2 items-center text-black"><MdLocationPin /> Hyderabad, India</div>
+            <div className="flex justify-start gap-2 items-center text-black"><MdLocationPin /> Dubai, UAE</div>
+        </div>
       </div>
-
-      {/* Footer Content */}
-      <div className="flex flex-col justify-center items-center w-full p-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full text-left mt-12">
-          {/* Logo Section */}
-          <div className="flex flex-col items-center gap-3">
-            <div className="flex items-center gap-2">
-              <img src="/newLogo.png" alt="logo" className="w-20 h-20 mt-2" />
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-teal-700 via-orange-500 to-blue-500 bg-clip-text text-transparent">
-                Edubuk
-              </h1>
-            </div>
-            <p className="text-xl text-teal-700">© 2025</p>
-          </div>
-
-          {/* Links Column 1 */}
-          <div className="flex justify-start sm:justify-center items-center">
-            <ul className="space-y-2">
-              <li>
-                <a href="https://www.edubukeseal.com/#learnerprofile" target="_blank" className="text-teal-700 hover:text-orange-500">
-                  <span className="text-orange-500">→</span> Learner’s Profile on Blockchain
-                </a>
-              </li>
-              <li>
-                <a href="https://www.edubukeseal.com/#collabNSupport" target="_blank" className="text-teal-700 hover:text-orange-500">
-                  <span className="text-orange-500">→</span> Our Collaborators
-                </a>
-              </li>
-              <li>
-                <a href="https://www.edubukeseal.com/#unSDG" target="_blank" className="text-teal-700 hover:text-orange-500">
-                  <span className="text-orange-500">→</span> UN SDG’s Compliance
-                </a>
-              </li>
-              <li>
-                <Link to="/about-us" className="text-teal-700 hover:text-orange-500">
-                  <span className="text-orange-500">→</span> About Us
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact-us" className="text-teal-700 hover:text-orange-500">
-                  <span className="text-orange-500">→</span> Contact Us
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Links Column 2 */}
-          <div className="flex justify-start sm:justify-center items-center">
-            <ul className="space-y-2">
-              <li>
-                <a href="https://www.edubukeseal.com/#accProgram" target="_blank" className="text-teal-700 hover:text-orange-500">
-                  <span className="text-orange-500">→</span> Accelerator Programs
-                </a>
-              </li>
-              <li>
-                <a href="https://www.edubukeseal.com/#awardRecog" target="_blank" className="text-teal-700 hover:text-orange-500">
-                  <span className="text-orange-500">→</span> Awards & Recognitions
-                </a>
-              </li>
-              <li>
-                <a href="https://www.edubukeseal.com/about#teamInfo" target="_blank" className="text-teal-700 hover:text-orange-500">
-                  <span className="text-orange-500">→</span> Meet our Team & Advisors
-                </a>
-              </li>
-              <li>
-                <a href="https://www.edubukeseal.com/ceta" target="_blank" className="text-teal-700 hover:text-orange-500">
-                  <span className="text-orange-500">→</span> CETA Program
-                </a>
-              </li>
-              <li>
-                <a href="https://www.edubukeseal.com/finder" target="_blank" className="text-teal-700 hover:text-orange-500">
-                  <span className="text-orange-500">→</span> Request Credential
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Links Column 3 */}
-          <div className="flex justify-start sm:justify-center items-center">
-            <ul className="space-y-2">
-              <li>
-                <a href="https://www.edubuk.io" target="_blank" className="text-teal-700 hover:text-orange-500">
-                  <span className="text-orange-500">→</span> Visit: www.edubuk.io
-                </a>
-              </li>
-              <li>
-                <a href="mailto:support@edubuk.com" target="_blank" className="text-teal-700 hover:text-orange-500">
-                  <span className="text-orange-500">→</span> Email: support@edubuk.com
-                </a>
-              </li>
-              <li>
-                <Link to="/refund-policy" className="text-teal-700 hover:text-orange-500">
-                  <span className="text-orange-500">→</span> Refund Policy
-                </Link>
-              </li>
-              <li>
-                <Link to="/terms-and-conditions" className="text-teal-700 hover:text-orange-500">
-                  <span className="text-orange-500">→</span> Terms & Conditions
-                </Link>
-              </li>
-              <li>
-                <Link to="/cancellation-policy" className="text-teal-700 hover:text-orange-500">
-                  <span className="text-orange-500">→</span> Cancellation Policy
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Social Media Icons */}
-        <div className="flex justify-center items-center gap-4 mt-8">
-          <h2 className="text-teal-700">Follow us on:</h2>
-          <a href="https://t.me/edubukofficial" target="_blank">
-            <FaTelegram className="text-blue-600 w-6 h-6 hover:text-orange-500" />
-          </a>
-          <a href="https://www.facebook.com/edubuk.trst/" target="_blank">
-            <FaFacebook className="text-blue-700 w-6 h-6 hover:text-orange-500" />
-          </a>
-          <a href="https://www.instagram.com/edubuk_/" target="_blank">
-            <FaInstagram className="text-pink-600 w-6 h-6 hover:text-orange-500" />
-          </a>
-          <a href="https://www.linkedin.com/company/edubuk-ai-web3/" target="_blank">
-            <FaLinkedin className="text-blue-500 w-6 h-6 hover:text-orange-500" />
-          </a>
-          <a href="https://x.com/edubuktrust" target="_blank">
-            <FaTwitter className="text-blue-400 w-6 h-6 hover:text-orange-500" />
-          </a>
-          <a href="https://www.youtube.com/channel/UC4g4MH4F_JTbd1tqNS5pq1g/videos" target="_blank">
-            <FaYoutube className="text-red-600 w-6 h-6 hover:text-orange-500" />
-          </a>
+   
+      <div className="flex justify-center md:justify-between items-center align-middle pb-6 flex-wrap-reverse">
+        <p className="text-[#000000] w-full border-t-2 border-gray-300 sm:w-auto text-center sm:border-none pt-3">© 2025 Edubuk | All Rights Reserved</p>
+        <div className="flex justify-center items-center gap-2 w-full sm:w-auto pb-3 sm:pb-0">
+            <p className="text-[#000000] font-semibold">Follow us on:</p>
+            <a href="https://t.me/edubukofficial" target="_blank" rel="no-refferer"><img src={social1} alt="social logo" className="w-5 h-5" ></img></a>
+            <a href="https://www.facebook.com/edubuk.trst/" target="_blank" rel="no-refferer"><img src={social2} alt="social logo" className="w-5 h-5" ></img></a>
+            <a href="https://www.instagram.com/edubuk_/" target="_blank" rel="no-refferer"><img src={social3} alt="social logo" className="w-5 h-5" ></img></a>
+            <a href="https://www.linkedin.com/company/edubuk-ai-web3/" target="_blank" rel="no-refferer"><img src={social4} alt="social logo" className="w-5 h-5" ></img></a>
+            <a href="https://x.com/edubuktrust" target="_blank" rel="no-refferer"><img src={social5} alt="social logo" className="w-5 h-5" ></img></a>
+            <a href="https://www.youtube.com/channel/UC4g4MH4F_JTbd1tqNS5pq1g/videos" target="_blank" rel="no-refferer"><img src={social6} alt="social logo" className="w-5 h-5" ></img></a>
         </div>
       </div>
     </div>
