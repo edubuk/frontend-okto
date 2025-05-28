@@ -1,6 +1,5 @@
 
 import { Link } from "react-router-dom";
-import edubuklogo from "@/assets/edubuklogo.png";
 import social1 from '../assets/Social/social1.png'
 import social2 from '../assets/Social/social2.png'
 import social3 from '../assets/Social/social3.png'
@@ -14,7 +13,7 @@ const Footer = () => {
   return (
     <div className="flex flex-col bg-white sm:px-4 gap-4 border-b-8 border-[#006666] w-full">
       <div className="flex flex-wrap justify-center sm:justify-between items-center gap-8 border-b-2 border-t-2 border-gray-300 pb-3 " >
-        <img src={edubuklogo} alt="logo" className="md:w-[200px] md:h-[200px] w-[152px] h-[152px]"></img>
+        <img src="/newLogo.png" alt="logo" className="md:w-[200px] md:h-[200px] w-[152px] h-[152px]"></img>
         <div className="flex flex-col justify-center gap-4 sm:pl-16 ml-10">
             <div className="font-semibold text-xl text-black uppercase">Contact Us:</div>
             <div className="flex justify-start gap-2 items-center text-black"><MdEmail />Email: support@edubukeseal.org</div>

@@ -16,7 +16,6 @@ import ContactUs from "./pages/ContactUs";
 function App() {
   const oktoAPIKey= import.meta.env.VITE_OKTO_CLIENT_API_KEY;
 
-
   return (
     <div>
   <OktoProvider apiKey={oktoAPIKey} buildType={BuildType.PRODUCTION} >
