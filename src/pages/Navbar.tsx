@@ -228,10 +228,10 @@ const Navbar = () => {
   }, [auth]);
 
   return (
-    <div className="flex justify-between items-center px-4 py-1 w-full border-b-2 border-gray-200">
-      <img src={logo} alt="Logo" className="h-32 w-32" />
+    <div className="flex justify-between items-center sm:px-3 w-full border-b-2 border-gray-200">
+      <img src={logo} alt="Logo" className="h-20 w-20 sm:h-28 sm:w-28 md:h-32 md:w-32 " />
       <div className="flex gap-2 justify-between items-center">
-        <div className=" space-x-4 hidden md:block">
+        <div className=" space-x-4 hidden lg:block">
           {links?.map((link, i) =>
             link.name === "Home" ? (
               <Link
@@ -264,7 +264,7 @@ const Navbar = () => {
           
         </div>
         {!sessionStorage.getItem("oktoAuthToken") ? (
-            <div className="hidden sm:flex relative rounded-full p-[2px] bg-gradient-to-r from-[#03257e] via-[#006666] to-[#f14419]">
+            <div className="hidden lg:flex relative rounded-full p-[2px] bg-gradient-to-r from-[#03257e] via-[#006666] to-[#f14419]">
               <button
                 onClick={()=>setLoginModel(true)}
                 className="w-full bg-white py-1 text-[20px] px-8 font-bold rounded-full text-[#03257e] hover:text-[#f14419]"
@@ -273,7 +273,7 @@ const Navbar = () => {
               </button>
             </div>
           ) : (
-           <div className="relative hidden sm:flex rounded-full p-[2px] bg-gradient-to-r from-[#03257e] via-[#006666] to-[#f14419]">
+           <div className="relative hidden lg:flex rounded-full p-[2px] bg-gradient-to-r from-[#03257e] via-[#006666] to-[#f14419]">
               <button
                 onClick={handlerLogout}
                 className="w-full bg-white py-1 text-[20px] px-8 font-bold rounded-full text-[#03257e] hover:text-[#f14419]"
@@ -288,7 +288,7 @@ const Navbar = () => {
             <div className="relative rounded-full p-[2px] bg-gradient-to-r from-[#03257e] via-[#006666] to-[#f14419]">
               <button
                 onClick={fetchUserPortfolio}
-                className=" w-full bg-white py-1 px-4 text-[20px] font-bold rounded-full text-[#03257e] hover:text-[#f14419]"
+                className=" w-full bg-white py-1 px-4 text-[12px] sm:text-[20px] font-bold rounded-full text-[#03257e] hover:text-[#f14419]"
               >
                 View Wallet
               </button>
@@ -331,18 +331,18 @@ const Navbar = () => {
             </div>
           )}
           <div
-            className={`relative flex sm:hidden flex-col items-center justify-center w-8 h-8 cursor-pointer space-y-1.5 transition-all duration-300 ease-in-out ${
+            className={`relative flex lg:hidden flex-col items-center justify-center w-8 h-8 cursor-pointer space-y-1.5 transition-all duration-300 ease-in-out ${
               isSidebarOpen ? "open" : ""
             }`}
             onClick={toggleSidebar}
           >
             <span
-              className={`block w-8 h-1 bg-[#006666] rounded transition duration-300 ease-in-out ${
+              className={`block w-8 h-1 bg-[#03257e] rounded transition duration-300 ease-in-out ${
                 isSidebarOpen ? "transform translate-y-3 rotate-45" : ""
               }`}
             ></span>
             <span
-              className={`block w-8 h-1 bg-[#006666] rounded transition duration-300 ease-in-out ${
+              className={`block w-8 h-1 bg-[#f14419] rounded transition duration-300 ease-in-out ${
                 isSidebarOpen ? "opacity-0" : ""
               }`}
             ></span>
@@ -356,33 +356,46 @@ const Navbar = () => {
       </div>
       {loginModel && (
         <div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 transition-opacity duration-300"
-          onClick={hidePopup}
-        >
-          <div
-            className="flex flex-col gap-4 bg-white shadow-lg rounded-lg p-6 w-80 relative transform transition-transform duration-300 scale-100 opacity-1 animate-fade-in"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <GoogleLogin
-              onSuccess={handleGoogleLogin}
-              onError={
-                ((error: any) => {
-                  console.log("Login Failed", error);
-                }) as () => void
-              }
-              useOneTap
-              promptMomentNotification={(notification) =>
-                console.log("Prompt moment notification:", notification)
-              }
-            />
-            <button
-              onClick={hidePopup}
-              className="block mx-auto px-4 py-2 bg-red-500 text-white font-medium rounded shadow hover:bg-red-600"
-            >
-              Close
-            </button>
-          </div>
-        </div>
+  className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300"
+  onClick={hidePopup}
+  aria-modal="true"
+  role="dialog"
+>
+  <div
+    className="relative w-[90%] max-w-sm bg-white rounded-lg shadow-lg p-6 flex flex-col gap-5 animate-fade-in transform transition-transform duration-300 scale-100 opacity-100"
+    onClick={(e) => e.stopPropagation()}
+  >
+    {/* Modal Header */}
+    <h2 className="text-2xl font-semibold text-center text-[#03257E]">Sign in with Google</h2>
+    <p className="text-sm text-center text-gray-600">
+      Use your Google account to continue securely.
+    </p>
+
+    {/* Google Login Button */}
+    <GoogleLogin
+      onSuccess={handleGoogleLogin}
+      onError={
+        ((error: any) => {
+          console.log("Login Failed", error);
+        }) as () => void
+      }
+      useOneTap
+      promptMomentNotification={(notification) =>
+        console.log("Prompt moment notification:", notification)
+      }
+    />
+
+    {/* Close Button */}
+    <button
+      onClick={hidePopup}
+      className="mt-2 px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600 transition"
+      aria-label="Close Google login modal"
+    >
+      Close
+    </button>
+  </div>
+</div>
+
       )}
       {/* Sidebar */}
       <Sidebar
@@ -393,7 +406,7 @@ const Navbar = () => {
         handlerLogout={handlerLogout}
         currentPath={currentPath}
       />
-      <img src={truCv} alt="trucv-logo" className="w-fit h-20 sm:h-24 md:w-fit md:h-20"></img>
+      <img src={truCv} alt="trucv-logo" className="w-fit h-16 sm:h-24 md:w-fit md:h-24"></img>
     </div>
   );
 };
@@ -421,8 +434,8 @@ const Sidebar: React.FC<SidebarProps> = ({
               to={link.path}
               onClick={() => setIsSidebarOpen(false)}
               className={`${
-                currentPath === link.path ? "text-blue-500" : "text-[#006666]"
-              } hover:text-blue-500 transition duration-200 py-2`}
+                currentPath === link.path ? "text-[#f14419]" : "text-[#03257e]"
+              } hover:text-[#f14419] transition duration-200 py-2`}
             >
               {link.name}
             </Link>
@@ -433,8 +446,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                 to={link.path}
                 onClick={() => setIsSidebarOpen(false)}
                 className={`${
-                  currentPath === link.path ? "text-blue-500" : "text-[#006666]"
-                } hover:text-blue-500 transition duration-200 py-2`}
+                  currentPath === link.path ? "text-[#f14419]" : "text-[#03257e]"
+                } hover:text-[#f14419] transition duration-200 py-2`}
               >
                 {link.name}
               </Link>
@@ -447,15 +460,15 @@ const Sidebar: React.FC<SidebarProps> = ({
               setLoginModel(true);
               setIsSidebarOpen(false);
             }}
-            className="bg-blue-500 py-2 px-4 rounded-full text-white"
+            className="bg-[#03257e] py-2 px-4 rounded-full text-white"
           >
             Login
           </button>
         ) : (
-          <div className="relative rounded-full p-[1px] bg-gradient-to-r from-[#00fbff] via-[#ff9100] to-[#0077ff]">
+          <div className="relative rounded-full p-[1px] bg-gradient-to-r from-[#03257e] via-[#006666] to-[#f14419]">
             <button
               onClick={handlerLogout}
-              className=" w-full bg-white py-2 px-4 rounded-full text-[#006666] hover:font-bold"
+              className=" w-full bg-white py-2 px-4 rounded-full text-[#03257e] hover:font-bold"
             >
               Logout
             </button>
