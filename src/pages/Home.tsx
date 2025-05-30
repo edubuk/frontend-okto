@@ -31,7 +31,7 @@ const Home = () => {
             alt="hero-img"
             className="w-full h-[50vh] sm:h-[60vh] md:h-[70vh] rounded-b-full object-cover"
           />
-          <div className="absolute left-1/2 bottom-0 -translate-x-1/2 w-[200px] h-[200px] sm:w-[210px] sm:h-[210px]  md:w-[240px] md:h-[240px] lg:w-[300px] lg:h-[300px] bg-[#03257e] rounded-full -z-10"></div>
+          <div className="absolute left-1/2 bottom-0 -translate-x-1/2 w-[300px] h-[300px] sm:w-[350px] sm:h-[350px] lg:w-[350px] lg:h-[350px] bg-[#03257e] rounded-full -z-10"></div>
         </div>
         </div>
         <div className="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-[#03257e] via-[#006666] to-[#f14419]">
