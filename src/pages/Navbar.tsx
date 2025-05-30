@@ -240,7 +240,7 @@ const Navbar = () => {
                 onClick={() => handlerActive(link.name)}
                 className={`${
                   isActive === link.name ? "text-[#f14419]" : "text-[#03257e]"
-                } hover:text-[#f14419] transition duration-200 py-2 text-[20px] font-medium`}
+                } hover:text-[#f14419] transition duration-200 py-2 text-[22px] font-medium`}
               >
                 {link.name}
               </Link>
@@ -254,36 +254,41 @@ const Navbar = () => {
                     currentPath === link.path
                       ? "text-[#f14419]"
                       : "text-[#03257e]"
-                  } hover:text-[#f14419] transition duration-200 py-2 text-[20px] font-medium`}
+                  } hover:text-[#f14419] transition duration-200 py-2 text-[22px] font-medium`}
                 >
                   {link.name}
                 </Link>
               )
             )
           )}
-          {!sessionStorage.getItem("oktoAuthToken") ? (
-            <button
-              onClick={() => setLoginModel(true)}
-              className="bg-[#f14419] py-2 px-4 rounded-full text-[#03257e] font-bold"
-            >
-              Login
-            </button>
-          ) : (
-            <button
-              onClick={handlerLogout}
-              className="bg-white-500 border-2 border-slate-500 py-2 px-7 rounded-full text-[#03257e] font-bold ml-1"
-            >
-              Logout
-            </button>
-          )}
+          
         </div>
+        {!sessionStorage.getItem("oktoAuthToken") ? (
+            <div className="hidden sm:flex relative rounded-full p-[2px] bg-gradient-to-r from-[#03257e] via-[#006666] to-[#f14419]">
+              <button
+                onClick={()=>setLoginModel(true)}
+                className="w-full bg-white py-1 text-[20px] px-8 font-bold rounded-full text-[#03257e] hover:text-[#f14419]"
+              >
+                Login
+              </button>
+            </div>
+          ) : (
+           <div className="relative hidden sm:flex rounded-full p-[2px] bg-gradient-to-r from-[#03257e] via-[#006666] to-[#f14419]">
+              <button
+                onClick={handlerLogout}
+                className="w-full bg-white py-1 text-[20px] px-8 font-bold rounded-full text-[#03257e] hover:text-[#f14419]"
+              >
+                Logout
+              </button>
+            </div>
+          )}
         {/* Hamburger Menu */}
         <div className="flex items-center justify-center gap-2 ml-2">
           {sessionStorage.getItem("oktoAuthToken") && (
             <div className="relative rounded-full p-[2px] bg-gradient-to-r from-[#03257e] via-[#006666] to-[#f14419]">
               <button
                 onClick={fetchUserPortfolio}
-                className=" w-full bg-white py-2 px-4 font-bold rounded-full text-[#03257e] hover:text-[#f14419]"
+                className=" w-full bg-white py-1 px-4 text-[20px] font-bold rounded-full text-[#03257e] hover:text-[#f14419]"
               >
                 View Wallet
               </button>

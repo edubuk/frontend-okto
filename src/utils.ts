@@ -67,7 +67,7 @@ export const convertDateToString = (value: any): string | null => {
   return null;
 };
 
-export const instLogos = [instLogo1,instLogo2,instLogo3,instLogo4,instLogo5];
+export const instLogos = [instLogo1,instLogo2,instLogo3,instLogo4,instLogo5,instLogo1,instLogo2,instLogo3,instLogo4,instLogo5];
 export const blcLogos =  [blcLogo1,blcLogo2,blcLogo3,blcLogo4,blcLogo5,blcLogo6,blcLogo7,blcLogo8,blcLogo9,blcLogo10];
 export const govLogos =  [govLogo1,govLogo2,govLogo3,govLogo4,govLogo5,govLogo6,govLogo7];
 export const finLogos =  [finLogo1,finLogo2,finLogo3,finLogo4,finLogo5,finLogo6];

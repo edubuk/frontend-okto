@@ -25,7 +25,7 @@ export default {
   },
   slide: {
     '0%': { transform: 'translateX(0)' },
-    '100%': { transform: 'translateX(-50%)' },
+    '100%': { transform: 'translateX(-40%)' },
   },
   slideOpposite: {
     '0%': { transform: 'translateX(-50%)' },

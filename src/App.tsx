@@ -12,6 +12,7 @@ import About from "./pages/About";
 import TermsAndConditions from "./pages/TermCond";
 import CancellationPolicy from "./pages/CancellationPol";
 import ContactUs from "./pages/ContactUs";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 function App() {
   const oktoAPIKey= import.meta.env.VITE_OKTO_CLIENT_API_KEY;
@@ -28,6 +29,8 @@ function App() {
         <Route path="/terms-and-conditions" element={<TermsAndConditions />}></Route>
         <Route path="/cancellation-policy" element={<CancellationPolicy />}></Route>
         <Route path="/contact-us" element={<ContactUs />}></Route>
+        <Route path="/privacy-policy" element={<PrivacyPolicy />}></Route>
+
         <Route element={<PrivateRoute />}>
           <Route path="/create-cv" element={<HomePage />} />
           <Route path="/dashboard" element={<DashBoard />} />
