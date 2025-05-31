@@ -53,7 +53,12 @@ interface Wallet {
   success: boolean;
 }
 
-const Navbar = () => {
+interface NavProps {
+  loginModel: boolean;
+  setLoginModel: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Navbar:React.FC<NavProps> = ({loginModel,setLoginModel}) => {
   const [isActive, setActive] = useState("/");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [auth, setAuth] = useState<string>();
@@ -67,7 +72,6 @@ const Navbar = () => {
     getWallets,
     getUserDetails,
   } = useOkto();
-  const [loginModel, setLoginModel] = useState(false);
   const [openWalletInfo, setOpenWalletInfo] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();

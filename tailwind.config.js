@@ -17,6 +17,8 @@ export default {
         'fade-in': 'fadeIn 0.3s ease-out',
        slide: 'slide 10s linear infinite',
         slideOpposite: 'slideOpposite 10s linear infinite',
+        zoomOut: 'zoomOut 1.5s ease-out forwards',
+        typewriter: 'typewriter 2s steps(7) 1s forwards',
       },
       keyframes: {
   fadeIn: {
