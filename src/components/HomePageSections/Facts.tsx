@@ -23,22 +23,22 @@ const Facts = () => {
       <p className="absolute top-3/4 right-[6%] sm:right-[35%] p-2 bg-white border-4 border-[#03257e] rounded-full w-3 h-3"></p>
     </div>
     <div className='relative'>
-      <div className='absolute flex top-[15%] -ml-[-2%] sm:-ml-[30%] justify-center items-center gap-6'>
-      <div className='flex justify-center items-start flex-col'>
+      <div className='absolute flex top-[11%] -ml-[-2%] sm:-ml-[30%] justify-center items-center gap-6'>
+      <div className='flex justify-center items-start flex-col ml-3 sm:ml-0'>
         <p className=' text-[#03257e] font-bold text-2xl sm:text-3xl md:text-4xl'>100 MILLION</p>
         <p className=' text-black'>Fake IDs and Credentials Sold Per Year</p>      
         </div>
         <img src={fact1} alt='fact-1' className='hidden sm:flex w-fit h-24'></img>
       </div>
-      <div className='absolute flex top-[41%] -ml-[-5%]  sm:-ml-[30%] justify-center items-center gap-6'>
-      <div className='flex justify-center items-start flex-col'>
+      <div className='absolute flex top-[43%] -ml-[-5%]  sm:-ml-[30%] justify-center items-center gap-6'>
+      <div className='flex justify-center items-start flex-col ml-2 sm:ml-0'>
         <p className=' text-[#03257e] text-2xl sm:text-3xl md:text-4xl font-bold'>$200 BILLION</p>
         <p className=' text-black'>Fake IDs & Credentials Market Globally as per UNESCO</p>
       </div>
         <img src={fact2} alt='fact-2' className='hidden sm:flex w-fit h-28'></img>
       </div>
-      <div className='absolute top-[74%] -ml-[-4%] sm:-ml-[30%] flex justify-center items-center gap-6'>
-      <div className='flex justify-center items-start flex-col'>
+      <div className='absolute top-[76%] -ml-[-4%] sm:-ml-[30%] flex justify-center items-center gap-6'>
+      <div className='flex justify-center items-start flex-col ml-2 sm:ml-0'>
         <p className=' text-[#03257e] text-2xl sm:text-3xl md:text-4xl font-bold'>$20 BILLION</p>
         <p className=' text-black'>Academic & Professional Market Share (10%)</p>
       </div>
