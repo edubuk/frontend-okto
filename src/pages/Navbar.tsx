@@ -65,6 +65,8 @@ const Navbar:React.FC<NavProps> = ({loginModel,setLoginModel}) => {
   const [userDetails, setUserDetails] = useState<User>();
   const [address, setAddress] = useState<string>();
   const [networkName, setNetworkName] = useState<string>();
+  const [showText, setShowText] = useState(false);
+  
   const {
     authenticate,
     getPortfolio,
@@ -226,6 +228,13 @@ const Navbar:React.FC<NavProps> = ({loginModel,setLoginModel}) => {
       }
     } catch (error) {}
   };
+  useEffect(() => {
+    const hasSeenPopup = localStorage.getItem('hasSeenPopup');
+    if (!hasSeenPopup) {
+      setShowText(true);
+      localStorage.setItem('hasSeenPopup', 'true');
+    }
+  }, []);
 
   useEffect(() => {
     getUserData();
@@ -289,6 +298,7 @@ const Navbar:React.FC<NavProps> = ({loginModel,setLoginModel}) => {
         {/* Hamburger Menu */}
         <div className="flex items-center justify-center gap-2 ml-2">
           {sessionStorage.getItem("oktoAuthToken") && (
+            <div className="relative">
             <div className="relative rounded-full p-[2px] bg-gradient-to-r from-[#03257e] via-[#006666] to-[#f14419]">
               <button
                 onClick={fetchUserPortfolio}
@@ -296,6 +306,18 @@ const Navbar:React.FC<NavProps> = ({loginModel,setLoginModel}) => {
               >
                 View Wallet
               </button>
+            </div>
+{showText&&    <div className="relative w-fit mt-2">
+  <div className="absolute flex justify-center flex-col items-center w-[200px] shadow p-2 bg-white z-20 rounded-md gap-2">
+  <p className="text-[#03257e]">
+    Please click on view wallet to setup your wallet before proceeding to{" "}
+    <span className="text-[#f14419]">Create CV</span>
+  </p>
+  <button className="py-1 px-3 bg-[#03257e] text-white rounded-lg" onClick={()=>setShowText(false)}>OK</button>
+  </div>
+  <div className="absolute left-1/2 top-full translate-x-20 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#f14419] rotate-180 z-20"></div>
+</div>}
+
             </div>
           )}
           {openWalletInfo && (

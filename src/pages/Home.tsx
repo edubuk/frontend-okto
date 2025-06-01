@@ -7,6 +7,7 @@ import ThreeDot from "../components/HomePageSections/ThreeDot";
 import VideoSection from "../components/HomePageSections/VideoSection";
 import Footer from "./Footer";
 import StepToCreateCV from "../components/HomePageSections/StepToCreateCV";
+import { Link } from "react-router-dom";
 // import Collaborators from "../components/HomePageSections/Collaborators";
 interface HomeProps {
   loginModel: boolean;
@@ -17,19 +18,25 @@ const Home:React.FC<HomeProps> = ({setLoginModel}) => {
   return (
     <div className="flex justify-center items-center flex-col gap-8">
      <div className="relative w-full">
-      <div className="flex justify-around items-center flex-wrap-reverse gap-10 md:gap-20 border-b-4 border-amber-300 md:h-[80vh]">
+      <div className="flex justify-around items-center flex-wrap-reverse gap-10 md:gap-20 border-b-4 border-amber-300 py-6">
         <div className="flex justify-center items-center flex-col gap-4 pb-4">
           <div className="flex justify-center items-center gap-2">
           <p className="text-white bg-[#006666] px-6 py-4 font-bold rounded-lg text-2xl sm:text-3xl md:text-4xl">
             TruCV
           </p>
           <div className="flex lg:hidden relative rounded-lg p-[2px] bg-gradient-to-r from-[#03257e] via-[#006666] to-[#f14419]">
-              <button
+              {!sessionStorage.getItem("oktoAuthToken")&&<button
                 className="w-full bg-white text-[20px] px-6 py-4 font-bold rounded-lg text-[#03257e] hover:text-[#f14419]"
                 onClick={()=>setLoginModel(true)}
               >
                 Login
-              </button>
+              </button>}
+              {
+                sessionStorage.getItem("oktoAuthToken")&&
+                <Link to='/create-cv'
+                className="w-full bg-white text-[20px] px-6 py-4 font-bold rounded-lg text-[#03257e] hover:text-[#f14419]"
+                >Create CV</Link>
+              }
             </div>
           </div>
           <p className="text-[#03257E] text-center text-2xl sm:text-3xl md:text-5xl font-bold">
