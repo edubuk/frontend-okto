@@ -415,7 +415,7 @@ export const formSchema = z.object({
           },
           {
             message:
-              "At least one of selfAssested, mail to Issuer, or proofs is required for class10",
+              "At least one of selfAssested/proofs is required for class10",
           }
         )
         .refine(
@@ -425,7 +425,7 @@ export const formSchema = z.object({
             (data.proof && data.proof.length > 0),
           {
             message:
-              "At least one of isSelfAttested, mailStatus, or proofs is required for class10",
+              "At least one of isSelfAttested/proofs is required for class10",
           }
         ),
       class12: z
@@ -437,7 +437,7 @@ export const formSchema = z.object({
           },
           {
             message:
-              "At least one of selfAssested, mail to Issuer, or proofs is required for class12",
+              "At least one of selfAssested/proofs is required for class12",
           }
         )
         .refine(
@@ -447,7 +447,7 @@ export const formSchema = z.object({
             (data.proof && data.proof.length > 0),
           {
             message:
-              "At least one of isSelfAttested, mailStatus, or proofs is required for class10",
+              "At least one of isSelfAttested/proofs is required for class10",
           }
         ),
       undergraduation: z
@@ -459,7 +459,7 @@ export const formSchema = z.object({
           },
           {
             message:
-              "At least one of selfAssested, mail to Issuer, or proofs is required for undergraduation",
+              "At least one of selfAssested/proofs is required for undergraduation",
           }
         )
         .refine(
@@ -469,7 +469,7 @@ export const formSchema = z.object({
             (data.proof && data.proof.length > 0),
           {
             message:
-              "At least one of isSelfAttested, mailStatus, or proofs is required for class10",
+              "At least one of isSelfAttested/proofs is required for class10",
           }
         ),
       postgraduation: z
@@ -481,7 +481,7 @@ export const formSchema = z.object({
           },
           {
             message:
-              "At least one of selfAssested, mail to Issuer, or proofs is required for postgraduation",
+              "At least one of selfAssested/proofs is required for postgraduation",
           }
         )
         .refine(
@@ -491,7 +491,7 @@ export const formSchema = z.object({
             (data.proof && data.proof.length > 0),
           {
             message:
-              "At least one of isSelfAttested, mailStatus, or proofs is required for class10",
+              "At least one of isSelfAttested/proofs is required for class10",
           }
         ),
     }),
@@ -507,7 +507,7 @@ export const formSchema = z.object({
           },
           {
             message:
-              "At least one of selfAssested, mail to Issuer, or proofs is required",
+              "At least one of selfAssested/proofs is required",
           }
         )
         .refine(
@@ -517,7 +517,7 @@ export const formSchema = z.object({
             (data.proof && data.proof.length > 0),
           {
             message:
-              "At least one of selfAssested, mail to Issuer, or proofs is required",
+              "At least one of selfAssested/proofs is required",
           }
         )
     ),
@@ -533,7 +533,7 @@ export const formSchema = z.object({
           },
           {
             message:
-              "At least one of selfAssested, mail to Issuer, or proofs is required",
+              "At least one of selfAssested/proofs is required",
           }
         )
         .refine(
@@ -543,7 +543,7 @@ export const formSchema = z.object({
             (data.proof && data.proof.length > 0),
           {
             message:
-              "At least one of selfAssested, mail to Issuer, or proofs is required",
+              "At least one of selfAssested/proofs is required",
           }
         )
     ),
@@ -559,7 +559,7 @@ export const formSchema = z.object({
           },
           {
             message:
-              "At least one of selfAssested, mail to Issuer, or proofs is required",
+              "At least one of selfAssested/proofs is required",
           }
         )
         .refine(
@@ -569,7 +569,7 @@ export const formSchema = z.object({
             (data.proof && data.proof.length > 0),
           {
             message:
-              "At least one of selfAssested, mail to Issuer, or proofs is required",
+              "At least one of selfAssested/proofs is required",
           }
         )
     ),
@@ -585,7 +585,7 @@ export const formSchema = z.object({
           },
           {
             message:
-              "At least one of selfAssested, mail to Issuer, or proofs is required",
+              "At least one of selfAssested/proofs is required",
           }
         )
         .refine(
@@ -595,7 +595,7 @@ export const formSchema = z.object({
             (data.proof && data.proof.length > 0),
           {
             message:
-              "At least one of selfAssested, mail to Issuer, or proofs is required",
+              "At least one of selfAssested/proofs is required",
           }
         )
     ),
@@ -611,7 +611,7 @@ export const formSchema = z.object({
           },
           {
             message:
-              "At least one of selfAssested, mail to Issuer, or proofs is required",
+              "At least one of selfAssested/proofs is required",
           }
         )
         .refine(
@@ -621,7 +621,7 @@ export const formSchema = z.object({
             (data.proof && data.proof.length > 0),
           {
             message:
-              "At least one of selfAssested, mail to Issuer, or proofs is required",
+              "At least one of selfAssested/proofs is required",
           }
         )
     ),

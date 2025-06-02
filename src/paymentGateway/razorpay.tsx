@@ -20,7 +20,7 @@ interface payload {
 
 const PaymentPopup: React.FC<Props> = ({ showPopup, setShowPopup}) => {
   const [coupon, setCoupon] = useState<string>("");
-  const [amount, setAmount] = useState<number>(89);
+  const [amount, setAmount] = useState<number>(499);
   const [isCouponValid, setCouponValid] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 

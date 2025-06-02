@@ -183,7 +183,16 @@ const CourseFields = ({ index, removeCourseFields, fields }: Props) => {
             </FormItem>
           )}
         />
-        {fields.length > 1 && index + 1 === fields.length && (
+        <Button
+            type="button"
+            variant={"destructive"}
+            className="mt-5 text-sm px-10"
+            onClick={deleteHandler}
+          >
+            Remove
+            <MdDeleteOutline className="text-xl ml-2" />
+          </Button>
+        {/* {fields.length > 1 && index + 1 === fields.length && (
           <Button
             type="button"
             variant={"destructive"}
@@ -193,7 +202,7 @@ const CourseFields = ({ index, removeCourseFields, fields }: Props) => {
             Remove
             <MdDeleteOutline className="text-xl ml-2" />
           </Button>
-        )}
+        )} */}
       </div>
       {/* Animated Verification section */}
       <div className="flex flex-col gap-4 sm:px-2">
