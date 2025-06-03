@@ -186,12 +186,12 @@ const PaymentPopup: React.FC<Props> = ({ showPopup, setShowPopup}) => {
                   </div>
                   {coupon?.length > 0 && amount === 499 && (
                     <p className="absolute text-[red] bottom-[0.01rem]">
-                      code is invalid
+                      
                     </p>
                   )}
                   {isCouponValid && (
                     <p className="absolute text-[#ff6a00] bottom-[0.01rem]">
-                      valid till 28 Feb 2025
+                      
                     </p>
                   )}
                 </div>
