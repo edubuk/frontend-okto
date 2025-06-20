@@ -8,6 +8,7 @@ import VideoSection from "../components/HomePageSections/VideoSection";
 import Footer from "./Footer";
 import StepToCreateCV from "../components/HomePageSections/StepToCreateCV";
 import { Link } from "react-router-dom";
+import WhyTrucv from "@/components/HomePageSections/WhyTrucv";
 // import Collaborators from "../components/HomePageSections/Collaborators";
 interface HomeProps {
   loginModel: boolean;
@@ -62,6 +63,8 @@ const Home:React.FC<HomeProps> = ({setLoginModel}) => {
       <ImageSlider />
       <ThreeDot />
       <Facts />
+      <ThreeDot />
+      <WhyTrucv />
       <ThreeDot />
       <StepToCreateCV />
       <ThreeDot />

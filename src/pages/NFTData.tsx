@@ -19,7 +19,7 @@ interface NFTGalleryProps {
 const NFTGallery: React.FC<NFTGalleryProps> = () => {
   const [nfts, setNfts] = useState<NFT[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const { readContractData, getWallets } = useOkto();
+  const { readContractData, getWallets,transferTokensWithJobStatus } = useOkto();
 
   const fetchNFTs = async () => {
     const id = toast.loading("Fetching NFTs...");
@@ -155,6 +155,8 @@ const NFTGallery: React.FC<NFTGalleryProps> = () => {
       setLoading(false);
     }
   };
+
+  const transferToken = 
 
   useEffect(() => {
     fetchNFTs();
